@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import DataTablePagination from "./DataTablePagination";
 import DataTableHeader from "./DataTableHeader";
-import { useLearningState } from "@/store/useAdminStore";
+import { useLearningState } from "../../../store/useAdminStore";
 import { handleGetItem } from "../../../lib/handleGetData";
 import { useEffect, useState } from "react";
 

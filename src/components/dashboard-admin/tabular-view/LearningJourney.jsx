@@ -4,7 +4,7 @@ import DataTable from "../table/DataTable";
 import { journey_add_url, journey_get_url } from "../../../lib/url";
 import { staticJourneyData } from "../../../static-data/data";
 import { useJourney } from "../../../store/useAdminStore";
-
+import columnJourney from '../table/columnJourney'
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";

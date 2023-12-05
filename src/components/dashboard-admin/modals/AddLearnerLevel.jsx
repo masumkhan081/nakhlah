@@ -1,15 +1,15 @@
 'use client'
-import InputField from "@/components/share/InputField";
+import InputField from "../../ui-custom/InputField";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { LearningLevelAddItem_URL } from "@/components/url";
+import { LearningLevelAddItem_URL } from "../../../lib/url";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import AdminFormButton from "../AdminFormButton/AdminFormButton";
+import AdminFormButton from "../../ui-custom/AdminFormButton";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { useLearningState } from "@/store/useAdminStore";
+import { useLearningState } from "../../../store/useAdminStore";
 
 
 const formSchema = z.object({

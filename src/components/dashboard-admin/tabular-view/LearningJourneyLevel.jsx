@@ -1,44 +1,39 @@
 "use client";
-import { useEffect } from "react";
-import { DataTable } from "../share/DataTable/DataTable";
-import { level_add_url, level_get_url } from "@/components/url";
-import  columnLevel  from "../share/Column/TaskLevel.jsx";
-import { staticLevelData } from "@/components/data";
-import { useLevel } from "../../../store/useAdminStore";
+import React, { useEffect, useState } from "react";
+import  DataTable  from "../table/DataTable";
+import levelColumns from "../table/ColLearnerLevel";
+import { LearningLevelGetAllItem_URL } from "../../../lib/url";
+import { useLearningState } from "../../../store/useAdminStore";
+import { shallow } from "zustand/shallow";
+import { handleGetItem } from "../../../lib/handleGetData";
 
 const LearningJourneyLevel = () => {
-  const levelData = useLevel((state) => state.data);
-  const getLevels = useLevel((state) => state.getLevels);
-  const addNewLevel = useLevel((state) => state.addNewLevel);
-  //   const errorMessageCall = useLevel((state) => state.errorMessage);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    if (Array.isArray(levelData) && levelData.length === 0) {
-      getLevels(level_get_url);
-    }
-  }, [levelData]);
-
-  // const { data, meta } = levelData;
-  // const dataRenderable =
-  //   data !== undefined &&
-  //   data.map((item) => {
-  //     return {
-  //       id: item.id,
-  //       titleLevel: item.attributes.title,
-  //       titleTask: item.attributes.learning_journey_unit.data.attributes.title,
-  //       titleJourney:
-  //         item.attributes.learning_journey_unit.data.attributes.learning_journey
-  //           .data.attributes.title,
-  //     };
-  //   });
-
+    const unsubget = useLearningState.subscribe(
+      (state) => state.getAllItem,
+      (get, preGet) => get(LearningLevelGetAllItem_URL),
+      {
+        equalityFn: shallow,
+        fireImmediately: true,
+      }
+    );
+    useLearningState.subscribe(
+      (state) => state.data,
+      (data, preData) => {
+        const dataInfo =
+          data.data !== undefined && handleGetItem(data.data, "learnerLevel");
+        setData(dataInfo);
+      }
+    );
+    return unsubget;
+  }, []);
   return (
     <div className="w-full bg-white  rounded-xl">
-      <DataTable
-        data={levelData}
-        columns={columnLevel}
-        view={"level"}
-      />
+      {/* <DataTable columns={purposeColumns} learningTitle={"purpose"}  addURL={LearningPurposeAddItem_URL} getURL={LearningPurposeGetAllItem_URL}/> */}
+      {/* <DataTable data={purposeData} columns={purposeColumns} learningTitle={"purpose"} /> */}
+      <DataTable data={data} columns={levelColumns} view={"learnerLevel"} />
     </div>
   );
 };

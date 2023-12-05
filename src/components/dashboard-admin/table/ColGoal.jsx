@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react"
-import Deletion from "../modal-body/Deletion"
-import AddGoal from "../AddNewItem/AddGoal"
+import Deletion from "../modals/Deletion"
+import AddGoal from "../modals/AddGoal"
 
 export const goalColumns = [
     {

@@ -15,10 +15,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import AddGoal from "../AddNewItem/AddGoal";
-import AddPurpose from "../AddNewItem/AddPurpose";
-import AddStartingPoint from "../AddNewItem/AddStartingPoint";
-import AddLearnerLevel from "../AddNewItem/AddLearnerLevel";
+import AddGoal from "../modals/AddGoal";
+import AddPurpose from "../modals/AddPurpose";
+import AddStartingPoint from "../modals/AddStartingPoint";
+import AddLearnerLevel from "../modals/AddLearnerLevel";
 
 const viewMap = {
   journey: "id_journey_titel",

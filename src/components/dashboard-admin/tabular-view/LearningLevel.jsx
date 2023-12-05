@@ -22,6 +22,7 @@ import Deletion from "../modals/Deletion";
 import AddTaskUnit from "../modals/AddTaskUnit";
 import { useEffect } from "react";
 import DataTable from "../table/DataTable";
+import columnLevel from "../table/columnLevel";
 import { level_add_url, level_get_url } from "../../../lib/url";
 
 import { staticLevelData } from "../../../static-data/data";
@@ -59,5 +60,3 @@ export default function LearningLevel() {
     </div>
   );
 }
-
-

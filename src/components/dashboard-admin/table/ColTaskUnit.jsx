@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Main_URL } from "@/components/url";
+import { Main_URL } from "../../../lib/url";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import AddJourney from "../AddNewItem/AddJourney";
-import AddLesson from "../AddNewItem/AddLesson";
-import Deletion from "../modal-body/Deletion";
-import AddTaskUnit from "../AddNewItem/AddTaskUnit";
+
+import Deletion from "../modals/Deletion";
+import AddTaskUnit from "../modals/AddTaskUnit";
 
 const columnTaskUnit = [
   {

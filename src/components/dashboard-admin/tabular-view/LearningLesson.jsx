@@ -1,11 +1,12 @@
 "use client";
 import { useEffect } from "react";
-import  DataTable  from "../table/DataTable";
+import DataTable from "../table/DataTable";
+import columnLesson from "../table/columnLesson";
 import { lesson_add_url, lesson_get_url } from "../../../lib/url";
- 
+
 import { staticLessonData } from "../../../static-data/data";
 import { useLesson } from "../../../store/useAdminStore";
- 
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";
@@ -60,6 +61,4 @@ export default function LearningLesson() {
       <DataTable data={lessonData} columns={columnLesson} view={"lesson"} />
     </div>
   );
-};
-
-
+}

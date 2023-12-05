@@ -3,12 +3,11 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react"
 import Image from "next/image"
-import Deletion from "../modal-body/Deletion"
-import AddJourney from "../AddNewItem/AddJourney"
-import { Main_URL } from "@/components/url"
-import AddLearnerLevel from "../AddNewItem/AddLearnerLevel"
+import Deletion from "../modals/Deletion" 
+import { Main_URL } from "../../../lib/url"
+import AddLearnerLevel from "../modals/AddLearnerLevel"
 
-export const levelColumns = [
+ const levelColumns = [
   {
     id: "select",
     header: ({ table }) => (
@@ -109,3 +108,5 @@ export const levelColumns = [
     },
   },
 ]
+
+export default levelColumns;

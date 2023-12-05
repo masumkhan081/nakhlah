@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { goalColumns } from "../share/Column/Goal";
-import { DataTable } from "../share/DataTable/DataTable";
+import goalColumns from "../table/ColGoal";
+import DataTable from "../table/DataTable";
 import { shallow } from "zustand/shallow";
 // import {
 //   LearningGoalAddItem_URL,
@@ -9,9 +9,9 @@ import { shallow } from "zustand/shallow";
 // } from "@/components/url";
 // import { goalColumns } from "../share/columns";
 // import { goalData } from "@/components/data";
-import { useLearningState } from "@/store/useAdminStore";
-import { LearningGoalGetAllItem_URL } from "@/components/url";
-import { handleGetItem } from "../share/handleGetData";
+import { useLearningState } from "../../../store/useAdminStore";
+import { LearningGoalGetAllItem_URL } from "../../../lib/url";
+import { handleGetItem } from "../../../lib/handleGetData";
 
 const LearningGoal = () => {
   // const goalDataCall = useLearningState((state) => state.data)

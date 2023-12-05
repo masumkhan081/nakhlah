@@ -3,9 +3,11 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
-import Deletion from "../modal-body/Deletion"
-import AddPurpose from "../AddNewItem/AddPurpose"
-import { Main_URL } from "@/components/url"
+import Deletion from "../modals/Deletion"
+import AddPurpose from "../modals/AddPurpose"
+import { Main_URL } from "../../../lib/url"
+
+
 export const purposeColumns = [
     {
       id: "select",
