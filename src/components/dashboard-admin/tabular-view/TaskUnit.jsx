@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import DataTable from "./DataTable";
+import DataTable from "../table/DataTable";
 import { unit_add_url, unit_get_url } from "../../../lib/url";
 
 import { Button } from "@/components/ui/button";
@@ -58,107 +58,6 @@ const TaskUnit = () => {
   );
 };
 
-const columnTaskUnit = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: () => <div className="textNormal textPrimaryColor">ID</div>,
-    cell: ({ row }) => {
-      const rowId = parseInt(row.id) + 1;
-      return <div className="textSecondaryColor textNormal">{rowId} </div>;
-    },
-  },
-  {
-    id: "id_task_titel",
-    accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Unit
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="">{row.getValue("id_task_titel")}</div>,
-  },
-  {
-    id: "journeyOfTask",
-    accessorKey: "journey.title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Journey
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="  textNormal textSecondaryColor">
-        {row.getValue("journeyOfTask")}
-      </div>
-    ),
-  },
 
-  {
-    id: "actions",
-    header: () => (
-      <div className="textNormal textPrimaryColor text-center">Actions</div>
-    ),
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <div className="flex gap-2 justify-center textSecondaryColor textSemiHeader">
-          <Dialog className="">
-            <DialogTrigger asChild>
-              <Button className="hover:text-[--uDText]">
-                <Trash2 className="" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="task" />
-            </DialogContent>
-          </Dialog>
-          <Dialog className="">
-            <DialogTrigger asChild>
-              <Button className="hover:text-[--uDText]">
-                <ClipboardEdit className="" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              <AddTaskUnit useForEdit={true} rowData={row.original} />
-            </DialogContent>
-          </Dialog>
-        </div>
-      );
-    },
-  },
-];
 
 export default TaskUnit;
