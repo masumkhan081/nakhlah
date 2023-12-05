@@ -1,4 +1,4 @@
-import ConTypeCategory from "@/components/adminDashboard/con-type-category/ConTypeCategory";
+import ConTypeCategory from "@/components/adminDashboard/ConTypeCategory";
 import React from "react";
 
 const ConTypeCategoryPage = () => {

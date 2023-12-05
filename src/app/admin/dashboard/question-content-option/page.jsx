@@ -1,4 +1,4 @@
-import QueConOption from '@/components/adminDashboard/que-con-option/QueConOption';
+import QueConOption from '@/components/adminDashboard/QueConOption';
 import React from 'react';
 
 const QueConOptionPage = () => {

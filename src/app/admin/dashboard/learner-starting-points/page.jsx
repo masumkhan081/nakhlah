@@ -1,4 +1,4 @@
-import LearningStartingPoint from "@/components/adminDashboard/learning-starting-point/LearningStartingPoint";
+import LearningStartingPoint from "@/components/adminDashboard/LearningStartingPoint";
 
 
 

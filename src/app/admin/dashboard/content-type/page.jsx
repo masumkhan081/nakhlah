@@ -1,4 +1,4 @@
-import ContentType from '@/components/adminDashboard/content-type/ContentType';
+import ContentType from '@/components/adminDashboard/ContentType';
 import React from 'react';
 
 const ContentTypePage = () => {

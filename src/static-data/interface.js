@@ -1,0 +1,156 @@
+import { MdBook, MdMenuBook } from "react-icons/md";
+import { RiSpeakFill } from "react-icons/ri";
+import { FaEarListen } from "react-icons/fa6";
+import { FiHome } from "react-icons/fi";
+import { AiOutlineUnorderedList } from "react-icons/ai";
+import { SiReacthookform } from "react-icons/si";
+
+export const adminDashboard = {
+  leftNavList: {
+    main: {
+      title: "Main",
+      list: [
+        {
+          id: 1,
+          title: "Dashboard",
+          icon: <FiHome />,
+          link: "/admin/dashboard",
+          subLinks: null,
+        },
+        {
+          id: 2,
+          title: "User",
+          icon: <FiHome />,
+          link: "#",
+          subLinks: [
+            {
+              id: 1,
+              title: "User Group",
+              icon: <AiOutlineUnorderedList />,
+              link: "#",
+              subLinks: null,
+            },
+            {
+              id: 2,
+              title: "User List",
+              icon: <AiOutlineUnorderedList />,
+              link: "#",
+              subLinks: null,
+            },
+          ],
+        },
+      ],
+    },
+    element: {
+      title: "Element",
+      list: [
+        {
+          id: 1,
+          title: "Get Start",
+          icon: <SiReacthookform />,
+          link: "#",
+          subLinks: [
+            {
+              id: 1,
+              title: "Learning Purpose",
+              link: "/admin/dashboard/learner-purpose",
+            },
+            {
+              id: 2,
+              title: "Learning Level",
+              link: "/admin/dashboard/learner-level",
+            },
+            {
+              id: 3,
+              title: "Learning Starting Point",
+              link: "/admin/dashboard/learner-starting-points",
+            },
+            {
+              id: 4,
+              title: "Learning Goal",
+              link: "/admin/dashboard/learner-goal",
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: "Learning Journey",
+          icon: <SiReacthookform />,
+          link: "#",
+          subLinks: [
+            {
+              id: 1,
+              title: "Journey",
+              link: "/admin/dashboard/learner-journey",
+            },
+            {
+              id: 2,
+              title: "Unit",
+              link: "/admin/dashboard/task-unit",
+            },
+            {
+              id: 3,
+              title: "Level",
+              link: "/admin/dashboard/learner-journey-levels",
+            },
+            {
+              id: 4,
+              title: "Lesson",
+              link: "/admin/dashboard/learner-lesson",
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: "Questionaires",
+          icon: <SiReacthookform />,
+          link: "#",
+          subLinks: [
+            {
+              id: 1,
+              title: "Question",
+              link: "",
+            },
+            {
+              id: 2,
+              title: "Question Type",
+              link: "",
+            },
+            {
+              id: 3,
+              title: "Content Type",
+              link: "",
+            },
+            {
+              id: 4,
+              title: "Content Type Catagory",
+              link: "",
+            },
+            {
+              id: 5,
+              title: "Content",
+              link: "",
+            },
+            {
+              id: 6,
+              title: "Question Content",
+              link: "",
+            },
+            {
+              id: 7,
+              title: "Question Content Option",
+              link: "",
+            },
+          ],
+        },
+        {
+          id: 4,
+          title: "Customer",
+          icon: <AiOutlineUnorderedList />,
+          link: "#",
+          subLinks: null,
+        },
+      ],
+    },
+  },
+};

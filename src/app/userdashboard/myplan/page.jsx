@@ -1,4 +1,4 @@
-import { userDashboard } from '@/components/data';
+import { userDashboard } from '../../../static-data/data';
 import MyPlanPage from '@/components/userDashboard/MyPlanPage/MyPlanPage';
 import React from 'react';
 

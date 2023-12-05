@@ -1,5 +1,5 @@
 import GamificationPage from '@/components/Gamification/GamificationPage';
-import { gamificationData } from '@/components/data';
+import { gamificationData } from '../../../static-data/data';
 import React from 'react';
 
 const Gamification = () => {

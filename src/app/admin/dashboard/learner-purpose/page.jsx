@@ -1,4 +1,4 @@
-import LearningPurpose from "@/components/adminDashboard/learning-purpose/LearningPurpose";
+import LearningPurpose from "@/components/dashboard-admin/tabular-view/LearningPurpose";
 
 
 const LearningPurposePage = () => {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { subscribeWithSelector } from "zustand/middleware";
 import {
   Admin_URL,
   LearningStartingPointAddItem_URL,
@@ -8,7 +9,7 @@ import {
   LearningLevelGetAllItem_URL,
   LearningPurposeAddItem_URL,
   LearningPurposeGetAllItem_URL,
-} from "@/components/url";
+} from "../lib/url";
 
 //  static data
 import {
@@ -16,7 +17,7 @@ import {
   staticLessonData,
   staticLevelData,
   staticUnitData,
-} from "../components/data";
+} from "../static-data/data";
 
 const token =
   "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e";
@@ -79,6 +80,8 @@ export const useAdminAuth = create(
       }),
   }))
 );
+
+// ______________________________________  learning section
 
 export const useJourney = create(
   immer((set) => ({
@@ -185,7 +188,6 @@ export const useTaskUnit = create(
     },
   }))
 );
-
 export const useLevel = create(
   immer((set) => ({
     data: is_store_mode_static ? staticLevelData : [],
@@ -285,6 +287,7 @@ export const useLesson = create(
     },
   }))
 );
+// _______________________________________  learning section
 
 export const useModal = create(
   immer((set) => ({
@@ -298,20 +301,46 @@ export const useModal = create(
   }))
 );
 
-// crud operation in dashboard get start
+// export const useLearningState = create(
+//   immer((set) => ({
+//     data: [],
+//     addItem: async (formData, url) => {
+//       return await axios.post(url, formData, config);
+//     },
+//     getAllItem: async (URL) => {
+//       const response = await axios.get(URL, config);
+//       if (response.status === 200) {
+//         set((state) => {
+//           state.data = response.data;
+//         });
+//       }
+//     },
+//   }))
+// );
+
 export const useLearningState = create(
-  immer((set) => ({
-    data: [],
-    addItem: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getAllItem: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
+  immer(
+    subscribeWithSelector((set) => ({
+      data: [],
+      addNewItem: false,
+      addItem: async (formData, url) => {
+        const response = await axios.post(url, formData, config);
         set((state) => {
-          state.data = response.data;
+          state.addNewItem = true;
         });
-      }
-    },
-  }))
+        return response;
+      },
+      getAllItem: async (url) => {
+        const response = await axios.get(url, config);
+        if (response.status === 200) {
+          set((state) => {
+            state.data = response.data;
+          });
+          set((state) => {
+            state.addNewItem = false;
+          });
+        }
+      },
+    }))
+  )
 );

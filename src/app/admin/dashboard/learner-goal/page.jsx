@@ -1,4 +1,4 @@
-import LearningGoal from '@/components/adminDashboard/learning-goal/LearningGoal';
+import LearningGoal from '@/components/adminDashboard/LearningGoal';
 import React from 'react';
 
 const LearningGoalPage = () => {

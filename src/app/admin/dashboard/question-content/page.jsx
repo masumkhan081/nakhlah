@@ -1,4 +1,4 @@
-import QueContent from '@/components/adminDashboard/que-content/QueContent';
+import QueContent from '@/components/adminDashboard/QueContent';
 import React from 'react';
 
 const QueContentPage = () => {

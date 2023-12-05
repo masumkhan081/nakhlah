@@ -1,4 +1,4 @@
-import LearningLesson from "@/components/adminDashboard/learning-lesson/LearningLesson";
+import LearningLesson from "@/components/dashboard-admin/tabular-view/LearningLesson";
 import React from "react";
 
 const LearningLessonPage = () => {

@@ -1,6 +1,6 @@
 import UserNavbar from '@/components/userDashboard/share/UserNavbar/UserNavbar'
 import { gumelaArabic } from '../../../public/assets/js/fonts'
-import { userDashboard } from '@/components/data'
+import { userDashboard } from '../../../static-data/data'
 import { Card } from '@/components/ui/card'
 
 export const metadata = {

@@ -1,4 +1,4 @@
-import LearningLevel from "@/components/adminDashboard/learning-level/LearningLevel";
+import LearningLevel from "@/components/dashboard-admin/tabular-view/LearningLevel";
 import React from "react";
 
 const LearningLevelPage = () => {

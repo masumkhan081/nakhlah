@@ -1,4 +1,4 @@
-import LearningJourney from '@/components/adminDashboard/learning-journey/LearningJourney';
+import LearningJourney from '@/components/dashboard-admin/tabular-view/LearningJourney';
 import React from 'react';
 
 const LearningJourneyPage = () => {

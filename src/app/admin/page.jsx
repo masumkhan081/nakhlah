@@ -1,5 +1,5 @@
-import AdminDashboardPage from '@/components/adminDashboard/AdminDashboardPage/AdminDashboardPage';
-import AdminSignInForm from '@/components/adminDashboard/AdminSignInPage/AdminSignInForm';
+import AdminDashboardPage from '@/components/adminDashboard/AdminDashboardPage';
+import AdminSignInForm from '@/components/adminDashboard/AdminSignInForm';
 import AdminFormTitle from '@/components/adminDashboard/share/AdminFormTitle';
 import Link from 'next/link';
 

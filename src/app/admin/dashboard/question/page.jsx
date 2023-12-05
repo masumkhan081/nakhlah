@@ -1,4 +1,4 @@
-import Question from '@/components/adminDashboard/question/Question';
+import Question from '@/components/adminDashboard/Question';
 import React from 'react';
 
 const QuestionPage = () => {

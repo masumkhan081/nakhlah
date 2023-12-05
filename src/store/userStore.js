@@ -1,4 +1,4 @@
-import { API_URL } from "@/components/url";
+import { API_URL } from "../../../lib/url";
 import axios from "axios";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";

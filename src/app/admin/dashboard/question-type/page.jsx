@@ -1,4 +1,4 @@
-import QueType from '@/components/adminDashboard/que-type/QueType';
+import QueType from '@/components/adminDashboard/QueType';
 import React from 'react';
 
 const QueTypePage = () => {
