@@ -4,7 +4,7 @@ import DataTable from "../table/DataTable";
 import { journey_add_url, journey_get_url } from "../../../lib/url";
 import { staticJourneyData } from "../../../static-data/data";
 import { useJourney } from "../../../store/useAdminStore";
-import columnJourney from '../table/columnJourney'
+import columnJourney from "../table/columnJourney";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";
@@ -21,18 +21,17 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/Deletion";
 import AddJourney from "../modals/AddJourney";
 
-
 export default function LearningJourney() {
   const journeyData = useJourney((state) => state.data);
-  const getJournies = useJourney((state) => state.getJournies);
+  // const getJournies = useJourney((state) => state.getJournies);
   const addNewJourney = useJourney((state) => state.addNewJourney);
   //   const errorMessageCall = useJourney((state) => state.errorMessage);
 
   useEffect(() => {
     if (Array.isArray(journeyData) && journeyData.length === 0) {
-      getJournies(journey_get_url);
+      // getJournies(journey_get_url);
     }
-  }, [journeyData, getJournies]);
+  }, [journeyData]);
 
   // _____________________________________________don,t remove
   // const { data, meta } = journeyData;
@@ -54,5 +53,3 @@ export default function LearningJourney() {
     </div>
   );
 }
-
-

@@ -3,11 +3,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { IoIosAddCircleOutline } from "react-icons/io";
 //
-import AddJourney from "../modals/AddJourney";
-import AddTaskUnit from "../modals/AddTaskUnit";
-import AddLevel from "../modals/AddLevel";
-import AddLesson from "../modals/AddLesson";
-
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -15,20 +10,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
+//
 import AddGoal from "../modals/AddGoal";
 import AddPurpose from "../modals/AddPurpose";
 import AddStartingPoint from "../modals/AddStartingPoint";
 import AddLearnerLevel from "../modals/AddLearnerLevel";
+import AddJourney from "../modals/AddJourney";
+import AddTaskUnit from "../modals/AddTaskUnit";
+import AddLevel from "../modals/AddLevel";
+import AddLesson from "../modals/AddLesson";
+import AddQueType from "../modals/AddQueType";
+import AddContentType from "../modals/AddContentType";
+import AddConTypeCategory from "../modals/AddConTypeCategory";
 
 const viewMap = {
+  // learning journey
   journey: "id_journey_titel",
   task: "id_task_titel",
   level: "id_level_titel",
   lesson: "id_lesson_titel",
+  // get-start or ?
   goal: "goal",
   purpose: "purpose",
   startingPoint: "startingPoint",
   learnerLevel: "learnerLevel",
+  // questionaries
+  "question-type": "id_question-type",
+  "content-type": "id_content_type",
+  "content-type-category": "id_content_type_category",
 };
 
 // {table,title, addURL, addItemAPICall, errorMessageCall}
@@ -66,6 +75,11 @@ const DataTableHeader = ({ table, view }) => {
             {view == "purpose" && <AddPurpose title={view} />}
             {view == "startingPoint" && <AddStartingPoint title={view} />}
             {view == "learnerLevel" && <AddLearnerLevel title={view} />}
+            {view == "question-type" && <AddQueType title={view} />}
+            {view == "content-type" && <AddContentType title={view} />}
+            {view == "content-type-category" && (
+              <AddConTypeCategory title={view} />
+            )}
           </DialogContent>
         </Dialog>
         {/* table columns hide dropdown section */}

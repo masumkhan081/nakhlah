@@ -1,4 +1,4 @@
-import ConTypeCategory from "@/components/adminDashboard/ConTypeCategory";
+import ConTypeCategory from "@/components/dashboard-admin/tabular-view/ConTypeCategory";
 import React from "react";
 
 const ConTypeCategoryPage = () => {

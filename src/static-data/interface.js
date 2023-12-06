@@ -4,6 +4,7 @@ import { FaEarListen } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { SiReacthookform } from "react-icons/si";
+import { ShieldQuestion, LineChart } from "lucide-react";
 
 export const adminDashboard = {
   leftNavList: {
@@ -75,7 +76,7 @@ export const adminDashboard = {
         {
           id: 2,
           title: "Learning Journey",
-          icon: <SiReacthookform />,
+          icon: <LineChart />,
           link: "#",
           subLinks: [
             {
@@ -103,43 +104,43 @@ export const adminDashboard = {
         {
           id: 3,
           title: "Questionaires",
-          icon: <SiReacthookform />,
+          icon: <ShieldQuestion />,
           link: "#",
           subLinks: [
             {
               id: 1,
               title: "Question",
-              link: "",
+              link: "/admin/dashboard/questions",
             },
             {
               id: 2,
               title: "Question Type",
-              link: "",
+              link: "/admin/dashboard/question-type",
             },
             {
               id: 3,
               title: "Content Type",
-              link: "",
+              link: "/admin/dashboard/content-type",
             },
             {
               id: 4,
-              title: "Content Type Catagory",
-              link: "",
+              title: "Content Type category",
+              link: "/admin/dashboard/content-type-category",
             },
             {
               id: 5,
               title: "Content",
-              link: "",
+              link: "/admin/dashboard/content",
             },
             {
               id: 6,
               title: "Question Content",
-              link: "",
+              link: "/admin/dashboard/question-content",
             },
             {
               id: 7,
               title: "Question Content Option",
-              link: "",
+              link: "/admin/dashboard/question-content-option",
             },
           ],
         },

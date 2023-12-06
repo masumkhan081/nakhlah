@@ -1,36 +1,41 @@
-'use client'
-import { DataTable } from './share/DataTable/DataTable';
-import { LearningGoalAddItem_URL, LearningGoalGetAllItem_URL } from '../../../lib/url';
-import { goalColumns } from './share/columns';
-import { goalData } from '../../../static-data/data';
-
+"use client";
+import { useEffect } from "react";
+import DataTable from "../table/DataTable";
+import {} from "../../../lib/url"; 
+import { useQueType } from "../../../store/useAdminStore";
+import columnQueType from "../table/columnQueType";
 
 const QueType = () => {
-    // const goalDataCall = useLearningState((state) => state.data)
-    // const getAllItemCall = useLearningState((state) => state.getAllItem)
-    // const addItemAPICall = useLearningState((state) => state.addItem)
-    // const errorMessageCall = useLearningState((state) => state.errorMessage)
-    // useEffect(() => {
-    //     if (Array.isArray(goalDataCall) && goalDataCall.length === 0) {
-    //         getAllItemCall(LearningGoalGetAllItem_URL)
-    //     }
-    // }, [goalDataCall, getAllItemCall])
-    // const {data, meta} = goalDataCall
-    // const goalData =  data !== undefined && data.map(item => {
-    //     const { id, attributes } = item;
-    //     const { goal, time } = attributes;
-    //     return {
-    //         id,
-    //         goal,
-    //         time
-    //     };
-    // });
-    return (
-        <div className='w-full bg-white  rounded-xl'>
-            {/* <DataTable columns={goalColumns} learningTitle={"goal"} addURL={LearningGoalAddItem_URL} getURL={LearningGoalGetAllItem_URL}/> */}
-            <DataTable data={goalData} columns={goalColumns} learningTitle={"goal"}/>
-        </div>
-    );
+
+  const queTypeData = useQueType((state) => state.data);
+  // const addStatic = useJourney((state) => state.addStatic);
+  //   const errorMessageCall = useJourney((state) => state.errorMessage);
+
+  useEffect(() => {
+    if (Array.isArray(queTypeData) && queTypeData.length === 0) {
+      // getJournies(journey_get_url);
+    }
+  }, [queTypeData]);
+
+  // _____________________________________________don,t remove
+  // const { data, meta } = journeyData;
+  // const dataRenderable =
+  //   data !== undefined &&
+  //   data.map((item) => {
+  //     const { id, attributes } = item;
+  //     const { title } = attributes;
+  //     return {
+  //       id,
+  //       title,
+  //     };
+  //   });
+  // _____________________________________________don,t remove
+
+  return (
+    <div className="w-full bg-white  rounded-xl">
+      <DataTable data={queTypeData} columns={columnQueType} view={"question-type"} />
+    </div>
+  );
 };
 
 export default QueType;

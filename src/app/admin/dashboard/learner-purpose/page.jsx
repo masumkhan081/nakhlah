@@ -1,8 +1,11 @@
 import LearningPurpose from "@/components/dashboard-admin/tabular-view/LearningPurpose";
 
-
 const LearningPurposePage = () => {
-  return <LearningPurpose />;
+  return (
+    <div className=" ">
+      <LearningPurpose />
+    </div>
+  );
 };
 
 export default LearningPurposePage;

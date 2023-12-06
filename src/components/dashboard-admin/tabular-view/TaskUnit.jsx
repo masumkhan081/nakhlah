@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import DataTable from "../table/DataTable";
-import columnTaskUnit from '../table/columnTaskUnit'
+import columnTaskUnit from "../table/columnTaskUnit";
 import { unit_add_url, unit_get_url } from "../../../lib/url";
 
 import { Button } from "@/components/ui/button";
@@ -35,9 +35,9 @@ const TaskUnit = () => {
 
   useEffect(() => {
     if (Array.isArray(unitData) && unitData.length === 0) {
-      getTaskUnits(unit_get_url);
+      // getTaskUnits(unit_get_url);
     }
-  }, [unitData, getTaskUnits]);
+  }, [unitData]);
 
   // _____________________________________________don,t remove
   // const { data, meta } = unitData;
@@ -58,7 +58,5 @@ const TaskUnit = () => {
     </div>
   );
 };
-
-
 
 export default TaskUnit;

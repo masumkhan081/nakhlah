@@ -13,11 +13,15 @@ import {
 
 //  static data
 import {
+  staticConType,
+  staticConTypeCategory,
   staticJourneyData,
   staticLessonData,
   staticLevelData,
+  staticQueType,
   staticUnitData,
 } from "../static-data/data";
+import { getHandler } from "@/lib/requestHandler";
 
 const token =
   "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e";
@@ -83,6 +87,192 @@ export const useAdminAuth = create(
 
 // ______________________________________  learning section
 
+export const useLearnerPurpose = create(
+  immer((set) => ({
+    data: [],
+    setPurposes: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    existance: (queType) => {
+      return staticJourneyData.find((item) => item.title === queType);
+    },
+    addStatic: (data) => {
+      set((state) => {
+        state.data = [...state.data, data];
+      });
+    },
+    updateStatic: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return { ...item, title: data.title };
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    removeStatic: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+    reset: () => {
+      set((state) => {
+        state.data = staticQueType;
+      });
+    },
+    addNewQueType: async (formData, url) => {
+      return await axios.post(url, formData, config);
+    },
+  }))
+);
+
+export const useQueType = create(
+  immer((set) => ({
+    data: is_store_mode_static ? staticQueType : [],
+
+    existance: (queType) => {
+      return staticJourneyData.find((item) => item.title === queType);
+    },
+
+    addStatic: (data) => {
+      set((state) => {
+        state.data = [...state.data, data];
+      });
+    },
+    updateStatic: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return { ...item, title: data.title };
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    removeStatic: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+    reset: () => {
+      set((state) => {
+        state.data = staticQueType;
+      });
+    },
+    addNewQueType: async (formData, url) => {
+      return await axios.post(url, formData, config);
+    },
+    getQueTypes: async (URL) => {
+      const response = await axios.get(URL, config);
+      if (response.status === 200) {
+        set((state) => {
+          state.data = response.data;
+        });
+      }
+    },
+  }))
+);
+export const useConType = create(
+  immer((set) => ({
+    data: is_store_mode_static ? staticConType : [],
+
+    existance: (conType) => {
+      return staticConType.find((item) => item.title === conType);
+    },
+
+    addStatic: (data) => {
+      set((state) => {
+        state.data = [...state.data, data];
+      });
+    },
+    updateStatic: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return { ...item, title: data.title };
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    removeStatic: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+    reset: () => {
+      set((state) => {
+        state.data = staticConType;
+      });
+    },
+    addConType: async (formData, url) => {
+      return await axios.post(url, formData, config);
+    },
+    getConTypes: async (URL) => {
+      const response = await axios.get(URL, config);
+      if (response.status === 200) {
+        set((state) => {
+          state.data = response.data;
+        });
+      }
+    },
+  }))
+);
+export const useConTypeCategory = create(
+  immer((set) => ({
+    data: is_store_mode_static ? staticConTypeCategory : [],
+
+    existance: (conTypeCategory) => {
+      return staticConTypeCategory.find(
+        (item) => item.title === conTypeCategory
+      );
+    },
+
+    addStatic: (data) => {
+      set((state) => {
+        state.data = [...state.data, data];
+      });
+    },
+    updateStatic: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return { ...item, title: data.title };
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    removeStatic: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+    reset: () => {
+      set((state) => {
+        state.data = staticConTypeCategory;
+      });
+    },
+    addConTypeCategory: async (formData, url) => {
+      return await axios.post(url, formData, config);
+    },
+    getQueTypeCategories: async (URL) => {
+      const response = await axios.get(URL, config);
+      if (response.status === 200) {
+        set((state) => {
+          state.data = response.data;
+        });
+      }
+    },
+  }))
+);
 export const useJourney = create(
   immer((set) => ({
     data: is_store_mode_static ? staticJourneyData : [],

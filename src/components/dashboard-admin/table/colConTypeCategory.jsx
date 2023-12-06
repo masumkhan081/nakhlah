@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Main_URL } from "../../../lib/url";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { Checkbox } from "@/components/ui/checkbox";
 import Deletion from "../modals/Deletion";
-import AddPurpose from "../modals/AddPurpose";
-import { Main_URL } from "../../../lib/url";
+import AddConTypeCategory from "../modals/AddConTypeCategory";
 
-const columnPurpose = [
+const columnConTypeCategory = [
   {
     id: "select",
     header: ({ table }) => (
@@ -35,46 +42,28 @@ const columnPurpose = [
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
-      return <div className="textSecondaryColor textNormal">{rowId} </div>;
+      return <p className="textSecondaryColor textNormal h-fit">{rowId} </p>;
     },
   },
   {
-    accessorKey: "purpose",
+    id: "id_content_type_category",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
+          className="textPrimaryColor textNormal text-center w-full"
         >
-          Purpose
+          Content Type Category
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("purpose")}
-      </div>
+      <p className=" textNormal textSecondaryColor text-center h-fit">
+        {row.getValue("id_content_type_category")}
+      </p>
     ),
-  },
-  {
-    accessorKey: "formats",
-    header: () => <div className="textPrimaryColor textNormal">Image</div>,
-    cell: ({ row }) => {
-      // console.log(row.getValue('formats'))
-      return (
-        <div>
-          <Image
-            src={`${Main_URL}${row.getValue("formats")?.small}`}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-black"
-          />
-          {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
-        </div>
-      );
-    },
   },
   {
     id: "actions",
@@ -83,31 +72,26 @@ const columnPurpose = [
     ),
     enableHiding: false,
     cell: ({ row }) => {
-      // const idx = row.original.id
       return (
-        <div className="flex gap-2 justify-center textSecondaryColor textSemiHeader">
+        <div className="flex gap-2 justify-center textSecondaryColor textSemiHeader ">
           <Dialog className="">
             <DialogTrigger asChild>
-              <Button className="hover:text-[--uDText]">
+              <Button className="hover:text-[--uDText] h-fit py-0.5 ">
                 <Trash2 className="" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="purpose" />
+              <Deletion rowData={row.original} what="content-type-category" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
             <DialogTrigger asChild>
-              <Button className="hover:text-[--uDText]">
+              <Button className="hover:text-[--uDText] h-fit py-0.5">
                 <ClipboardEdit className="" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddPurpose
-                title="purpose"
-                useForEdit={true}
-                rowData={row.original}
-              />
+              <AddConTypeCategory useForEdit={true} rowData={row.original} />
             </DialogContent>
           </Dialog>
         </div>
@@ -116,4 +100,4 @@ const columnPurpose = [
   },
 ];
 
-export default columnPurpose;
+export default columnConTypeCategory;

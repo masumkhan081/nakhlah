@@ -1,221 +1,69 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import {
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import AdminFormButton from "../share/AdminFormButton/AdminFormButton";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import InputField from "../../ui-custom/InputField";
+
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import AdminFormButton from "../../ui-custom/AdminFormButton";
+
 import { useToast } from "@/components/ui/use-toast";
+import CustomInput from "../../ui-custom/CustomInput";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+import { useConType } from "../../../store/useAdminStore";
+import { useState } from "react";
+import CustomButton from "../../ui-custom/CustomButton";
 
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Fill the Title  field",
-  }),
-  picture: z.any().refine((file) => file, "Please upload file"),
-});
-const formSchema2 = z.object({
-  title: z.string().min(2, {
-    message: "Fill the Title  field",
-  }),
-  subtitle: z.string().min(2, {
-    message: "Fill the Subtitle  field",
-  }),
-  picture: z.any().refine((file) => file, "Please upload file"),
-});
-const formSchema3 = z.object({
-  title: z.string().min(2, {
-    message: "Fill the Goal  field",
-  }),
-  time: z.string().min(0, "Amount must be a positive number"),
-});
-
-const handleFormData = (title, values) => {
-  const formData = new FormData();
-  formData.append("files.icon", values.picture);
-  if (title === "purpose") {
-    formData.append("data", `{"purpose":"${values.title}"}`);
-  } else if (title === "level") {
-    formData.append("data", `{"level":"${values.title}"}`);
-  } else {
-    formData.append(
-      "data",
-      `{"title":"${values.title}", "subtitle": "${values.subtitle}"}`
-    );
-  }
-  return formData;
-};
-
-// {title, addURL, addItemAPICall, errorMessageCall}
-export default function AddContentType({ title, isJourney }) {
-  // console.log(title)
-
+export default function AddContentType({ rowData, useForEdit }) {
+  //
   const { toast } = useToast();
-  const form = useForm({
-    resolver: zodResolver(
-      title === "purpose" || title === "level"
-        ? formSchema
-        : title === "title"
-        ? formSchema2
-        : formSchema3
-    ),
-    defaultValues:
-      title === "purpose" || title === "level"
-        ? {
-            title: "",
-            picture: [],
-          }
-        : title === "title"
-        ? {
-            title: "",
-            subtitle: "",
-            picture: [],
-          }
-        : {
-            title: "",
-            time: undefined,
-          },
-  });
+  const existance = useConType((state) => state.existance);
+  const addStatic = useConType((state) => state.addStatic);
+  const updateStatic = useConType((state) => state.updateStatic);
+  const [contentType, setContentType] = useState(useForEdit ? rowData.title : "");
+  const [error, setError] = useState("");
 
-  const onSubmit = async (values) => {
-    let data;
-    if (title !== "goal") {
-      data = handleFormData(title, values);
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (contentType.length < 3) {
+      setError("Too Short");
+    } else if (existance(contentType)) {
+      setError("Already Exist");
+    } else {
+      useForEdit
+        ? updateStatic({ id: rowData.id, title: contentType })
+        : addStatic({ id: Math.random(), title: contentType });
+      toast({
+        title: useForEdit
+          ? "Item Updated Succesfully"
+          : "Item Added Successfully",
+      });
+      document.getElementById("closeDialog")?.click();
     }
-    if (title === "goal") {
-      data = {
-        data: {
-          time: values.time,
-          goal: values.title,
-        },
-      };
-    }
-    // extra added
-    toast({
-      title: `Add Item Successfully`,
-    });
-    document.getElementById("closeDialog")?.click();
-    // try {
-    //     const response = await addItemAPICall(data, addURL)
-    //     if (response.status === 200) {
-    //         toast({
-    //             title: `Add ${title}  Item Successfully`
-    //         })
-    //         document.getElementById('closeDialog')?.click();
-    //     }
-    //     else {
-    //         toast({
-    //             title: 'Item not add'
-    //         })
-    //     }
-    // } catch (error) {
-    //     toast({
-    //         title: 'Bad request'
-    //     })
-    // }
-  };
+  }
 
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          GetStart Form
+          {useForEdit ? "Update" : "New"} Content Type
         </DialogTitle>
-        <DialogDescription className="textNormal textSecondaryColor">
-          Input new {title} item
-        </DialogDescription>
 
-        <Form encType="multipart/form-data" {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* this form get start section  if you create new form for journey section create bool value is Journey or not  */}
-            {isJourney ? (
-              <></>
-            ) : (
-              <>
-                <InputField
-                  form={form}
-                  name={"title"}
-                  label={`${title} type`}
-                  placeholder={""}
-                  type={"text"}
-                  isAdmin={true}
-                  isItem={true}
-                />
-                <>
-                  {title === "goal" && (
-                    <InputField
-                      form={form}
-                      name={"time"}
-                      label={`Time`}
-                      placeholder={""}
-                      type={"number"}
-                      isAdmin={true}
-                      isItem={true}
-                    />
-                  )}
-                </>
-                <>
-                  {title === "title" && (
-                    <InputField
-                      form={form}
-                      name={"subtitle"}
-                      label={`Sub${title} type`}
-                      placeholder={""}
-                      type={"text"}
-                      isAdmin={true}
-                      isItem={true}
-                    />
-                  )}
-                </>
-
-                <>
-                  {title !== "goal" && (
-                    <FormField
-                      control={form.control}
-                      name="picture"
-                      render={({ field: { onChange, value, ...rest } }) => (
-                        <FormItem>
-                          <FormLabel className="textPrimaryColor textNormal">
-                            Upload File
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="file"
-                              className="py-2 px-4 border-[2px] border-[--uDSubText] textNormal textSecondaryColor"
-                              {...rest}
-                              onChange={(event) => {
-                                const file = event.target.files[0];
-                                onChange(file);
-                              }}
-                            />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  )}
-                </>
-              </>
-            )}
-
-            <AdminFormButton title={"Add Item"} />
-          </form>
-        </Form>
-        {/* {errorMessageCall !== '' && <p className='text-red-600 text'>{errorMessageCall}</p>} */}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 py-4 text-black text-lg"
+        >
+          <div className="flex flex-col gap-1">
+            <label>Content Type</label>
+            <CustomInput
+              type="text"
+              value={contentType}
+              onChange={(e) => setContentType(e.target.value)}
+              ph="New Journey Level"
+            />
+            <span className="text-red-700">{error}</span>
+          </div>
+          <CustomButton
+            txt={useForEdit ? "Update" : "Add"}
+            type="submit"
+            style="text-blue-800"
+          />
+        </form>
       </DialogHeader>
     </>
   );

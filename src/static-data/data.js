@@ -447,6 +447,53 @@ export const gamificationData = [
 
 // static-data-masum
 
+export const staticQueType = [
+  {
+    id: 1,
+    title: "MCQ",
+  },
+  {
+    id: 2,
+    title: "Fill in the blank",
+  },
+  {
+    id: 3,
+    title: "Adshort questionvance",
+  },
+  {
+    id: 4,
+    title: "True 0r False",
+  },
+];
+export const staticConType = [
+  {
+    id: 1,
+    title: "Sound",
+  },
+  {
+    id: 2,
+    title: "Audio",
+  },
+  {
+    id: 3,
+    title: "Word",
+  },
+];
+export const staticConTypeCategory = [
+  {
+    id: 1,
+    title: "Image",
+  },
+  {
+    id: 2,
+    title: "Audio",
+  },
+  {
+    id: 3,
+    title: "Text",
+  },
+];
+
 export const staticJourneyData = [
   {
     id: 1,
@@ -639,122 +686,119 @@ export const staticTaskUnit = [
     time: 25,
   },
 ];
-// left sidenav
 
-export const  purposeData = [
+export const purposeData = [
   {
-      id: 1,
-      purpose: 'text1',
-      formats: Minutes10
+    id: 1,
+    purpose: "text1",
+    formats: Minutes10,
   },
   {
-      id: 2,
-      purpose: 'text2',
-      formats: Minutes10
+    id: 2,
+    purpose: "text2",
+    formats: Minutes10,
   },
   {
-      id: 3,
-      purpose: 'text3',
-      formats: Minutes10
+    id: 3,
+    purpose: "text3",
+    formats: Minutes10,
   },
   {
-      id: 4,
-      purpose: 'text4',
-      formats: Minutes10
+    id: 4,
+    purpose: "text4",
+    formats: Minutes10,
   },
   {
-      id: 5,
-      purpose: 'text5',
-      formats: Minutes10
+    id: 5,
+    purpose: "text5",
+    formats: Minutes10,
   },
-]
+];
 //level data
-export const  levelData = [
+export const levelData = [
   {
-      id: 1,
-      level: 'text1',
-      formats: Minutes10
+    id: 1,
+    level: "text1",
+    formats: Minutes10,
   },
   {
-      id: 2,
-      level: 'text2',
-      formats: Minutes10
+    id: 2,
+    level: "text2",
+    formats: Minutes10,
   },
   {
-      id: 3,
-      level: 'text3',
-      formats: Minutes10
+    id: 3,
+    level: "text3",
+    formats: Minutes10,
   },
   {
-      id: 4,
-      level: 'text4',
-      formats: Minutes10
+    id: 4,
+    level: "text4",
+    formats: Minutes10,
   },
   {
-      id: 5,
-      level: 'text5',
-      formats: Minutes10
+    id: 5,
+    level: "text5",
+    formats: Minutes10,
   },
-]
-export const  startingPointData = [
+];
+export const startingPointData = [
   {
-      id: 1,
-      title: 'text1',
-      subtitle: 'sub 1',
-      formats: Minutes10
-  },
-  {
-      id: 2,
-      title: 'text2',
-      subtitle: 'sub 1',
-      formats: Minutes10
+    id: 1,
+    title: "text1",
+    subtitle: "sub 1",
+    formats: Minutes10,
   },
   {
-      id: 3,
-      title: 'text3',
-      subtitle: 'sub 1',
-      formats: Minutes10
+    id: 2,
+    title: "text2",
+    subtitle: "sub 1",
+    formats: Minutes10,
   },
   {
-      id: 4,
-      title: 'text4',
-      subtitle: 'sub 1',
-      formats: Minutes10
+    id: 3,
+    title: "text3",
+    subtitle: "sub 1",
+    formats: Minutes10,
   },
   {
-      id: 5,
-      title: 'text5',
-      subtitle: 'sub 1',
-      formats: Minutes10
+    id: 4,
+    title: "text4",
+    subtitle: "sub 1",
+    formats: Minutes10,
   },
-]
-
-export const goalData = [
-{
-  id: 1,
-  goal: "text1",
-  time: 5,
-},
-{
-  id: 2,
-  goal: "text2",
-  time: 10,
-},
-{
-  id: 3,
-  goal: "text3",
-  time: 15,
-},
-{
-  id: 4,
-  goal: "text4",
-  time: 20,
-},
-{
-  id: 5,
-  goal: "text5",
-  time: 25,
-},
+  {
+    id: 5,
+    title: "text5",
+    subtitle: "sub 1",
+    formats: Minutes10,
+  },
 ];
 
-
+export const goalData = [
+  {
+    id: 1,
+    goal: "text1",
+    time: 5,
+  },
+  {
+    id: 2,
+    goal: "text2",
+    time: 10,
+  },
+  {
+    id: 3,
+    goal: "text3",
+    time: 15,
+  },
+  {
+    id: 4,
+    goal: "text4",
+    time: 20,
+  },
+  {
+    id: 5,
+    goal: "text5",
+    time: 25,
+  },
+];

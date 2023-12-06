@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Main_URL } from "../../../lib/url";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { Checkbox } from "@/components/ui/checkbox";
 import Deletion from "../modals/Deletion";
-import AddPurpose from "../modals/AddPurpose";
-import { Main_URL } from "../../../lib/url";
+import AddContentType from "../modals/AddContentType";
 
-const columnPurpose = [
+const columnContentType = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,42 +46,24 @@ const columnPurpose = [
     },
   },
   {
-    accessorKey: "purpose",
+    id: "id_content_type",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Purpose
+          Content Type
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("purpose")}
+      <div className=" textNormal textSecondaryColor">
+        {row.getValue("id_content_type")}
       </div>
     ),
-  },
-  {
-    accessorKey: "formats",
-    header: () => <div className="textPrimaryColor textNormal">Image</div>,
-    cell: ({ row }) => {
-      // console.log(row.getValue('formats'))
-      return (
-        <div>
-          <Image
-            src={`${Main_URL}${row.getValue("formats")?.small}`}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-black"
-          />
-          {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
-        </div>
-      );
-    },
   },
   {
     id: "actions",
@@ -83,7 +72,6 @@ const columnPurpose = [
     ),
     enableHiding: false,
     cell: ({ row }) => {
-      // const idx = row.original.id
       return (
         <div className="flex gap-2 justify-center textSecondaryColor textSemiHeader">
           <Dialog className="">
@@ -93,7 +81,7 @@ const columnPurpose = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="purpose" />
+              <Deletion rowData={row.original} what="content-type" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -103,8 +91,8 @@ const columnPurpose = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddPurpose
-                title="purpose"
+              <AddContentType
+                title="Content Type"
                 useForEdit={true}
                 rowData={row.original}
               />
@@ -116,4 +104,4 @@ const columnPurpose = [
   },
 ];
 
-export default columnPurpose;
+export default columnContentType;
