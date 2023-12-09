@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddLesson from "../modals/AddLesson";
 
-const columnLesson = [
+import Deletion from "../modals/Deletion";
+import AddTaskUnit from "../modals/AddTaskUnit";
+
+const columnTaskUnit = [
   {
     id: "select",
     header: ({ table }) => (
@@ -46,48 +47,8 @@ const columnLesson = [
     },
   },
   {
-    id:"id_lesson_titel",
+    id: "id_task_titel",
     accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Lesson
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="  textNormal textSecondaryColor">
-        {row.getValue("id_lesson_titel")}
-      </div>
-    ),
-  },
-  {
-    id: "levelOfLesson",
-    accessorKey: "level.title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Level
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="  textNormal textSecondaryColor">
-        {row.getValue("levelOfLesson")}
-      </div>
-    ),
-  },
-  {
-    id: "unitOfLeson",
-    accessorKey: "level.unit.title",
     header: ({ column }) => {
       return (
         <Button
@@ -99,15 +60,11 @@ const columnLesson = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="  textNormal textSecondaryColor">
-        {row.getValue("unitOfLeson")}
-      </div>
-    ),
+    cell: ({ row }) => <div className="textNormal textSecondaryColor">{row.getValue("id_task_titel")}</div>,
   },
   {
-    id: "journeyOfLesson",
-    accessorKey: "level.unit.journey.title",
+    id: "journeyOfTask",
+    accessorKey: "journey.title",
     header: ({ column }) => {
       return (
         <Button
@@ -121,7 +78,7 @@ const columnLesson = [
     },
     cell: ({ row }) => (
       <div className="  textNormal textSecondaryColor">
-        {row.getValue("journeyOfLesson")}
+        {row.getValue("journeyOfTask")}
       </div>
     ),
   },
@@ -142,7 +99,7 @@ const columnLesson = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="lesson" />
+              <Deletion rowData={row.original} what="learning-unit" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -152,7 +109,7 @@ const columnLesson = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddLesson useForEdit={true} rowData={row.original} />
+              <AddTaskUnit useForEdit={true} rowData={row.original} />
             </DialogContent>
           </Dialog>
         </div>
@@ -161,4 +118,4 @@ const columnLesson = [
   },
 ];
 
-export default columnLesson;
+export default columnTaskUnit;

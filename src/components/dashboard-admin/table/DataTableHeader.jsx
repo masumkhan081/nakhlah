@@ -13,7 +13,7 @@ import { ChevronDown } from "lucide-react";
 //
 import AddGoal from "../modals/AddGoal";
 import AddPurpose from "../modals/AddPurpose";
-import AddStartingPoint from "../modals/AddStartingPoint";
+import AddStartingPoint from "../modals/AddStartPoint";
 import AddLearnerLevel from "../modals/AddLearnerLevel";
 import AddJourney from "../modals/AddJourney";
 import AddTaskUnit from "../modals/AddTaskUnit";
@@ -25,17 +25,17 @@ import AddConTypeCategory from "../modals/AddConTypeCategory";
 
 const viewMap = {
   // learning journey
-  journey: "id_journey_titel",
-  task: "id_task_titel",
-  level: "id_level_titel",
-  lesson: "id_lesson_titel",
+  "learning-journey": "id_learning_journey",
+  "learning-unit": "id_learning_unit",
+  "learning-level": "id_learning_level",
+  "learning-lesson": "id_learning_lesson",
   // get-start or ?
-  goal: "goal",
-  purpose: "purpose",
-  startingPoint: "startingPoint",
-  learnerLevel: "learnerLevel",
+  "learner-goal": "id_learner_goal",
+  "learner-purpose": "id_learner_purpose",
+  "learner-start-point": "id_learner_start_point",
+  "learner-level": "id_learner_level",
   // questionaries
-  "question-type": "id_question-type",
+  "question-type": "id_question_type",
   "content-type": "id_content_type",
   "content-type-category": "id_content_type_category",
 };
@@ -67,14 +67,14 @@ const DataTableHeader = ({ table, view }) => {
 
           <DialogContent className="sm:max-w-[500px]">
             {/* <AddNewItem  title={title}  isJourney={false}/> */}
-            {view == "journey" && <AddJourney title={view} />}
-            {view == "level" && <AddLevel title={view} />}
-            {view == "lesson" && <AddLesson title={view} />}
-            {view == "task" && <AddTaskUnit title={view} />}
-            {view == "goal" && <AddGoal title={view} />}
-            {view == "purpose" && <AddPurpose title={view} />}
-            {view == "startingPoint" && <AddStartingPoint title={view} />}
-            {view == "learnerLevel" && <AddLearnerLevel title={view} />}
+            {view == "learning-journey" && <AddJourney title={view} />}
+            {view == "learning-level" && <AddLevel title={view} />}
+            {view == "learning-lesson" && <AddLesson title={view} />}
+            {view == "learning-unit" && <AddTaskUnit title={view} />}
+            {view == "learner-goal" && <AddGoal title={view} />}
+            {view == "learner-purpose" && <AddPurpose title={view} />}
+            {view == "learner-start-point" && <AddStartingPoint title={view} />}
+            {view == "learner-level" && <AddLearnerLevel title={view} />}
             {view == "question-type" && <AddQueType title={view} />}
             {view == "content-type" && <AddContentType title={view} />}
             {view == "content-type-category" && (

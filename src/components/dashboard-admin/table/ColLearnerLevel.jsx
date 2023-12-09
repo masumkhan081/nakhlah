@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react"
-import Image from "next/image"
-import Deletion from "../modals/Deletion" 
-import { Main_URL } from "../../../lib/url"
-import AddLearnerLevel from "../modals/AddLearnerLevel"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
+import Image from "next/image";
+import Deletion from "../modals/Deletion";
+import { Main_URL } from "../../../lib/url";
+import AddLearnerLevel from "../modals/AddLearnerLevel";
 
- const levelColumns = [
+const levelColumns = [
   {
     id: "select",
     header: ({ table }) => (
@@ -32,14 +32,10 @@ import AddLearnerLevel from "../modals/AddLearnerLevel"
   },
   {
     accessorKey: "id",
-    header: () => (
-      <div className="textNormal textPrimaryColor">ID</div>
-    ),
+    header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
-      const rowId = parseInt(row.id) + 1
-      return (
-        <div className="textSecondaryColor textNormal">{rowId} </div>
-      )
+      const rowId = parseInt(row.id) + 1;
+      return <div className="textSecondaryColor textNormal">{rowId} </div>;
     },
   },
   {
@@ -48,26 +44,37 @@ import AddLearnerLevel from "../modals/AddLearnerLevel"
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className='textPrimaryColor textNormal'
+          className="textPrimaryColor textNormal"
         >
           Level
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
-      return <div className="lowercase textNormal textSecondaryColor">{row.getValue("level")}</div>
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {row.getValue("level")}
+        </div>
+      );
     },
   },
   {
     accessorKey: "formats",
     header: () => <div className="textPrimaryColor textNormal">Image</div>,
     cell: ({ row }) => {
-
-      return <div >
-        <Image src={`${Main_URL}${row.getValue('formats')?.small}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" />
-        {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
-      </div>
+      return (
+        <div>
+          <Image
+            src={`${Main_URL}${row.getValue("formats")?.small}`}
+            alt=""
+            width={40}
+            height={40}
+            className="rounded-full border-2 border-black"
+          />
+          {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
+        </div>
+      );
     },
   },
   {
@@ -86,7 +93,7 @@ import AddLearnerLevel from "../modals/AddLearnerLevel"
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="learnerLevel" />
+              <Deletion rowData={row.original} what="learner-level" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -104,9 +111,9 @@ import AddLearnerLevel from "../modals/AddLearnerLevel"
             </DialogContent>
           </Dialog>
         </div>
-      )
+      );
     },
   },
-]
+];
 
 export default levelColumns;

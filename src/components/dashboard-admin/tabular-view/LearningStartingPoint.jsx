@@ -1,76 +1,56 @@
 "use client";
 import { useEffect, useState } from "react";
 import DataTable from "../table/DataTable";
-// import { LearningStartingPointAddItem_URL, LearningStartingPointGetAllItem_URL } from "@/components/url";
-// import { startingPointColumns } from "../share/columns";
-// import { startingPointData } from "@/components/data";
-import { useLearningState } from "../../../store/useAdminStore";
-import { handleGetItem } from "../../../lib/handleGetData";
-import startingPointColumns from "../table/ColStartingPoint";
-import { shallow } from "zustand/shallow";
-import { LearningStartingPointGetAllItem_URL } from "../../../lib/url";
+import { useLearnerStartPoint } from "../../../store/useAdminStore";
+import ColStartPoint from "../table/ColStartPoint";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHandler } from "@/lib/requestHandler";
 
 const LearningStartingPoint = () => {
-  // const statingPointDataCall = useLearningState((state) => state.data)
-  // const getAllItemCall = useLearningState((state) => state.getAllItem)
-  // const addItemAPICall = useLearningState((state) => state.addItem)
-  // const errorMessageCall = useLearningState((state) => state.errorMessage)
-  // useEffect(() => {
-  //     if (Array.isArray(statingPointDataCall) && statingPointDataCall.length === 0) {
-  //         getAllItemCall(LearningStartingPointGetAllItem_URL)
-  //     }
-  // }, [statingPointDataCall, getAllItemCall])
-  // const {data, meta} = statingPointDataCall
-  // const startingPointData =  data !== undefined && data.map(item => {
-  //     const { id, attributes } = item;
-  //     const { title,subtitle, icon } = attributes;
-
-  //     const formats = {
-  //         large: icon.data?.attributes?.formats.large?.url,
-  //         small: icon.data?.attributes?.formats.small?.url,
-  //         medium: icon.data?.attributes?.formats.medium?.url,
-  //         thumbnail: icon.data?.attributes?.formats.thumbnail?.url
-  //     };
-
-  //     return {
-  //         id,
-  //         title,
-  //         subtitle,
-  //         formats
-  //     };
-  // });
-
-  const [data, setData] = useState([]);
+  //
+  const startPoints = useLearnerStartPoint((state) => state.data);
+  const setStartPoints = useLearnerStartPoint((state) => state.setStartPoints);
 
   useEffect(() => {
-    const unsubget = useLearningState.subscribe(
-      (state) => state.getAllItem,
-      (get, preGet) => get(LearningStartingPointGetAllItem_URL),
-      {
-        equalityFn: shallow,
-        fireImmediately: true,
+    const fetch = async () => {
+      const response = await getHandler("learner-start-point");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            subtitle: item.attributes.subtitle,
+          };
+        });
+        setStartPoints(data);
       }
-    );
-    useLearningState.subscribe(
-      (state) => state.data,
-      (data, preData) => {
-        const dataInfo =
-          data.data !== undefined && handleGetItem(data.data, "startingPoint");
-        setData(dataInfo);
-      }
-    );
-    return unsubget;
-  }, []);
-  console.log(data);
+    };
+    if (Array.isArray(startPoints) && startPoints.length === 0) {
+      fetch();
+    }
+  }, [startPoints]);
+
   return (
     <div className="w-full bg-white  rounded-xl">
-      {/* <DataTable columns={startingPointColumns} learningTitle={"title"} addURL={LearningStartingPointAddItem_URL} getURL={LearningStartingPointGetAllItem_URL}/> */}
-      {/* <DataTable data={startingPointData} columns={startingPointColumns} learningTitle={"title"} /> */}
-      <DataTable
-        data={data}
-        columns={startingPointColumns}
-        view={"startingPoint"}
-      />
+      {startPoints.length != 0 ? (
+        <DataTable
+          data={startPoints}
+          columns={ColStartPoint}
+          view={"learner-start-point"}
+        />
+      ) : (
+        <div className="w-full md:py-12 sm:py-6 flex flex-col gap-4 justify-center items-center">
+          <Skeleton className="bg-slate-500 h-16 w-16 rounded-full" />
+          <div className="flex-col gap-6">
+            <Skeleton className="bg-slate-400  w-[250px] mb-2 text-slate-50 ps-2 py-1 ">
+              Loading ...
+            </Skeleton>
+            <Skeleton className="bg-slate-300 h-4 w-[200px] mb-2" />
+            <Skeleton className="bg-slate-200 w-[150px] h-[20px] rounded-md " />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

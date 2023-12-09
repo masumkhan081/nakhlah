@@ -1,113 +1,69 @@
 "use client";
-import InputField from "../../ui-custom/InputField";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { LearningPurposeAddItem_URL } from "../../../lib/url";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import AdminFormButton from "../../ui-custom/AdminFormButton";
 import { useToast } from "@/components/ui/use-toast";
-import { Input } from "@/components/ui/input";
-import { useLearningState } from "../../../store/useAdminStore";
-
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Fill the Title  field",
-  }),
-  picture: z.any().refine((file) => file, "Please upload file"),
-});
+import { useLearnerPurpose } from "../../../store/useAdminStore";
 
 export default function AddPurpose({ rowData, title, useForEdit }) {
-  const addItemAPICall = useLearningState((state) => state.addItem);
+  //
   const { toast } = useToast();
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: useForEdit ? rowData.purpose : "",
-      picture: useForEdit ? rowData.formats.large : undefined,
-    },
-  });
+  //
+  const addEdit = useLearnerPurpose((state) => state.addEdit);
+  const afterAdd = useLearnerPurpose((state) => state.afterAdd);
+  const afterUpdate = useLearnerPurpose((state) => state.afterUpdate);
+  //
+  const [purpose, setPurpose] = useState(useForEdit ? rowData.title : "");
+  const [error, setError] = useState("");
 
-  const onSubmit = async (values) => {
-    const formData = new FormData();
-    formData.append("files.icon", values.picture);
-    formData.append("data", `{"purpose":"${values.title}"}`);
-
-    try {
-      const response = await addItemAPICall(
-        formData,
-        LearningPurposeAddItem_URL
-      );
-      if (response.status === 200) {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (purpose.length < 3) {
+      setError("Too Short");
+    } else {
+      const result = await addEdit({
+        useForEdit,
+        data: {
+          title: purpose,
+        },
+        id: rowData?.id,
+      });
+      if (result.status == 200) {
+        useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
         toast({
-          title: `${useForEdit ? "Update" : "Add"} ${title}  Item Successfully`,
+          title: result.message,
         });
         document.getElementById("closeDialog")?.click();
-      } else {
-        toast({
-          title: "Item not add",
-        });
+      } else if (result.status == 400) {
+        setError(result.errors);
       }
-    } catch (error) {
-      toast({
-        title: "Bad request",
-      });
     }
-  };
+  }
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Learning {title}
+          {useForEdit ? "Update" : "New"} Learner Purpose
         </DialogTitle>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <InputField
-              form={form}
-              name={"title"}
-              label={`${title} type`}
-              placeholder={""}
-              type={"text"}
-              isAdmin={true}
-              isItem={true}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 py-4 text-black text-lg"
+        >
+          <div className="flex flex-col gap-1">
+            <label>Purpose Name</label>
+            <CustomInput
+              type="text"
+              value={purpose}
+              onChange={(e) => setPurpose(e.target.value)}
+              ph="New Journey Level"
             />
-            <FormField
-              control={form.control}
-              name="picture"
-              render={({ field: { onChange, value, ...rest } }) => (
-                <FormItem>
-                  <FormLabel className="textPrimaryColor textNormal">
-                    Upload File
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      className="py-2 px-4 border-[2px] border-[--uDSubText] textNormal textSecondaryColor"
-                      {...rest}
-                      onChange={(event) => {
-                        const file = event.target.files[0];
-                        onChange(file);
-                      }}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <AdminFormButton title={`${useForEdit ? "Update" : "Add"} Item`} />
-          </form>
-        </Form>
+            <span className="text-red-700">{error}</span>
+          </div>
+          <CustomButton
+            txt={useForEdit ? "Update" : "Add"}
+            type="submit"
+            style="text-blue-800"
+          />
+        </form>
       </DialogHeader>
     </>
   );

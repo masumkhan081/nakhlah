@@ -1,89 +1,97 @@
 "use client";
-import InputField from "../../ui-custom/InputField";
+
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
-import { LearningGoalAddItem_URL } from "../../../lib/url";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import AdminFormButton from "../../ui-custom/AdminFormButton";
+import { useLearnerGoal } from "../../../store/useAdminStore";
 import { useToast } from "@/components/ui/use-toast";
-import { useLearningState } from "../../../store/useAdminStore";
+import CustomInput from "../../ui-custom/CustomInput";
+import { useState } from "react";
+import CustomButton from "../../ui-custom/CustomButton";
 
-const formSchemaGoal = z.object({
-  title: z.string().min(2, {
-    message: "Fill the Goal  field",
-  }),
-  time: z.string().min(0, "Amount must be a positive number"),
-});
-
-export default function AddGoal({ rowData, title, useForEdit }) {
-  const addItemAPICall = useLearningState((state) => state.addItem);
+export default function AddGoal({ rowData, useForEdit }) {
+  //
   const { toast } = useToast();
-  const form = useForm({
-    resolver: zodResolver(formSchemaGoal),
-    defaultValues: {
-      title: useForEdit ? rowData.goal : "",
-      time: useForEdit ? rowData.time : undefined,
-    },
+  const afterAdd = useLearnerGoal((state) => state.afterAdd);
+  const afterUpdate = useLearnerGoal((state) => state.afterUpdate);
+  const addEdit = useLearnerGoal((state) => state.addEdit);
+  const [goalName, setGoalName] = useState(useForEdit ? rowData.goal : "");
+  const [targetTime, setTargetTime] = useState(useForEdit ? rowData.time : "");
+  const [error, setError] = useState({
+    err0: "",
+    err1: "",
   });
 
-  const onSubmit = async (values) => {
-    let data = {
-      data: {
-        time: values.time,
-        goal: values.title,
-      },
-    };
-    try {
-      const response = await addItemAPICall(data, LearningGoalAddItem_URL);
-      if (response.status === 200) {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    let err0 = "";
+    let err1 = "";
+    if (goalName.length < 3) {
+      err0 = "Too Short";
+    } else if (targetTime < 1) {
+      err1 = "Wrong target time";
+    } else {
+      const result = await addEdit({
+        useForEdit,
+        data: {
+          goal: goalName,
+          time: targetTime,
+        },
+        id: rowData?.id,
+      });
+      if (result.status == 200) {
+        useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
         toast({
-          title: `${useForEdit ? "Update" : "Add"} ${title}  Item Successfully`,
+          title: result.message,
         });
         document.getElementById("closeDialog")?.click();
-      } else {
-        toast({
-          title: "Item not add",
-        });
+      } else if (result.status == 400) {
+        setError(result.errors);
       }
-    } catch (error) {
-      toast({
-        title: "Bad request",
-      });
     }
-  };
+  }
+
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Learning {title}
+          {useForEdit ? "Update" : "New"} Learning Goal
         </DialogTitle>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <InputField
-              form={form}
-              name={"title"}
-              label={`${title} type`}
-              placeholder={""}
-              type={"text"}
-              isAdmin={true}
-              isItem={true}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 py-4 text-black text-lg"
+        >
+          <div className="flex flex-col gap-1">
+            <label className="flex justify-between">
+              <span>Goal Name</span>
+            </label>
+            <CustomInput
+              type="text"
+              value={goalName}
+              onChange={(e) => setGoalName(e.target.value)}
+              ph="Goal name"
             />
-            <InputField
-              form={form}
-              name={"time"}
-              label={`Time`}
-              placeholder={""}
-              type={"number"}
-              isAdmin={true}
-              isItem={true}
-            />
+            <span className="text-red-700">{error.err0}</span>
+          </div>
 
-            <AdminFormButton title={`${useForEdit ? "Update" : "Add"} Item`} />
-          </form>
-        </Form>
+          <div className="flex flex-col gap-1">
+            <label className="flex justify-between">
+              <span>Target time</span>
+            </label>
+            <CustomInput
+              type="text"
+              value={targetTime}
+              onChange={(e) => setTargetTime(e.target.value)}
+              ph="Target time"
+            />
+            <span className="text-red-700">{error.err1}</span>
+          </div>
+
+          <CustomButton
+            txt={useForEdit ? "Update" : "Add"}
+            type="submit"
+            style="text-blue-800"
+          />
+        </form>
       </DialogHeader>
     </>
   );

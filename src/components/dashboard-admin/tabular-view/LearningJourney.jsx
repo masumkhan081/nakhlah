@@ -1,55 +1,46 @@
 "use client";
 import { useEffect } from "react";
 import DataTable from "../table/DataTable";
-import { journey_add_url, journey_get_url } from "../../../lib/url";
-import { staticJourneyData } from "../../../static-data/data";
-import { useJourney } from "../../../store/useAdminStore";
-import columnJourney from "../table/columnJourney";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Main_URL } from "../../../lib/url";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddJourney from "../modals/AddJourney";
+import { useLearningJourney } from "../../../store/useAdminStore";
+import columnJourney from "../table/ColJourney";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHandler } from "@/lib/requestHandler";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 export default function LearningJourney() {
-  const journeyData = useJourney((state) => state.data);
-  // const getJournies = useJourney((state) => state.getJournies);
-  const addNewJourney = useJourney((state) => state.addNewJourney);
-  //   const errorMessageCall = useJourney((state) => state.errorMessage);
+  const journeyData = useLearningJourney((state) => state.data);
+  const setJournies = useLearningJourney((state) => state.setJournies);
 
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("learning-journey");
+      console.log(response.data);
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setJournies(dataRenderable);
+      }
+    };
     if (Array.isArray(journeyData) && journeyData.length === 0) {
-      // getJournies(journey_get_url);
+      fetch();
     }
   }, [journeyData]);
 
-  // _____________________________________________don,t remove
-  // const { data, meta } = journeyData;
-  // const dataRenderable =
-  //   data !== undefined &&
-  //   data.map((item) => {
-  //     const { id, attributes } = item;
-  //     const { title } = attributes;
-  //     return {
-  //       id,
-  //       title,
-  //     };
-  //   });
-  // _____________________________________________don,t remove
-
   return (
     <div className="w-full bg-white  rounded-xl">
-      <DataTable data={journeyData} columns={columnJourney} view={"journey"} />
+      {journeyData.length != 0 ? (
+        <DataTable
+          data={journeyData}
+          columns={columnJourney}
+          view={"learning-journey"}
+        />
+      ) : (
+        <CustomSkeleton/>
+      )}
     </div>
   );
 }

@@ -1,21 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Main_URL } from "../../../lib/url";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
+import Image from "next/image";
 import Deletion from "../modals/Deletion";
-import AddJourney from "../modals/AddJourney";
+import AddStartingPoint from "../modals/AddStartPoint";
+import { Main_URL } from "../../../lib/url";
+import { BASE_URL } from "@/lib/requestHandler";
 
-
-const columnJourney = [
+const ColStartPoint = [
   {
     id: "select",
     header: ({ table }) => (
@@ -47,7 +40,7 @@ const columnJourney = [
     },
   },
   {
-    id: "id_journey_titel",
+    id: "id_learner_start_point",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -61,10 +54,47 @@ const columnJourney = [
       );
     },
     cell: ({ row }) => (
-      <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_journey_titel")}
+      <div className="lowercase textNormal textSecondaryColor">
+        {row.getValue("title")}
       </div>
     ),
+  },
+  {
+    accessorKey: "subtitle",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Subtitle
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="lowercase textNormal textSecondaryColor pl-2">
+        {row.getValue("subtitle")}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "formats",
+    header: () => <div className="textPrimaryColor textNormal">Image</div>,
+    cell: ({ row }) => {
+      // console.log(row.getValue('formats'))
+      return (
+        <div>
+          <Image
+            src={`${BASE_URL}${row.getValue("formats")?.small}`}
+            alt=""
+            width={40}
+            height={40}
+            className="rounded-full border-2 border-black"
+          />
+        </div>
+      );
+    },
   },
   {
     id: "actions",
@@ -82,7 +112,7 @@ const columnJourney = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="journey" />
+              <Deletion rowData={row.original} what="learner-start-point" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -92,8 +122,8 @@ const columnJourney = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddJourney
-                title="journey"
+              <AddStartingPoint
+                title="startingPoint"
                 useForEdit={true}
                 rowData={row.original}
               />
@@ -105,4 +135,4 @@ const columnJourney = [
   },
 ];
 
-export default columnJourney;
+export default ColStartPoint;

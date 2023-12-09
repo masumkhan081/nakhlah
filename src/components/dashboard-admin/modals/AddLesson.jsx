@@ -15,10 +15,10 @@ import CustomButton from "../../ui-custom/CustomButton";
 import { useToast } from "@/components/ui/use-toast";
 import CustomInput from "../../ui-custom/CustomInput";
 import {
-  useLesson,
-  useJourney,
-  useLevel,
-  useTaskUnit,
+  useLearningLesson,
+  useLearningJourney,
+  useLearningLevel,
+  useLearningUnit,
 } from "../../../store/useAdminStore";
 import { useEffect, useState } from "react";
 
@@ -64,13 +64,15 @@ export default function AddLesson({ rowData, title, useForEdit }) {
     err4: "",
   });
 
-  const journies = useJourney((state) => state.data);
-  const existance = useLesson((state) => state.existance);
-  const addStatic = useLesson((state) => state.addStatic);
-  const updateStatic = useLesson((state) => state.updateStatic);
-  const removeStatic = useLesson((state) => state.removeStatic);
-  const filteredUnits = useTaskUnit((state) => state.filteredUnits);
-  const filteredLevels = useLevel((state) => state.filteredLevels);
+  const journies = useLearningJourney((state) => state.data);
+  // 
+  const addEdit = useLearningJourney((state) => state.addEdit);
+  const afterAdd = useLearningJourney((state) => state.afterAdd);
+  const afterUpdate = useLearningJourney((state) => state.afterUpdate);
+  // 
+  const removeStatic = useLearningLesson((state) => state.removeStatic);
+  const filteredUnits = useLearningUnit((state) => state.filteredUnits);
+  const filteredLevels = useLearningLevel((state) => state.filteredLevels);
 
   function handleSubmit(e) {
     e.preventDefault();

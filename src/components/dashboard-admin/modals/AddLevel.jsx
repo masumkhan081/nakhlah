@@ -16,9 +16,9 @@ import {
   level_add_url,
 } from "../../../lib/url";
 import {
-  useJourney,
-  useTaskUnit,
-  useLevel,
+  useLearningJourney,
+  useLearningUnit,
+  useLearningLevel,
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
@@ -56,13 +56,15 @@ export default function AddLevel({ rowData, title, useForEdit }) {
     err3: "",
   });
 
-  const journies = useJourney((state) => state.data);
-  //useTaskUnit((state) => state.filteredUnits(selectedJourney.id));
-  const existance = useLevel((state) => state.existance);
-  const addStatic = useLevel((state) => state.addStatic);
-  const updateStatic = useLevel((state) => state.updateStatic);
-  const removeStatic = useLevel((state) => state.removeStatic);
-  const filteredUnits = useTaskUnit((state) => state.filteredUnits);
+  const journies = useLearningJourney((state) => state.data);
+  //useLearningUnit((state) => state.filteredUnits(selectedJourney.id));
+  const existance = useLearningLevel((state) => state.existance);
+   // 
+   const addEdit = useLearningJourney((state) => state.addEdit);
+   const afterAdd = useLearningJourney((state) => state.afterAdd);
+   const afterUpdate = useLearningJourney((state) => state.afterUpdate);
+   // 
+  const filteredUnits = useLearningUnit((state) => state.filteredUnits);
 
   function handleSubmit(e) {
     e.preventDefault();

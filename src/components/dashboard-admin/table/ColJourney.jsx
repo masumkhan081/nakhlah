@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";
@@ -13,12 +12,10 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/Deletion";
-import AddLevel from "../modals/AddLevel";
+import AddJourney from "../modals/AddJourney";
 
 
-
-
-const columnLevel = [
+const columnJourney = [
   {
     id: "select",
     header: ({ table }) => (
@@ -50,7 +47,7 @@ const columnLevel = [
     },
   },
   {
-    id: "id_level_titel",
+    id: "id_journey_titel",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -58,58 +55,17 @@ const columnLevel = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Level
+          Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_level_titel")}
+        {row.getValue("id_journey_titel")}
       </div>
     ),
   },
-  {
-    id: "unitOfLevel",
-    accessorKey: "unit.title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Unit
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="  textNormal textSecondaryColor">
-        {row.getValue("unitOfLevel")}
-      </div>
-    ),
-  },
-  {
-    id: "journeyOfLevel",
-    accessorKey: "unit.journey.title",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Journey
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="  textNormal textSecondaryColor">
-        {row.getValue("journeyOfLevel")}
-      </div>
-    ),
-  },
-
   {
     id: "actions",
     header: () => (
@@ -126,7 +82,7 @@ const columnLevel = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="level" />
+              <Deletion rowData={row.original} what="learning-journey" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -136,7 +92,11 @@ const columnLevel = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddLevel useForEdit={true} rowData={row.original} />
+              <AddJourney
+                title="journey"
+                useForEdit={true}
+                rowData={row.original}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -144,4 +104,5 @@ const columnLevel = [
     },
   },
 ];
-export default columnLevel;
+
+export default columnJourney;

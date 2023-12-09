@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import  DataTable  from "../table/DataTable";
+import DataTable from "../table/DataTable";
 import levelColumns from "../table/ColLearnerLevel";
 import { LearningLevelGetAllItem_URL } from "../../../lib/url";
 import { useLearningState } from "../../../store/useAdminStore";
 import { shallow } from "zustand/shallow";
 import { handleGetItem } from "../../../lib/handleGetData";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 const LearningJourneyLevel = () => {
   const [data, setData] = useState([]);
@@ -31,9 +32,9 @@ const LearningJourneyLevel = () => {
   }, []);
   return (
     <div className="w-full bg-white  rounded-xl">
-      {/* <DataTable columns={purposeColumns} learningTitle={"purpose"}  addURL={LearningPurposeAddItem_URL} getURL={LearningPurposeGetAllItem_URL}/> */}
-      {/* <DataTable data={purposeData} columns={purposeColumns} learningTitle={"purpose"} /> */}
+     
       <DataTable data={data} columns={levelColumns} view={"learnerLevel"} />
+     {/* <CustomSkeleton/> */}
     </div>
   );
 };

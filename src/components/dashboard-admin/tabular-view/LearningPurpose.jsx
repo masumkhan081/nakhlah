@@ -13,22 +13,19 @@ const LearningPurpose = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler("purpose");
+      const response = await getHandler("learner-purpose");
       if (response.status === 200) {
-        const { data, meta } = response.data;
-
-        const purposeData = data.map((item) => {
-          const { id, attributes } = item;
-          const { purpose, icon } = attributes;
+        const purposeData = response.data.data.map((item) => {
+          const { icon } = item.attributes;
           const formats = {
-            large: icon.data?.attributes?.formats.large?.url,
-            small: icon.data?.attributes?.formats.small?.url,
-            medium: icon.data?.attributes?.formats.medium?.url,
-            thumbnail: icon.data?.attributes?.formats.thumbnail?.url,
+            large: icon?.data?.attributes?.formats.large?.url,
+            small: icon?.data?.attributes?.formats.small?.url,
+            medium: icon?.data?.attributes?.formats.medium?.url,
+            thumbnail: icon?.data?.attributes?.formats.thumbnail?.url,
           };
           return {
-            id,
-            purpose,
+            id: item.id,
+            purpose: item.attributes.purpose,
             formats,
           };
         });

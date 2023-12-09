@@ -21,7 +21,12 @@ import {
   staticQueType,
   staticUnitData,
 } from "../static-data/data";
-import { getHandler } from "@/lib/requestHandler";
+import {
+  deleteHandler,
+  getHandler,
+  postHandler,
+  putHandler,
+} from "@/lib/requestHandler";
 
 const token =
   "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e";
@@ -95,232 +100,530 @@ export const useLearnerPurpose = create(
         state.data = data;
       });
     },
-    existance: (queType) => {
-      return staticJourneyData.find((item) => item.title === queType);
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("purpose", id, {
+            data,
+          })
+        : await postHandler("purpose", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
     },
-    addStatic: (data) => {
+    afterAdd: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = [data, ...state.data];
       });
     },
-    updateStatic: (data) => {
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
-            return { ...item, title: data.title };
+            return data;
           } else {
             return item;
           }
         });
       });
     },
-    removeStatic: (id) => {
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
-    },
-    reset: () => {
-      set((state) => {
-        state.data = staticQueType;
-      });
-    },
-    addNewQueType: async (formData, url) => {
-      return await axios.post(url, formData, config);
     },
   }))
 );
-
-export const useQueType = create(
+export const useLearnerLevel = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticQueType : [],
-
-    existance: (queType) => {
-      return staticJourneyData.find((item) => item.title === queType);
-    },
-
-    addStatic: (data) => {
+    data: [],
+    setGoals: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
-    updateStatic: (data) => {
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("goal", id, {
+            data,
+          })
+        : await postHandler("goal", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
-            return { ...item, title: data.title };
+            return data;
           } else {
             return item;
           }
         });
       });
     },
-    removeStatic: (id) => {
+    removeGoal: async (id) => {
+      const response = await deleteHandler("goal", id);
+
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: "Deleted Successfully",
+          id: data.id,
+        };
+      } else if (response.status == 400) {
+        return response.data.error.message;
+      }
+    },
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
     },
-    reset: () => {
+  }))
+);
+export const useLearnerStartPoint = create(
+  immer((set) => ({
+    data: [],
+    setStartPoints: (data) => {
       set((state) => {
-        state.data = staticQueType;
+        state.data = data;
       });
     },
-    addNewQueType: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getQueTypes: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("learner-start-point", id, {
+            data,
+          })
+        : await postHandler("learner-start-point", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
       }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useLearnerGoal = create(
+  immer((set) => ({
+    data: [],
+    setGoals: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("goal", id, {
+            data,
+          })
+        : await postHandler("goal", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    removeGoal: async (id) => {
+      const response = await deleteHandler("goal", id);
+
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: "Deleted Successfully",
+          id: data.id,
+        };
+      } else if (response.status == 400) {
+        return response.data.error.message;
+      }
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useQueType = create(
+  immer((set) => ({
+    data: [],
+    setQueTypes: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("question-type", id, {
+            data,
+          })
+        : await postHandler("question-type", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
     },
   }))
 );
 export const useConType = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticConType : [],
-
-    existance: (conType) => {
-      return staticConType.find((item) => item.title === conType);
-    },
-
-    addStatic: (data) => {
+    data: [],
+    setConTypes: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
-    updateStatic: (data) => {
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-type", id, {
+            data,
+          })
+        : await postHandler("content-type", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
-            return { ...item, title: data.title };
+            return data;
           } else {
             return item;
           }
         });
       });
     },
-    removeStatic: (id) => {
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
-    },
-    reset: () => {
-      set((state) => {
-        state.data = staticConType;
-      });
-    },
-    addConType: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getConTypes: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
-      }
     },
   }))
 );
 export const useConTypeCategory = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticConTypeCategory : [],
-
-    existance: (conTypeCategory) => {
-      return staticConTypeCategory.find(
-        (item) => item.title === conTypeCategory
-      );
-    },
-
-    addStatic: (data) => {
+    data: [],
+    setConTypeCategories: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
-    updateStatic: (data) => {
+    addConTypeCategory: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("content-type-category", id, {
+            data,
+          })
+        : await postHandler("content-type-category", {
+            data,
+          });
+
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1] ? errors[1].message : "",
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            time: data.attributes.time,
+            goal: data.attributes.goal,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
-            return { ...item, title: data.title };
+            return data;
           } else {
             return item;
           }
         });
       });
     },
-    removeStatic: (id) => {
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
     },
-    reset: () => {
-      set((state) => {
-        state.data = staticConTypeCategory;
-      });
-    },
-    addConTypeCategory: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getQueTypeCategories: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
-      }
-    },
   }))
 );
-export const useJourney = create(
+export const useLearningJourney = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticJourneyData : [],
-
-    existance: (jouneyName) => {
-      return staticJourneyData.find((item) => item.title === jouneyName);
-    },
-
-    addStatic: (data) => {
+    data: [],
+    setJournies: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
-    updateStatic: (data) => {
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("learning-journey", id, {
+            data,
+          })
+        : await postHandler("learning-journey", {
+            data,
+          });
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
-            return { ...item, title: data.title };
+            return data;
           } else {
             return item;
           }
         });
       });
     },
-    removeStatic: (id) => {
+
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
     },
-    reset: () => {
-      set((state) => {
-        state.data = staticJourneyData;
-      });
-    },
-    addNewJourney: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getJournies: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
-      }
-    },
   }))
 );
-export const useTaskUnit = create(
+export const useLearningUnit = create(
   immer((set) => ({
     data: is_store_mode_static ? staticUnitData : [],
 
@@ -378,21 +681,19 @@ export const useTaskUnit = create(
     },
   }))
 );
-export const useLevel = create(
+export const useLearningLevel = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticLevelData : [],
+    data: [],
 
-    existance: (unitId, levelName) => {
-      return staticLevelData.find(
-        (item) => item.title === levelName && item.unit.id === unitId
-      );
+    setLevels: (data) => {
+      set((state) => (state.data = data));
     },
-    addStatic: (data) => {
+    addEdit: (data) => {
       set((state) => {
         state.data = [...state.data, data];
       });
     },
-    updateStatic: (data) => {
+    afterAdd: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
@@ -403,12 +704,7 @@ export const useLevel = create(
         });
       });
     },
-    removeStatic: (id) => {
-      set((state) => {
-        state.data = state.data.filter((item) => item.id != id);
-      });
-    },
-    filteredLevels: (id) => {
+    afterUpdate: (id) => {
       // set((state) => {
       const filteredLevels = staticLevelData.filter((item) => {
         return item.unit.id === id;
@@ -416,39 +712,24 @@ export const useLevel = create(
       return filteredLevels;
       //   });
     },
-    reset: () => {
+    afterDelete: (id) => {
       set((state) => {
-        state.data = staticLevelData;
+        state.data = state.data.filter((item) => item.id != id);
       });
-    },
-
-    addNewLevel: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getLevels: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
-      }
     },
   }))
 );
-export const useLesson = create(
+export const useLearningLesson = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticLessonData : [],
-    existance: (levelId, lessonName) => {
-      return staticLessonData.find(
-        (item) => item.title === lessonName && item.level.id == levelId
-      );
-    },
-    addStatic: (data) => {
+    data : [],
+    setLessons: (data) => set((state) => (state.data = data)),
+
+    addEdit: (data) => {
       set((state) => {
         state.data = [...state.data, data];
       });
     },
-    updateStatic: (data) => {
+    afterAdd: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
@@ -459,21 +740,13 @@ export const useLesson = create(
         });
       });
     },
-    removeStatic: (id) => {
+    afterUpdate: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
     },
-    addNewLesson: async (formData, url) => {
+    afterDelete: async (formData, url) => {
       return await axios.post(url, formData, config);
-    },
-    getLessons: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
-      }
     },
   }))
 );

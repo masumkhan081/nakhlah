@@ -4,42 +4,48 @@ import {
   LearningGoalAddItem_URL,
   LearningGoalGetAllItem_URL,
 } from "../../../lib/url";
-import colContentType from "../table/colContentType";
+import colContentType from "../table/ColContentType";
 import { useConType } from "../../../store/useAdminStore";
 import { useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHandler } from "@/lib/requestHandler";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 const ContentType = () => {
   //
-
   const conTypeData = useConType((state) => state.data);
+  const setConTypes = useConType((state) => state.setConTypes);
 
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("content-type");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setConTypes(data);
+      }
+    };
     if (Array.isArray(conTypeData) && conTypeData.length === 0) {
-      // getJournies(journey_get_url);
+      fetch();
     }
   }, [conTypeData]);
 
-  // _____________________________________________don,t remove
-  // const { data, meta } = journeyData;
-  // const dataRenderable =
-  //   data !== undefined &&
-  //   data.map((item) => {
-  //     const { id, attributes } = item;
-  //     const { title } = attributes;
-  //     return {
-  //       id,
-  //       title,
-  //     };
-  //   });
-  // _____________________________________________don,t remove
-
   return (
     <div className="w-full bg-white  rounded-xl">
-      <DataTable
-        data={conTypeData}
-        columns={colContentType}
-        view="content-type"
-      />
+      {conTypeData.length != 0 ? (
+        <DataTable
+          data={conTypeData}
+          columns={colContentType}
+          view="content-type"
+        />
+      ) : (
+        <CustomSkeleton/>
+      )}
     </div>
   );
 };

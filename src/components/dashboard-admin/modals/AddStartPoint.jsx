@@ -1,34 +1,29 @@
 "use client";
-
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import AdminFormButton from "../../ui-custom/AdminFormButton";
-
 import { useToast } from "@/components/ui/use-toast";
-import CustomInput from "../../ui-custom/CustomInput";
-import { useQueType } from "../../../store/useAdminStore";
+import { useLearnerStartPoint } from "../../../store/useAdminStore";
 import { useState } from "react";
-import CustomButton from "../../ui-custom/CustomButton";
+import CustomButton from "@/components/ui-custom/CustomButton";
+import CustomInput from "@/components/ui-custom/CustomInput";
 
-export default function AddQueType({ rowData, useForEdit }) {
+export default function AddStartingPoint({ rowData, title, useForEdit }) {
   //
   const { toast } = useToast();
-  //
-  const addEdit = useQueType((state) => state.addEdit);
-  const afterAdd = useQueType((state) => state.afterAdd);
-  const afterUpdate = useQueType((state) => state.afterUpdate);
-  //
-  const [queType, setQueType] = useState(useForEdit ? rowData.title : "");
+  const addEdit = useLearnerStartPoint((state) => state.addEdit);
+  const afterAdd = useLearnerStartPoint((state) => state.afterAdd);
+  const afterUpdate = useLearnerStartPoint((state) => state.afterUpdate);
+  const [startPoint, setStartPoint] = useState(useForEdit ? rowData.title : "");
   const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (queType.length < 3) {
+    if (startPoint.length < 3) {
       setError("Too Short");
     } else {
       const result = await addEdit({
         useForEdit,
         data: {
-          title: queType,
+          title: startPoint,
         },
         id: rowData?.id,
       });
@@ -48,7 +43,7 @@ export default function AddQueType({ rowData, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Question Type
+          {useForEdit ? "Update" : "New"} Learner Start Point
         </DialogTitle>
 
         <form
@@ -56,12 +51,12 @@ export default function AddQueType({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Question Type</label>
+            <label>Start Point</label>
             <CustomInput
               type="text"
-              value={queType}
-              onChange={(e) => setQueType(e.target.value)}
-              ph="New queType Level"
+              value={startPoint}
+              onChange={(e) => setStartPoint(e.target.value)}
+              ph="New Journey Level"
             />
             <span className="text-red-700">{error}</span>
           </div>

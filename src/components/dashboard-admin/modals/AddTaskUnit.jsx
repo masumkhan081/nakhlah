@@ -38,18 +38,22 @@ import InputField from "../../ui-custom/InputField";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import CustomInput from "../../ui-custom/CustomInput";
-import { useJourney, useTaskUnit } from "../../../store/useAdminStore";
+import {
+  useLearningJourney,
+  useLearningUnit,
+} from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
 
 export default function AddTaskUnit({ rowData, title, useForEdit }) {
+  //
   const { toast } = useToast();
-  // const data = useTaskUnit((state) => state.data);
-  const journies = useJourney((state) => state.data);
-  const addStatic = useTaskUnit((state) => state.addStatic);
-  const existance = useTaskUnit((state) => state.existance);
-  const updateStatic = useTaskUnit((state) => state.updateStatic);
-  const removeStatic = useTaskUnit((state) => state.removeStatic);
+  const journies = useLearningJourney((state) => state.data);
+  //
+  const addEdit = useLearningUnit((state) => state.addEdit);
+  const afterAdd = useLearningUnit((state) => state.afterAdd);
+  const afterUpdate = useLearningUnit((state) => state.afterUpdate);
+  //
   const [taskName, setTaskName] = useState(useForEdit ? rowData.title : "");
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit

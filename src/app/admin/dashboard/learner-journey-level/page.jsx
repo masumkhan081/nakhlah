@@ -1,4 +1,4 @@
-import LearningJourneyLevel from "@/components/dashboard-admin/tabular-view/LearningJourneyLevel";
+import LearningJourneyLevel from "@/components/dashboard-admin/tabular-view/LearnerLevel";
 
 const LearningLevelPage = () => {
   return (

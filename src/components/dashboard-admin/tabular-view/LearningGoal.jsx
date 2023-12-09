@@ -3,62 +3,43 @@ import { useEffect, useState } from "react";
 import goalColumns from "../table/ColGoal";
 import DataTable from "../table/DataTable";
 import { shallow } from "zustand/shallow";
-// import {
-//   LearningGoalAddItem_URL,
-//   LearningGoalGetAllItem_URL,
-// } from "@/components/url";
-// import { goalColumns } from "../share/columns";
-// import { goalData } from "@/components/data";
-import { useLearningState } from "../../../store/useAdminStore";
-import { LearningGoalGetAllItem_URL } from "../../../lib/url";
-import { handleGetItem } from "../../../lib/handleGetData";
+import { useLearnerGoal } from "../../../store/useAdminStore";
+import { getHandler } from "../../../lib/requestHandler";
+import { Skeleton } from "@/components/ui/skeleton";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 const LearningGoal = () => {
-  // const goalDataCall = useLearningState((state) => state.data)
-  // const getAllItemCall = useLearningState((state) => state.getAllItem)
-  // const addItemAPICall = useLearningState((state) => state.addItem)
-  // const errorMessageCall = useLearningState((state) => state.errorMessage)
-  // useEffect(() => {
-  //     if (Array.isArray(goalDataCall) && goalDataCall.length === 0) {
-  //         getAllItemCall(LearningGoalGetAllItem_URL)
-  //     }
-  // }, [goalDataCall, getAllItemCall])
-  // const {data, meta} = goalDataCall
-  // const goalData =  data !== undefined && data.map(item => {
-  //     const { id, attributes } = item;
-  //     const { goal, time } = attributes;
-  //     return {
-  //         id,
-  //         goal,
-  //         time
-  //     };
-  // });
-  const [data, setData] = useState([]);
+  const learnerGoals = useLearnerGoal((state) => state.data);
+  const setGoals = useLearnerGoal((state) => state.setGoals);
+  const addEdit = useLearnerGoal((state) => state.addEdit);
 
   useEffect(() => {
-    const unsubget = useLearningState.subscribe(
-      (state) => state.getAllItem,
-      (get, preGet) => get(LearningGoalGetAllItem_URL),
-      {
-        equalityFn: shallow,
-        fireImmediately: true,
+    const fetch = async () => {
+      const response = await getHandler("learner-goal");
+      console.log(response.data);
+      if (response.status === 200) {
+        const goalData = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            goal: item.attributes.goal,
+            time: item.attributes.time,
+          };
+        });
+        setGoals(goalData);
       }
-    );
-    useLearningState.subscribe(
-      (state) => state.data,
-      (data, preData) => {
-        const dataInfo =
-          data.data !== undefined && handleGetItem(data.data, "goal");
-        setData(dataInfo);
-      }
-    );
-    return unsubget;
-  }, []);
+    };
+    if (Array.isArray(learnerGoals) && learnerGoals.length === 0) {
+      fetch();
+    }
+  }, [learnerGoals]);
+
   return (
     <div className="w-full bg-white  rounded-xl">
-      {/* <DataTable columns={goalColumns} learningTitle={"goal"} addURL={LearningGoalAddItem_URL} getURL={LearningGoalGetAllItem_URL}/> */}
-      {/* <DataTable data={goalData} columns={goalColumns} learningTitle={"goal"} /> */}
-      <DataTable data={data} columns={goalColumns} view={"goal"} />
+      {learnerGoals.length != 0 ? (
+        <DataTable data={learnerGoals} columns={goalColumns} view={"goal"} />
+      ) : (
+        <CustomSkeleton/>
+      )}
     </div>
   );
 };

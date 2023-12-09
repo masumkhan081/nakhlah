@@ -4,40 +4,49 @@ import {
   LearningGoalAddItem_URL,
   LearningGoalGetAllItem_URL,
 } from "../../../lib/url";
-import colConTypeCategory from "../table/colConTypeCategory";
+import colConTypeCategory from "../table/ColConTypeCategory";
 import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHandler } from "@/lib/requestHandler";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 const ConTypeCategory = () => {
   const conTypeCatagories = useConTypeCategory((state) => state.data);
+  const setConTypeCategories = useConTypeCategory(
+    (state) => state.setConTypeCategories
+  );
 
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("content-type-category");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setConTypeCategories(data);
+      }
+    };
     if (Array.isArray(conTypeCatagories) && conTypeCatagories.length === 0) {
-      // getJournies(journey_get_url);
+      fetch();
     }
   }, [conTypeCatagories]);
 
-  // _____________________________________________don,t remove
-  // const { data, meta } = journeyData;
-  // const dataRenderable =
-  //   data !== undefined &&
-  //   data.map((item) => {
-  //     const { id, attributes } = item;
-  //     const { title } = attributes;
-  //     return {
-  //       id,
-  //       title,
-  //     };
-  //   });
-  // _____________________________________________don,t remove
-
   return (
     <div className="w-full bg-white  rounded-xl">
-      <DataTable
-        data={conTypeCatagories}
-        columns={colConTypeCategory}
-        learningTitle={"content-type-category"}
-      />
+      {conTypeCatagories.length != 0 ? (
+        <DataTable
+          data={conTypeCatagories}
+          columns={colConTypeCategory}
+          view={"content-type-category"}
+        />
+      ) : (
+        <CustomSkeleton/>
+      )}
     </div>
   );
 };

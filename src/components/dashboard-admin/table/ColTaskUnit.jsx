@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-
 import Deletion from "../modals/Deletion";
 import AddTaskUnit from "../modals/AddTaskUnit";
 
@@ -60,7 +59,7 @@ const columnTaskUnit = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="textNormal textSecondaryColor">{row.getValue("id_task_titel")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("id_task_titel")}</div>,
   },
   {
     id: "journeyOfTask",
@@ -99,7 +98,7 @@ const columnTaskUnit = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="task" />
+              <Deletion rowData={row.original} what="learning-unit" />
             </DialogContent>
           </Dialog>
           <Dialog className="">

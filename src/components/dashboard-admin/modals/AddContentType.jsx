@@ -1,7 +1,6 @@
 "use client";
 
-import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import AdminFormButton from "../../ui-custom/AdminFormButton";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog"; 
 
 import { useToast } from "@/components/ui/use-toast";
 import CustomInput from "../../ui-custom/CustomInput";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
@@ -12,28 +11,35 @@ import CustomButton from "../../ui-custom/CustomButton";
 export default function AddContentType({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
-  const existance = useConType((state) => state.existance);
-  const addStatic = useConType((state) => state.addStatic);
-  const updateStatic = useConType((state) => state.updateStatic);
+  // 
+  const addEdit = useConType((state) => state.addEdit);
+  const afterAdd = useConType((state) => state.afterAdd);
+  const afterUpdate = useConType((state) => state.afterUpdate);
+  // 
   const [contentType, setContentType] = useState(useForEdit ? rowData.title : "");
   const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (contentType.length < 3) {
       setError("Too Short");
-    } else if (existance(contentType)) {
-      setError("Already Exist");
     } else {
-      useForEdit
-        ? updateStatic({ id: rowData.id, title: contentType })
-        : addStatic({ id: Math.random(), title: contentType });
-      toast({
-        title: useForEdit
-          ? "Item Updated Succesfully"
-          : "Item Added Successfully",
+      const result = await addEdit({
+        useForEdit,
+        data: {
+          title: contentType,
+        },
+        id: rowData?.id,
       });
-      document.getElementById("closeDialog")?.click();
+      if (result.status == 200) {
+        useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
+        toast({
+          title: result.message,
+        });
+        document.getElementById("closeDialog")?.click();
+      } else if (result.status == 400) {
+        setError(result.errors);
+      }
     }
   }
 

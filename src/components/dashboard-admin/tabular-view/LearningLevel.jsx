@@ -1,62 +1,55 @@
 "use client";
-import { staticUnitData } from "../../../static-data/data";
-import { useTaskUnit } from "../../../store/useAdminStore";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Main_URL } from "../../../lib/url";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import AddJourney from "../modals/AddJourney";
-import AddLesson from "../modals/AddLesson";
-import AddLevel from "../modals/AddLevel";
-import Deletion from "../modals/Deletion";
-import AddTaskUnit from "../modals/AddTaskUnit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "../table/DataTable";
-import columnLevel from "../table/columnLevel";
-import { level_add_url, level_get_url } from "../../../lib/url";
-
-import { staticLevelData } from "../../../static-data/data";
-import { useLevel } from "../../../store/useAdminStore";
+import columnLevel from "../table/ColLearningLevel";
+import { useLearningLevel } from "../../../store/useAdminStore";
+import { getHandler } from "@/lib/requestHandler";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 export default function LearningLevel() {
-  const levelData = useLevel((state) => state.data);
-  const getLevels = useLevel((state) => state.getLevels);
-  const addNewLevel = useLevel((state) => state.addNewLevel);
-  //   const errorMessageCall = useLevel((state) => state.errorMessage);
+  const levelData = useLearningLevel((state) => state.data);
+  const setLevels = useLearningLevel((state) => state.setLevels);
 
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("learning-level");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey_unit } = item.attributes;
+          const { learning_journey } = learning_journey_unit.data.attributes;
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey_unit: {
+              id: learning_journey_unit.id,
+              title: learning_journey_unit.data.attributes.title,
+              learning_journey: {
+                id: learning_journey.id,
+                title: learning_journey.attributes.title,
+              },
+            },
+          };
+        });
+        setLevels(data);
+      }
+    };
     if (Array.isArray(levelData) && levelData.length === 0) {
-      getLevels(level_get_url);
+      fetch();
     }
   }, [levelData]);
 
-  // const { data, meta } = levelData;
-  // const dataRenderable =
-  //   data !== undefined &&
-  //   data.map((item) => {
-  //     return {
-  //       id: item.id,
-  //       titleLevel: item.attributes.title,
-  //       titleTask: item.attributes.learning_journey_unit.data.attributes.title,
-  //       titleJourney:
-  //         item.attributes.learning_journey_unit.data.attributes.learning_journey
-  //           .data.attributes.title,
-  //     };
-  //   });
-
   return (
     <div className="w-full bg-white  rounded-xl">
-      <DataTable data={levelData} columns={columnLevel} view={"level"} />
+      {levelData.length != 0 ? (
+        <DataTable
+          data={levelData}
+          columns={columnLevel}
+          view={"learning-level"}
+        />
+      ) : (
+        <CustomSkeleton />
+      )}
     </div>
   );
 }

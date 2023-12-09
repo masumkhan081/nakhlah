@@ -2,6 +2,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+
+to do 
+1. deletion data mising t deleting goal
+
 First, run the development server:
 
 ```bash

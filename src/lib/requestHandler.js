@@ -12,7 +12,58 @@ const config = {
 };
 
 const getMap = {
-  purpose: `${BASE_URL}/api/learning-purposes?populate=*`,
+  "learner-purpose": `${BASE_URL}/api/learning-purposes`,
+  "learner-goal": `${BASE_URL}/api/learning-goals`,
+  "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
+  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "question-type": `${BASE_URL}/api/question-types`,
+  "content-type": `${BASE_URL}/api/content-types`,
+  "content-type-category": `${BASE_URL}/api/content-type-categories`,
+  "learning-journey": `${BASE_URL}/api/learning-journeys`,
+  "learning-level": `${BASE_URL}/api/learning-journey-levels?populate[learning_journey_unit][populate][0]=learning_journey`,
+  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
+  // level: `${BASE_URL}/api/learner-levels?populate=*`,
+  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+};
+
+const postMap = {
+  "learner-purpose": `${BASE_URL}/api/learning-purposes`,
+  "learner-goal": `${BASE_URL}/api/learning-goals`,
+  "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
+  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "question-type": `${BASE_URL}/api/question-types`,
+  "content-type": `${BASE_URL}/api/content-types`,
+  "content-type-category": `${BASE_URL}/api/content-type-categories`,
+  "learning-journey": `${BASE_URL}/api/learning-journeys`,
+  // level: `${BASE_URL}/api/learner-levels?populate=*`,
+  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
+  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+};
+const putMap = {
+  "learner-purpose": `${BASE_URL}/api/learning-purposes`,
+  "learner-goal": `${BASE_URL}/api/learning-goals`,
+  "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
+  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "question-type": `${BASE_URL}/api/question-types`,
+  "content-type": `${BASE_URL}/api/content-types`,
+  "content-type-category": `${BASE_URL}/api/content-type-categories`,
+  "learning-journey": `${BASE_URL}/api/learning-journeys`,
+  // level: `${BASE_URL}/api/learner-levels?populate=*`,
+  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
+  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+};
+const deleteMap = {
+  "learner-purpose": `${BASE_URL}/api/learning-purposes`,
+  "learner-goal": `${BASE_URL}/api/learning-goals`,
+  "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
+  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "question-type": `${BASE_URL}/api/question-types`,
+  "content-type": `${BASE_URL}/api/content-types`,
+  "content-type-category": `${BASE_URL}/api/content-type-categories`,
+  "learning-journey": `${BASE_URL}/api/learning-journeys`,
+  // level: `${BASE_URL}/api/learner-levels?populate=*`,
+  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
+  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
 };
 
 export const getHandler = async (key) => {
@@ -24,28 +75,28 @@ export const getHandler = async (key) => {
   }
 };
 
-export const postHandler = async (endpoint, body) => {
+export const postHandler = async (key, body) => {
   try {
-    const response = await axios.post(BASE_URL + endpoint, body, config);
+    const response = await axios.post(postMap[key], body, config);
     return response;
   } catch (error) {
     return error.response;
   }
 };
 
-export const putHandler = async (endpoint, data) => {
+export const putHandler = async (key, id, data) => {
   try {
-    const response = await axios.patch(`${BASE_URL + endpoint}`, data, config);
+    const response = await axios.put(putMap[key] + `/${id}`, data, config);
     return response;
-  } catch (err) {
-    return err;
+  } catch (error) {
+    return error.response;
   }
 };
-export const deleteHandler = async (endpoint, data) => {
+export const deleteHandler = async ({ key, id }) => {
   try {
-    const response = await axios.patch(`${BASE_URL + endpoint}`, data, config);
+    const response = await axios.delete(deleteMap[key] + `/${id}`, config);
     return response;
-  } catch (err) {
-    return err;
+  } catch (error) {
+    return error.response;
   }
 };

@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import Deletion from "../modals/Deletion";
-import AddStartingPoint from "../modals/AddStartingPoint";
 import { Main_URL } from "../../../lib/url";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
+import Deletion from "../modals/Deletion";
+import AddLevel from "../modals/AddLevel";
 
-export const startingPointColumns = [
+const columnLevel = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,6 +46,7 @@ export const startingPointColumns = [
     },
   },
   {
+    id: "id_level_titel",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -46,55 +54,58 @@ export const startingPointColumns = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Title
+          Level
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("title")}
+      <div className=" textNormal textSecondaryColor">
+        {row.getValue("id_level_titel")}
       </div>
     ),
   },
   {
-    accessorKey: "subtitle",
+    id: "unitOfLevel",
+    accessorKey: "learning_journey_unit.title",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Subtitle
+          Unit
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("subtitle")}
+      <div className="  textNormal textSecondaryColor">
+        {row.getValue("unitOfLevel")}
       </div>
     ),
   },
   {
-    accessorKey: "formats",
-    header: () => <div className="textPrimaryColor textNormal">Image</div>,
-    cell: ({ row }) => {
-      // console.log(row.getValue('formats'))
+    id: "journeyOfLevel",
+    accessorKey: "learning_journey_unit.learning_journey.title",
+    header: ({ column }) => {
       return (
-        <div>
-          <Image
-            src={`${Main_URL}${row.getValue("formats")?.small}`}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-black"
-          />
-          {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
-        </div>
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Journey
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
+    cell: ({ row }) => (
+      <div className="  textNormal textSecondaryColor">
+        {row.getValue("journeyOfLevel")}
+      </div>
+    ),
   },
+
   {
     id: "actions",
     header: () => (
@@ -111,7 +122,7 @@ export const startingPointColumns = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="startingPoint" />
+              <Deletion rowData={row.original} what="learning-level" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -121,11 +132,7 @@ export const startingPointColumns = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddStartingPoint
-                title="startingPoint"
-                useForEdit={true}
-                rowData={row.original}
-              />
+              <AddLevel useForEdit={true} rowData={row.original} />
             </DialogContent>
           </Dialog>
         </div>
@@ -133,3 +140,4 @@ export const startingPointColumns = [
     },
   },
 ];
+export default columnLevel;

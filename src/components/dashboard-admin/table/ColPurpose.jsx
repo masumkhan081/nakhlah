@@ -93,7 +93,7 @@ const columnPurpose = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="purpose" />
+              <Deletion rowData={row.original} what="learner-purpose" />
             </DialogContent>
           </Dialog>
           <Dialog className="">

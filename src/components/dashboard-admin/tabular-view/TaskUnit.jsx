@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import DataTable from "../table/DataTable";
-import columnTaskUnit from "../table/columnTaskUnit";
+import columnTaskUnit from "../table/ColTaskUnit";
 import { unit_add_url, unit_get_url } from "../../../lib/url";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";
 import Deletion from "../modals/Deletion";
 import { staticUnitData } from "../../../static-data/data";
-import { useTaskUnit } from "../../../store/useAdminStore";
+import { useLearningUnit } from "../../../store/useAdminStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,10 +26,10 @@ import AddLesson from "../modals/AddLesson";
 import AddTaskUnit from "../modals/AddTaskUnit";
 
 const TaskUnit = () => {
-  const unitData = useTaskUnit((state) => state.data);
-  const getTaskUnits = useTaskUnit((state) => state.getTaskUnits);
-  const addNewTaskUnit = useTaskUnit((state) => state.addNewTaskUnit);
-  //   const errorMessageCall = useTaskUnit((state) => state.errorMessage);
+  const unitData = useLearningUnit((state) => state.data);
+  const getTaskUnits = useLearningUnit((state) => state.getTaskUnits);
+  const addNewTaskUnit = useLearningUnit((state) => state.addNewTaskUnit);
+  //   const errorMessageCall = useLearningUnit((state) => state.errorMessage);
 
   console.log(JSON.stringify(unitData));
 
