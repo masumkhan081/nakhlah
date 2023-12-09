@@ -38,7 +38,7 @@ export default function AddContentType({ rowData, useForEdit }) {
         });
         document.getElementById("closeDialog")?.click();
       } else if (result.status == 400) {
-        setError(result.errors);
+        setError(result.error);
       }
     }
   }
@@ -60,7 +60,7 @@ export default function AddContentType({ rowData, useForEdit }) {
               type="text"
               value={contentType}
               onChange={(e) => setContentType(e.target.value)}
-              ph="New Journey Level"
+              ph="Content type"
             />
             <span className="text-red-700">{error}</span>
           </div>

@@ -41,12 +41,16 @@ const columnQueType = [
     accessorKey: "id",
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
-      const rowId = parseInt(row.id) + 1;
-      return <div className="textSecondaryColor textNormal">{rowId} </div>;
+      // const rowId = parseInt(row.id) + 1;
+      return (
+        <div className="textSecondaryColor textNormal">
+          {row.getValue("id")}
+        </div>
+      );
     },
   },
   {
-    id: "id_que_type_titel",
+    id: "id_question_type",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -61,7 +65,7 @@ const columnQueType = [
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_que_type_titel")}
+        {row.getValue("id_question_type")}
       </div>
     ),
   },

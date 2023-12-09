@@ -2,59 +2,50 @@
 import { useEffect } from "react";
 import DataTable from "../table/DataTable";
 import columnTaskUnit from "../table/ColTaskUnit";
-import { unit_add_url, unit_get_url } from "../../../lib/url";
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Main_URL } from "../../../lib/url";
-import Deletion from "../modals/Deletion";
-import { staticUnitData } from "../../../static-data/data";
 import { useLearningUnit } from "../../../store/useAdminStore";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
-import AddJourney from "../modals/AddJourney";
-import AddLesson from "../modals/AddLesson";
-import AddTaskUnit from "../modals/AddTaskUnit";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
+import { getHandler } from "@/lib/requestHandler";
 
 const TaskUnit = () => {
+  //
   const unitData = useLearningUnit((state) => state.data);
-  const getTaskUnits = useLearningUnit((state) => state.getTaskUnits);
-  const addNewTaskUnit = useLearningUnit((state) => state.addNewTaskUnit);
-  //   const errorMessageCall = useLearningUnit((state) => state.errorMessage);
-
-  console.log(JSON.stringify(unitData));
+  const setUnits = useLearningUnit((state) => state.setUnits);
 
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("learning-unit");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey } = item.attributes;
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey: {
+              id: learning_journey.id,
+              title: learning_journey.data.attributes.title,
+            },
+          };
+        });
+        setUnits(data);
+      }
+    };
     if (Array.isArray(unitData) && unitData.length === 0) {
-      // getTaskUnits(unit_get_url);
+      fetch();
     }
   }, [unitData]);
 
-  // _____________________________________________don,t remove
-  // const { data, meta } = unitData;
-  // const dataRenderable =
-  //   data !== undefined &&
-  //   data.map((item) => {
-  //     return {
-  //       id: item.id,
-  //       titleTask: item.attributes.title,
-  //       titleJourney: item.attributes.learning_journey.data.attributes.title,
-  //     };
-  //   });
-  // _____________________________________________don,t remove
-
   return (
     <div className="w-full bg-white  rounded-xl">
-      <DataTable data={unitData} columns={columnTaskUnit} view={"task"} />
+      {unitData.length != 0 ? (
+        <DataTable
+          data={unitData}
+          columns={columnTaskUnit}
+          view={"learning-unit"}
+        />
+      ) : (
+        <CustomSkeleton />
+      )}
     </div>
   );
 };

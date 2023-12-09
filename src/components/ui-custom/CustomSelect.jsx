@@ -30,6 +30,7 @@ const CustomSelect = ({ options, value, onChange, bg }) => {
 
   return (
     <div className="relative " ref={dropdownRef}>
+    <p>{JSON.stringify(options)}</p>
       <div
         className={`py-1 px-1.5 min-w-[110px] rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
         onClick={toggleDropdown}

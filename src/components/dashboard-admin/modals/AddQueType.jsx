@@ -39,7 +39,7 @@ export default function AddQueType({ rowData, useForEdit }) {
         });
         document.getElementById("closeDialog")?.click();
       } else if (result.status == 400) {
-        setError(result.errors);
+        setError(result.error);
       }
     }
   }

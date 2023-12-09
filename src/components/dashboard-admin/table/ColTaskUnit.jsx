@@ -63,7 +63,7 @@ const columnTaskUnit = [
   },
   {
     id: "journeyOfTask",
-    accessorKey: "journey.title",
+    accessorKey: "learning_journey.title",
     header: ({ column }) => {
       return (
         <Button

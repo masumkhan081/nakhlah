@@ -14,7 +14,7 @@ export default function LearningJourney() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-journey");
-      console.log(response.data);
+
       if (response.status === 200) {
         const dataRenderable = response.data.data.map((item) => {
           return {
@@ -39,7 +39,7 @@ export default function LearningJourney() {
           view={"learning-journey"}
         />
       ) : (
-        <CustomSkeleton/>
+        <CustomSkeleton />
       )}
     </div>
   );

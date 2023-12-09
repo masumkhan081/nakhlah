@@ -9,7 +9,7 @@ import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useState } from "react";
 import CustomButton from "../../ui-custom/CustomButton";
 
-export default function AddJourney({ rowData, useForEdit }) {
+export default function AddConTypeCategory({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
   //
@@ -41,7 +41,7 @@ export default function AddJourney({ rowData, useForEdit }) {
         });
         document.getElementById("closeDialog")?.click();
       } else if (result.status == 400) {
-        setError(result.errors);
+        setError(result.error);
       }
     }
   }
@@ -53,18 +53,17 @@ export default function AddJourney({ rowData, useForEdit }) {
           {useForEdit ? "Update" : "New"} Content Type Category
           <span className="text-sm text-bg-slate-500">(ex:Image)</span>
         </DialogTitle>
-
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Category Name</label>
+            <label>Content Type Category</label>
             <CustomInput
               type="text"
               value={conTypeCategory}
               onChange={(e) => setConTypecategory(e.target.value)}
-              ph="New Journey Level"
+              ph="Content Type Category"
             />
             <span className="text-red-700">{error}</span>
           </div>

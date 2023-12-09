@@ -33,7 +33,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
         });
         document.getElementById("closeDialog")?.click();
       } else if (result.status == 400) {
-        setError(result.errors);
+        setError(result.error);
       }
     }
   }

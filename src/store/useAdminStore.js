@@ -113,10 +113,7 @@ export const useLearnerPurpose = create(
         let errors = response.data.error.details.errors;
         return {
           status: response.status,
-          errors: {
-            err0: errors[0].message,
-            err1: errors[1] ? errors[1].message : "",
-          },
+          error: errors[0].message,
         };
       }
       if (response.status == 200) {
@@ -189,6 +186,7 @@ export const useLearnerLevel = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
+            //  work left
             time: data.attributes.time,
             goal: data.attributes.goal,
           },
@@ -394,10 +392,7 @@ export const useQueType = create(
         let errors = response.data.error.details.errors;
         return {
           status: response.status,
-          errors: {
-            err0: errors[0].message,
-            err1: errors[1] ? errors[1].message : "",
-          },
+          error: errors[0].message,
         };
       }
       if (response.status == 200) {
@@ -407,8 +402,7 @@ export const useQueType = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            title: data.attributes.title,
           },
         };
       }
@@ -457,10 +451,7 @@ export const useConType = create(
         let errors = response.data.error.details.errors;
         return {
           status: response.status,
-          errors: {
-            err0: errors[0].message,
-            err1: errors[1] ? errors[1].message : "",
-          },
+          error: errors[0].message,
         };
       }
       if (response.status == 200) {
@@ -470,8 +461,7 @@ export const useConType = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            title: data.attributes.title,
           },
         };
       }
@@ -507,7 +497,7 @@ export const useConTypeCategory = create(
         state.data = data;
       });
     },
-    addConTypeCategory: async ({ useForEdit, data, id }) => {
+    addEdit: async ({ useForEdit, data, id }) => {
       const response = useForEdit
         ? await putHandler("content-type-category", id, {
             data,
@@ -515,15 +505,11 @@ export const useConTypeCategory = create(
         : await postHandler("content-type-category", {
             data,
           });
-
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
           status: response.status,
-          errors: {
-            err0: errors[0].message,
-            err1: errors[1] ? errors[1].message : "",
-          },
+          error: errors[0].message,
         };
       }
       if (response.status == 200) {
@@ -533,8 +519,7 @@ export const useConTypeCategory = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            title: data.attributes.title,
           },
         };
       }
@@ -582,9 +567,7 @@ export const useLearningJourney = create(
         let errors = response.data.error.details.errors;
         return {
           status: response.status,
-          errors: {
-            err0: errors[0].message,
-          },
+          error: errors[0].message,
         };
       }
       if (response.status == 200) {
@@ -625,19 +608,54 @@ export const useLearningJourney = create(
 );
 export const useLearningUnit = create(
   immer((set) => ({
-    data: is_store_mode_static ? staticUnitData : [],
+    data: [],
 
-    addStatic: (data) => {
+    setUnits: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
-    existance: (journeyId, taskName) => {
-      return staticUnitData.find(
-        (item) => item.title === taskName && item.journey.id === journeyId
-      );
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("learning-unit", id, {
+            data,
+          })
+        : await postHandler("learning-unit", {
+            data,
+          });
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          errors: {
+            err0: errors[0].message,
+            err1: errors[1]?.message,
+          },
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        const { learning_journey } = data.attributes;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+            learning_journey: {
+              id: learning_journey.id,
+              title: learning_journey.data.attributes.title,
+            },
+          },
+        };
+      }
     },
-    updateStatic: (data) => {
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
@@ -648,36 +666,10 @@ export const useLearningUnit = create(
         });
       });
     },
-    removeStatic: (id) => {
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
-    },
-    filteredUnits: (id) => {
-      // set((state) => {
-      const filteredUnits = staticUnitData.filter((item) => {
-        return item.journey.id === id;
-      });
-      return filteredUnits;
-      // state.data = filteredUnits;
-      // });
-    },
-    reset: () => {
-      set((state) => {
-        state.data = staticUnitData;
-      });
-    },
-
-    addNewTaskUnit: async (formData, url) => {
-      return await axios.post(url, formData, config);
-    },
-    getTaskUnits: async (URL) => {
-      const response = await axios.get(URL, config);
-      if (response.status === 200) {
-        set((state) => {
-          state.data = response.data;
-        });
-      }
     },
   }))
 );
@@ -721,7 +713,7 @@ export const useLearningLevel = create(
 );
 export const useLearningLesson = create(
   immer((set) => ({
-    data : [],
+    data: [],
     setLessons: (data) => set((state) => (state.data = data)),
 
     addEdit: (data) => {

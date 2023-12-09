@@ -20,6 +20,7 @@ const getMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
+  "learning-unit": `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels?populate[learning_journey_unit][populate][0]=learning_journey`,
   // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
   // level: `${BASE_URL}/api/learner-levels?populate=*`,

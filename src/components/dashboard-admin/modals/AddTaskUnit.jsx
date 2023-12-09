@@ -44,11 +44,13 @@ import {
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
+import { getHandler } from "@/lib/requestHandler";
 
 export default function AddTaskUnit({ rowData, title, useForEdit }) {
   //
   const { toast } = useToast();
   const journies = useLearningJourney((state) => state.data);
+  const setJournies = useLearningJourney((state) => state.setJournies);
   //
   const addEdit = useLearningUnit((state) => state.addEdit);
   const afterAdd = useLearningUnit((state) => state.afterAdd);
@@ -71,9 +73,7 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
     let err_1 = "";
     let err_2 = "";
 
-    if (existance(selectedJourney.id, taskName)) {
-      setError({ err1: err_1, err2: err_2, err0: "Already Exists" });
-    } else if (selectedJourney.title != "" && !(taskName.length < 3)) {
+     if (selectedJourney.title != "" && !(taskName.length < 3)) {
       useForEdit
         ? updateStatic({
             id: rowData.id,
@@ -102,22 +102,23 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
     }
   }
 
-  // useEffect(() => {
-  //   console.log(JSON.stringify(journeyData));
-  //   if (Array.isArray(journeyData) && journeyData.length === 0) {
-  //     getJournies(journey_get_url);
-  //   }
-  // }, [journeyData, getJournies]);
-
-  // const { data, meta } = journeyData;
-  // const dataRenderable = data?.map((item) => {
-  //   const { id, attributes } = item;
-  //   const { title } = attributes;
-  //   return {
-  //     id,
-  //     title,
-  //   };
-  // });
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("learning-unit");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setJournies(dataRenderable);
+      }
+    };
+    if (Array.isArray(journies) && journies.length === 0) {
+      fetch();
+    }
+  }, [journies]);
 
   return (
     <>
