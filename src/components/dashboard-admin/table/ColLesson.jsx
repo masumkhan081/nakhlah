@@ -46,7 +46,7 @@ const columnLesson = [
     },
   },
   {
-    id:"id_lesson_titel",
+    id: "id_lesson_titel",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -67,7 +67,7 @@ const columnLesson = [
   },
   {
     id: "levelOfLesson",
-    accessorKey: "level.title",
+    accessorKey: "learning_journey_level.title",
     header: ({ column }) => {
       return (
         <Button
@@ -87,7 +87,7 @@ const columnLesson = [
   },
   {
     id: "unitOfLeson",
-    accessorKey: "level.unit.title",
+    accessorKey: "learning_journey_level.learning_journey_unit.title",
     header: ({ column }) => {
       return (
         <Button
@@ -107,7 +107,8 @@ const columnLesson = [
   },
   {
     id: "journeyOfLesson",
-    accessorKey: "level.unit.journey.title",
+    accessorKey:
+      "learning_journey_level.learning_journey_unit.learning_journey.title",
     header: ({ column }) => {
       return (
         <Button

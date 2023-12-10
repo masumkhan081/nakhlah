@@ -14,7 +14,6 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/Deletion";
 import AddJourney from "../modals/AddJourney";
 
-
 const columnJourney = [
   {
     id: "select",
@@ -42,8 +41,12 @@ const columnJourney = [
     accessorKey: "id",
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
-      const rowId = parseInt(row.id) + 1;
-      return <div className="textSecondaryColor textNormal">{rowId} </div>;
+      // const rowId = parseInt(row.id) + 1;
+      return (
+        <div className="textSecondaryColor textNormal">
+          {row.getValue("id")}{" "}
+        </div>
+      );
     },
   },
   {

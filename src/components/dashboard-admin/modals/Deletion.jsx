@@ -35,26 +35,7 @@ export default function Deletion({ rowData, what }) {
     "learning-level": useLearningLevel((state) => state.afterDelete),
     "learning-lesson": useLearningLesson((state) => state.afterDelete),
   };
-  // learning-journey
-  // const afterDeleteJourney = useLearningJourney((state) => state.afterDelete);
-  // const afterDeleteLearningUnit = useLearningUnit((state) => state.afterDelete);
-  // const afterDeleteLearningLevel = useLearningLevel(
-  //   (state) => state.afterDelete
-  // );
-  // const afterDeleteLearningLesson = useLearningLesson((state) => state.afterDelete);
-  // questionaries
-  // const afterDeleteQueType = useQueType((state) => state.afterDelete);
-  // const afterDeleteConType = useConType((state) => state.afterDelete);
-  // const afterDeleteConTypeCategory = useConTypeCategory(
-  //   (state) => state.afterDelete
-  // );
-  // user-profile
-  // const afterDeletePurpose = useLearnerPurpose((state) => state.afterDelete);
-  // const afterDeleteLearnerlevel = useLearnerlevel((state) => state.afterDelete);
-  // const afterDeleteStartPoint = useLearnerStartPoint(
-  //   (state) => state.afterDelete
-  // );
-  // const afterDeleteGoal = useLearnerGoal((state) => state.afterDelete);
+   
 
   function onSuccess() {
     document.getElementById("closeDialog")?.click();

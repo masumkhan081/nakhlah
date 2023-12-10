@@ -22,9 +22,7 @@ const getMap = {
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
   "learning-unit": `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels?populate[learning_journey_unit][populate][0]=learning_journey`,
-  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
-  // level: `${BASE_URL}/api/learner-levels?populate=*`,
-  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+  "learning-lesson": `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
 };
 
 const postMap = {
@@ -36,9 +34,9 @@ const postMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
-  // level: `${BASE_URL}/api/learner-levels?populate=*`,
-  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
-  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+  "learning-unit": `${BASE_URL}/api/learning-journey-units`,
+  "learning-level": `${BASE_URL}/api/learning-journey-levels`,
+  "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
 };
 const putMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -49,9 +47,9 @@ const putMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
-  // level: `${BASE_URL}/api/learner-levels?populate=*`,
-  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
-  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+  "learning-unit": `${BASE_URL}/api/learning-journey-units`,
+  "learning-level": `${BASE_URL}/api/learning-journey-levels`,
+  "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
 };
 const deleteMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
@@ -62,9 +60,9 @@ const deleteMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
-  // level: `${BASE_URL}/api/learner-levels?populate=*`,
-  // task: `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
-  // lesson: `${BASE_URL}/api/learning-journey-lessons?populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+  "learning-unit": `${BASE_URL}/api/learning-journey-units`,
+  "learning-level": `${BASE_URL}/api/learning-journey-levels`,
+  "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
 };
 
 export const getHandler = async (key) => {

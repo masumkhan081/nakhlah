@@ -22,30 +22,30 @@ import {
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
+import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 
-export default function AddLevel({ rowData, title, useForEdit }) {
+export default function AddLevel({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
   const initStateSelection = {
     id: null,
     title: "",
   };
-
   const [levelName, setLevelName] = useState(useForEdit ? rowData.title : "");
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.unit.journey.id,
-          title: rowData.unit.journey.title,
+          id: rowData.learning_journey_unit.learning_journey.id,
+          title: rowData.learning_journey_unit.learning_journey.title,
         }
       : initStateSelection
   );
-  const [units, setUnits] = useState([]);
+  const [filteredUnits, setFilteredUnits] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(
     useForEdit
       ? {
-          id: rowData.unit.id,
-          title: rowData.unit.title,
+          id: rowData.learning_journey_unit.id,
+          title: rowData.learning_journey_unit.title,
         }
       : initStateSelection
   );
@@ -56,56 +56,69 @@ export default function AddLevel({ rowData, title, useForEdit }) {
     err3: "",
   });
 
-  const journies = useLearningJourney((state) => state.data);
-  //useLearningUnit((state) => state.filteredUnits(selectedJourney.id));
-  const existance = useLearningLevel((state) => state.existance);
-   // 
-   const addEdit = useLearningJourney((state) => state.addEdit);
-   const afterAdd = useLearningJourney((state) => state.afterAdd);
-   const afterUpdate = useLearningJourney((state) => state.afterUpdate);
-   // 
-  const filteredUnits = useLearningUnit((state) => state.filteredUnits);
+  const journeyData = useLearningJourney((state) => state.data);
+  const setJournies = useLearningJourney((state) => state.setJournies);
+  //
+  const unitData = useLearningUnit((state) => state.data);
+  const setUnits = useLearningUnit((state) => state.setUnits);
+  //
+  const afterUpdate = useLearningLevel((state) => state.afterUpdate);
+  const afterAdd = useLearningLevel((state) => state.afterAdd);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     let err_1 = "";
     let err_2 = "";
     let err_3 = "";
-    if (existance(selectedUnit.id, levelName)) {
-      setError({
-        err1: err_1,
-        err2: err_2,
-        err3: err_3,
-        err0: "Already Exists",
-      });
-    } else if (
+    if (
       selectedJourney.title != "" &&
       selectedUnit.title != "" &&
       !(levelName.length < 3)
     ) {
-      useForEdit
-        ? updateStatic({
-            id: rowData.id,
-            title: levelName,
-            unit: {
-              ...selectedUnit,
-              journey: { ...selectedJourney },
+      const data = {
+        title: levelName,
+        learning_journey_unit: {
+          connect: [selectedUnit.id],
+        },
+      };
+
+      const result = useForEdit
+        ? await putHandler("learning-level", rowData.id, { data })
+        : await postHandler("learning-level", {
+            data,
+          }); 
+   
+      if (result.status == 200) {
+        let data = result.data.data;
+
+        data = {
+          id: data.id,
+          title: data.attributes.title,
+          learning_journey_unit: {
+            id: selectedUnit.id,
+            title: selectedUnit.title,
+            learning_journey: {
+              id: selectedJourney.id,
+              title: selectedJourney.title,
             },
-          })
-        : addStatic({
-            id: Math.floor(Math.random() * 10),
-            title: levelName,
-            unit: {
-              ...selectedUnit,
-              journey: selectedJourney,
-            },
-          });
-      toast({
-        title: useForEdit
-          ? "Item Updated Succesfully"
-          : "Item Added Successfully",
-      });
-      document.getElementById("closeDialog")?.click();
+          },
+        };
+
+        useForEdit ? afterUpdate(data) : afterAdd(data);
+        toast({
+          title: useForEdit
+            ? "Item Updated Succesfully"
+            : "Item Added Successfully",
+        });
+        document.getElementById("closeDialog")?.click();
+      } else if (result.status == 400) {
+        let errors = result.data.error.details.errors;
+        setError({
+          err0: errors[0].message,
+          err1: errors[1]?.message,
+          err2: errors[2]?.message,
+        });
+      }
     } else {
       if (selectedJourney.id == null) {
         err_1 = "Select Journey Level First";
@@ -120,23 +133,60 @@ export default function AddLevel({ rowData, title, useForEdit }) {
     }
   }
 
+  function filterUnitsByJourney(id) {
+    setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
+  }
+
   useEffect(() => {
-    const unitAfterFilter = filteredUnits(selectedJourney.id);
-    setSelectedUnit(initStateSelection);
-    setUnits(unitAfterFilter);
+    const fetchJournies = async () => {
+      const response = await getHandler("learning-journey");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setJournies(dataRenderable);
+      }
+    };
+
+    if (Array.isArray(journeyData) && journeyData.length === 0) {
+      fetchJournies();
+    }
+  }, [journeyData]);
+  useEffect(() => {
+    const fetchUnits = async () => {
+      const response = await getHandler("learning-unit");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey } = item.attributes;
+
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey: {
+              id: learning_journey.data.id,
+              title: learning_journey.data.attributes.title,
+            },
+          };
+        });
+        setUnits(data);
+      }
+    };
+
+    if (Array.isArray(unitData) && unitData.length === 0) {
+      fetchUnits();
+    }
+  }, [unitData]);
+
+  useEffect(() => {
+    if (selectedJourney.id != null) {
+      useForEdit ? "" : setSelectedUnit(initStateSelection);
+      filterUnitsByJourney(selectedJourney.id);
+    }
   }, [selectedJourney]);
-
-  // useEffect(() => {
-  //   if (Array.isArray(journeyData) && journeyData.length === 0) {
-  //     getJournies(journey_get_url);
-  //   }
-  // }, [journeyData, getJournies]);
-
-  // useEffect(() => {
-  //   if (Array.isArray(journeyData) && journeyData.length === 0) {
-  //     getJournies(level_by_journey_get_url);
-  //   }
-  // }, [selectedJourney]);
 
   return (
     <>
@@ -156,7 +206,7 @@ export default function AddLevel({ rowData, title, useForEdit }) {
             <label>Select Journey</label>
             <CustomSelect
               value={selectedJourney}
-              options={journies}
+              options={journeyData}
               bg="light"
               onChange={(value) =>
                 setSelectedJourney({ id: value.id, title: value.title })
@@ -168,7 +218,7 @@ export default function AddLevel({ rowData, title, useForEdit }) {
             <label>Select Task Unit</label>
             <CustomSelect
               value={selectedUnit}
-              options={units}
+              options={filteredUnits}
               bg="light"
               onChange={(value) =>
                 setSelectedUnit({ id: value.id, title: value.title })

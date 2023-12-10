@@ -44,7 +44,7 @@ import {
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
-import { getHandler } from "@/lib/requestHandler";
+import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 
 export default function AddTaskUnit({ rowData, title, useForEdit }) {
   //
@@ -59,7 +59,10 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
   const [taskName, setTaskName] = useState(useForEdit ? rowData.title : "");
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
-      ? { id: rowData.journey.id, title: rowData.journey.title }
+      ? {
+          id: rowData.learning_journey.id,
+          title: rowData.learning_journey.title,
+        }
       : {
           id: null,
           title: "",
@@ -67,30 +70,48 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
   );
   const [error, setError] = useState({ err0: "", err1: "", err2: "" });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     let err_1 = "";
     let err_2 = "";
 
-     if (selectedJourney.title != "" && !(taskName.length < 3)) {
-      useForEdit
-        ? updateStatic({
-            id: rowData.id,
-            title: taskName,
-            journey: selectedJourney,
-          })
-        : addStatic({
-            id: Math.random(),
-            title: taskName,
-            journey: selectedJourney,
+    if (selectedJourney.title != "" && !(taskName.length < 3)) {
+      const data = {
+        title: taskName,
+        learning_journey: {
+          connect: [selectedJourney.id],
+        },
+      };
+
+      const result = useForEdit
+        ? await putHandler("learning-unit", rowData.id, { data })
+        : await postHandler("learning-unit", {
+            data,
           });
-      toast({
-        title: useForEdit
-          ? "Item Updated Succesfully"
-          : "Item Added Successfully",
-      });
-      document.getElementById("closeDialog")?.click();
+
+      if (result.status == 200) {
+        let data = result.data.data;
+        data = {
+          id: data.id,
+          title: data.attributes.title,
+          learning_journey: {
+            id: selectedJourney.id,
+            title: selectedJourney.title,
+          },
+        };
+
+        useForEdit ? afterUpdate(data) : afterAdd(data);
+        toast({
+          title: useForEdit
+            ? "Item Updated Succesfully"
+            : "Item Added Successfully",
+        });
+        document.getElementById("closeDialog")?.click();
+      } else if (result.status == 400) {
+        let errors = result.data.error.details.errors;
+        setError({ err0: errors[0].message, err1: errors[1]?.message });
+      }
     } else {
       if (selectedJourney.title === "") {
         err_1 = "Select Journey Level Before Task Name";
@@ -104,7 +125,8 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler("learning-unit");
+      const response = await getHandler("learning-journey");
+
       if (response.status === 200) {
         const dataRenderable = response.data.data.map((item) => {
           return {

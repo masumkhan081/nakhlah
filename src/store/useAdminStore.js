@@ -615,41 +615,7 @@ export const useLearningUnit = create(
         state.data = data;
       });
     },
-    addEdit: async ({ useForEdit, data, id }) => {
-      const response = useForEdit
-        ? await putHandler("learning-unit", id, {
-            data,
-          })
-        : await postHandler("learning-unit", {
-            data,
-          });
-      if (response.status == 400) {
-        let errors = response.data.error.details.errors;
-        return {
-          status: response.status,
-          errors: {
-            err0: errors[0].message,
-            err1: errors[1]?.message,
-          },
-        };
-      }
-      if (response.status == 200) {
-        let data = response.data.data;
-        const { learning_journey } = data.attributes;
-        return {
-          status: response.status,
-          message: useForEdit ? "Updated Successfully" : "Added Successfully",
-          data: {
-            id: data.id,
-            title: data.attributes.title,
-            learning_journey: {
-              id: learning_journey.id,
-              title: learning_journey.data.attributes.title,
-            },
-          },
-        };
-      }
-    },
+    addEdit: async ({ useForEdit, data, id }) => {},
     afterAdd: (data) => {
       set((state) => {
         state.data = [data, ...state.data];
@@ -678,14 +644,17 @@ export const useLearningLevel = create(
     data: [],
 
     setLevels: (data) => {
-      set((state) => (state.data = data));
-    },
-    addEdit: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
+
     afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
@@ -695,14 +664,6 @@ export const useLearningLevel = create(
           }
         });
       });
-    },
-    afterUpdate: (id) => {
-      // set((state) => {
-      const filteredLevels = staticLevelData.filter((item) => {
-        return item.unit.id === id;
-      });
-      return filteredLevels;
-      //   });
     },
     afterDelete: (id) => {
       set((state) => {
@@ -714,14 +675,18 @@ export const useLearningLevel = create(
 export const useLearningLesson = create(
   immer((set) => ({
     data: [],
-    setLessons: (data) => set((state) => (state.data = data)),
-
-    addEdit: (data) => {
+    setLessons: (data) => {
       set((state) => {
-        state.data = [...state.data, data];
+        state.data = data;
       });
     },
+
     afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
       set((state) => {
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
@@ -732,13 +697,10 @@ export const useLearningLesson = create(
         });
       });
     },
-    afterUpdate: (id) => {
+    afterDelete: (id) => {
       set((state) => {
         state.data = state.data.filter((item) => item.id != id);
       });
-    },
-    afterDelete: async (formData, url) => {
-      return await axios.post(url, formData, config);
     },
   }))
 );
@@ -755,24 +717,6 @@ export const useModal = create(
     },
   }))
 );
-
-// export const useLearningState = create(
-//   immer((set) => ({
-//     data: [],
-//     addItem: async (formData, url) => {
-//       return await axios.post(url, formData, config);
-//     },
-//     getAllItem: async (URL) => {
-//       const response = await axios.get(URL, config);
-//       if (response.status === 200) {
-//         set((state) => {
-//           state.data = response.data;
-//         });
-//       }
-//     },
-//   }))
-// );
-
 export const useLearningState = create(
   immer(
     subscribeWithSelector((set) => ({

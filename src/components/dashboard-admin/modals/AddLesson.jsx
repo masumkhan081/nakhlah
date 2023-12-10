@@ -1,7 +1,5 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+
 import {
   DialogDescription,
   DialogFooter,
@@ -21,6 +19,7 @@ import {
   useLearningUnit,
 } from "../../../store/useAdminStore";
 import { useEffect, useState } from "react";
+import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 
 export default function AddLesson({ rowData, title, useForEdit }) {
   const { toast } = useToast();
@@ -29,30 +28,40 @@ export default function AddLesson({ rowData, title, useForEdit }) {
     title: "",
   };
 
+  function filterUnitsByJourney(id) {
+    setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
+  }
+
+  function filterLevelsByUnit(id) {
+    setFilteredLevels(
+      levelData.filter((item) => item.learning_journey_unit.id == id)
+    );
+  }
+
   const [lessonName, setLessonName] = useState(useForEdit ? rowData.title : "");
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.level.unit.journey.id,
-          title: rowData.level.unit.journey.title,
+          id: rowData.learning_journey_unit.learning_journey.id,
+          title: rowData.learning_journey_unit.learning_journey.title,
         }
       : initStateSelection
   );
-  const [units, setUnits] = useState([]);
+  const [filteredUnits, setFilteredUnits] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(
     useForEdit
       ? {
-          id: rowData.level.unit.id,
-          title: rowData.level.unit.title,
+          id: rowData.learning_journey_unit.id,
+          title: rowData.learning_journey_unit.title,
         }
       : initStateSelection
   );
-  const [levels, setLevels] = useState([]);
+  const [filteredLevels, setFilteredLevels] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState(
     useForEdit
       ? {
-          id: rowData.level.id,
-          title: rowData.level.title,
+          id: rowData.learning_journey_unit.learning_journey_level.id,
+          title: rowData.learning_journey_unit.learning_journey_level.title,
         }
       : initStateSelection
   );
@@ -64,65 +73,90 @@ export default function AddLesson({ rowData, title, useForEdit }) {
     err4: "",
   });
 
-  const journies = useLearningJourney((state) => state.data);
-  // 
-  const addEdit = useLearningJourney((state) => state.addEdit);
-  const afterAdd = useLearningJourney((state) => state.afterAdd);
-  const afterUpdate = useLearningJourney((state) => state.afterUpdate);
-  // 
-  const removeStatic = useLearningLesson((state) => state.removeStatic);
-  const filteredUnits = useLearningUnit((state) => state.filteredUnits);
-  const filteredLevels = useLearningLevel((state) => state.filteredLevels);
+  const journeyData = useLearningJourney((state) => state.data);
+  const setJournies = useLearningJourney((state) => state.setJournies);
+  //
+  const unitData = useLearningUnit((state) => state.data);
+  const setUnits = useLearningUnit((state) => state.setUnits);
+  //
+  const levelData = useLearningLevel((state) => state.data);
+  const setLevels = useLearningLevel((state) => state.setLevels);
+  //
+  const afterUpdate = useLearningLesson((state) => state.afterUpdate);
+  const afterAdd = useLearningLesson((state) => state.afterAdd);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     let err_0 = "";
     let err_1 = "";
     let err_2 = "";
     let err_3 = "";
     let err_4 = "";
-    if (existance(selectedLevel.id, lessonName)) {
-      setError({
-        err1: err_1,
-        err2: err_2,
-        err3: err_3,
-        err4: err_4,
-        err0: "Already Exists",
-      });
-    } else if (
+    if (
       selectedJourney.title != "" &&
       selectedUnit.title != "" &&
       selectedLevel.title != "" &&
       !(lessonName.length < 3)
     ) {
-      useForEdit
-        ? updateStatic({
-            id: rowData.id,
-            title: lessonName,
-            level: {
-              ...selectedLevel,
-              unit: { ...selectedUnit, journey: { ...selectedJourney } },
-            }, // redundant
-          })
-        : addStatic({
-            id: Math.floor(Math.random() * 10),
-            title: lessonName,
-            level: {
-              ...selectedLevel,
-              unit: {
-                ...selectedUnit,
-                journey: {
-                  ...selectedJourney,
-                },
+      const data = {
+        title: lessonName,
+        learning_journey_level: {
+          id: selectedLevel.id,
+          title: selectedLevel.title,
+          learning_journey_unit: {
+            id: selectedUnit.id,
+            title: selectedUnit.title,
+            learning_journey: {
+              id: selectedJourney.id,
+              title: selectedJourney.title,
+            },
+          },
+        },
+      };
+
+      const result = useForEdit
+        ? await putHandler("learning-lesson", rowData.id, { data })
+        : await postHandler("learning-lesson", {
+            data,
+          });
+
+      if (result.status == 200) {
+        let data = result.data.data;
+
+        data = {
+          id: data.id,
+          title: data.attributes.title,
+          learning_journey_level: {
+            id: selectedLevel.id,
+            title: selectedLevel.title,
+            learning_journey_unit: {
+              id: selectedUnit.id,
+              title: selectedUnit.title,
+              learning_journey: {
+                id: selectedJourney.id,
+                title: selectedJourney.title,
               },
             },
-          });
-      toast({
-        title: useForEdit
-          ? "Item Updated Succesfully"
-          : "Item Added Successfully",
-      });
-      document.getElementById("closeDialog")?.click();
+          },
+        };
+
+        useForEdit ? afterUpdate(data) : afterAdd(data);
+        toast({
+          title: useForEdit
+            ? "Item Updated Succesfully"
+            : "Item Added Successfully",
+        });
+        document.getElementById("closeDialog")?.click();
+      } else if (result.status == 400) {
+        let errors = result.data.error.details.errors;
+        setError({
+          err0: errors[0].message,
+          err1: errors[1]?.message,
+          err2: errors[2]?.message,
+          err3: errors[3]?.message,
+          err4: errors[4]?.message,
+        });
+      }
     } else {
       if (selectedJourney.id == null) {
         err_1 = "Select Journey Level First";
@@ -141,15 +175,90 @@ export default function AddLesson({ rowData, title, useForEdit }) {
   }
 
   useEffect(() => {
-    const unitAfterFilter = filteredUnits(selectedJourney.id);
-    useForEdit == false ? setSelectedUnit(initStateSelection) : "";
-    setUnits(unitAfterFilter);
+    const fetchJournies = async () => {
+      const response = await getHandler("learning-journey");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setJournies(dataRenderable);
+      }
+    };
+
+    if (Array.isArray(journeyData) && journeyData.length === 0) {
+      fetchJournies();
+    }
+  }, [journeyData]);
+
+  useEffect(() => {
+    const fetchUnits = async () => {
+      const response = await getHandler("learning-unit");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey } = item.attributes;
+
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey: {
+              id: learning_journey.data.id,
+              title: learning_journey.data.attributes.title,
+            },
+          };
+        });
+        setUnits(data);
+      }
+    };
+    if (Array.isArray(unitData) && unitData.length === 0) {
+      fetchUnits();
+    }
+  }, [unitData]);
+
+  useEffect(() => {
+    const fetchLevels = async () => {
+      const response = await getHandler("learning-level");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey_unit } = item.attributes;
+          const { learning_journey } = learning_journey_unit.data.attributes;
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey_unit: {
+              id: learning_journey_unit.data.id,
+              title: learning_journey_unit.data.attributes.title,
+              learning_journey: {
+                id: learning_journey.data.id,
+                title: learning_journey.data.attributes.title,
+              },
+            },
+          };
+        });
+        setLevels(data);
+      }
+    };
+    if (Array.isArray(levelData) && levelData.length === 0) {
+      fetchLevels();
+    }
+  }, [levelData]);
+
+  useEffect(() => {
+    if (selectedJourney.id != null) {
+      useForEdit ? "" : setSelectedUnit(initStateSelection);
+      filterUnitsByJourney(selectedJourney.id);
+    }
   }, [selectedJourney]);
 
   useEffect(() => {
-    const levelAfterFilter = filteredLevels(selectedUnit.id);
-    useForEdit == false ? setSelectedLevel(initStateSelection) : "";
-    setLevels(levelAfterFilter);
+    if (selectedUnit.id != null) {
+      useForEdit ? "" : setSelectedLevel(initStateSelection);
+      filterLevelsByUnit(selectedUnit.id);
+    }
   }, [selectedUnit]);
 
   return (
@@ -170,7 +279,7 @@ export default function AddLesson({ rowData, title, useForEdit }) {
               <label>Select Journey</label>
               <CustomSelect
                 value={selectedJourney}
-                options={journies}
+                options={journeyData}
                 bg="light"
                 onChange={(value) =>
                   setSelectedJourney({ id: value.id, title: value.title })
@@ -182,7 +291,7 @@ export default function AddLesson({ rowData, title, useForEdit }) {
               <label>Select Task Unit</label>
               <CustomSelect
                 value={selectedUnit}
-                options={units}
+                options={filteredUnits}
                 bg="light"
                 onChange={(value) =>
                   setSelectedUnit({ id: value.id, title: value.title })
@@ -194,7 +303,7 @@ export default function AddLesson({ rowData, title, useForEdit }) {
               <label>Select Task Level</label>
               <CustomSelect
                 value={selectedLevel}
-                options={levels}
+                options={filteredLevels}
                 bg="light"
                 onChange={(value) =>
                   setSelectedLevel({ id: value.id, title: value.title })

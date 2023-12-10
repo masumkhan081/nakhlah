@@ -22,11 +22,11 @@ export default function LearningLevel() {
             id: item.id,
             title: item.attributes.title,
             learning_journey_unit: {
-              id: learning_journey_unit.id,
+              id: learning_journey_unit.data.id,
               title: learning_journey_unit.data.attributes.title,
               learning_journey: {
-                id: learning_journey.id,
-                title: learning_journey.attributes.title,
+                id: learning_journey.data.id,
+                title: learning_journey.data.attributes.title,
               },
             },
           };
