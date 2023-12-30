@@ -43,7 +43,7 @@ const LearningPurpose = () => {
         <DataTable
           data={learnerPurposes}
           columns={columnPurpose}
-          view={"purpose"}
+          view={"learner-purpose"}
         />
       ) : (
         <div className="w-full md:py-12 sm:py-6 flex flex-col gap-4 justify-center items-center">

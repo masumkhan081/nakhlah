@@ -1,11 +1,9 @@
 "use client";
 import { useEffect } from "react";
-import DataTable from "../table/DataTable";
-import {} from "../../../lib/url";
+import DataTable from "../table/DataTable"; 
 import { useQueType } from "../../../store/useAdminStore";
 import columnQueType from "../table/ColQueType";
-import { getHandler } from "@/lib/requestHandler";
-import { Skeleton } from "@/components/ui/skeleton";
+import { getHandler } from "@/lib/requestHandler"; 
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
 const QueType = () => {

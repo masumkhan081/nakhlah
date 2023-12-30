@@ -1,13 +1,10 @@
 "use client";
 
 import {
-  DialogDescription,
-  DialogFooter,
+  DialogDescription, 
   DialogHeader,
-  DialogTitle,
-  DialogContent,
-} from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+  DialogTitle, 
+} from "@/components/ui/dialog"; 
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
 import { useToast } from "@/components/ui/use-toast";
@@ -21,7 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 
-export default function AddLesson({ rowData, title, useForEdit }) {
+export default function AddLesson({ rowData, useForEdit }) {
   const { toast } = useToast();
   const initStateSelection = {
     id: null,
@@ -42,8 +39,8 @@ export default function AddLesson({ rowData, title, useForEdit }) {
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_unit.learning_journey.id,
-          title: rowData.learning_journey_unit.learning_journey.title,
+          id: rowData.learning_journey_level.learning_journey_unit.learning_journey.id,
+          title: rowData.learning_journey_level.learning_journey_unit.learning_journey.title,
         }
       : initStateSelection
   );
@@ -51,8 +48,8 @@ export default function AddLesson({ rowData, title, useForEdit }) {
   const [selectedUnit, setSelectedUnit] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_unit.id,
-          title: rowData.learning_journey_unit.title,
+          id: rowData.learning_journey_level.learning_journey_unit.id,
+          title: rowData.learning_journey_level.learning_journey_unit.title,
         }
       : initStateSelection
   );
@@ -60,8 +57,8 @@ export default function AddLesson({ rowData, title, useForEdit }) {
   const [selectedLevel, setSelectedLevel] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_unit.learning_journey_level.id,
-          title: rowData.learning_journey_unit.learning_journey_level.title,
+          id: rowData.learning_journey_level.id,
+          title: rowData.learning_journey_level.title,
         }
       : initStateSelection
   );

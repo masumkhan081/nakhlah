@@ -22,6 +22,7 @@ import AddLesson from "../modals/AddLesson";
 import AddQueType from "../modals/AddQueType";
 import AddContentType from "../modals/AddContentType";
 import AddConTypeCategory from "../modals/AddConTypeCategory";
+import AddQuestion from "../modals/AddQuestion";
 
 const viewMap = {
   // learning journey
@@ -38,6 +39,7 @@ const viewMap = {
   "question-type": "id_question_type",
   "content-type": "id_content_type",
   "content-type-category": "id_content_type_category",
+  "question":"id_question",
 };
 
 // {table,title, addURL, addItemAPICall, errorMessageCall}
@@ -80,35 +82,12 @@ const DataTableHeader = ({ table, view }) => {
             {view == "content-type-category" && (
               <AddConTypeCategory title={view} />
             )}
+            {view == "question" && (
+              <AddQuestion title={view} />
+            )}
           </DialogContent>
         </Dialog>
-        {/* table columns hide dropdown section */}
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="border-[1px] textSecondaryColor textNormal  py-2 px-3 ">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize textSecondaryColor"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu> */}
+    
       </div>
     </div>
   );

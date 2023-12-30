@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Image from "next/image";
 import Deletion from "../modals/Deletion";
-import AddStartingPoint from "../modals/AddStartPoint"; 
-import { BASE_URL } from "@/lib/requestHandler";
+import AddStartingPoint from "../modals/AddStartPoint";
+import AddQuestion from "../modals/AddQuestion";
 
 const ColStartPoint = [
   {
@@ -39,8 +38,8 @@ const ColStartPoint = [
     },
   },
   {
-    id: "id_learner_start_point",
-    accessorKey: "title",
+    id: "id_question",
+    accessorKey: "question",
     header: ({ column }) => {
       return (
         <Button
@@ -54,46 +53,9 @@ const ColStartPoint = [
     },
     cell: ({ row }) => (
       <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("title")}
+        {row.getValue("id_question")}
       </div>
     ),
-  },
-  {
-    accessorKey: "subtitle",
-    header: ({ column }) => {
-      return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="textPrimaryColor textNormal"
-        >
-          Subtitle
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor pl-2">
-        {row.getValue("subtitle")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "formats",
-    header: () => <div className="textPrimaryColor textNormal">Image</div>,
-    cell: ({ row }) => {
-      // console.log(row.getValue('formats'))
-      return (
-        <div>
-          <Image
-            src={`${BASE_URL}${row.getValue("formats")?.small}`}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-black"
-          />
-        </div>
-      );
-    },
   },
   {
     id: "actions",
@@ -111,7 +73,7 @@ const ColStartPoint = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="learner-start-point" />
+              <Deletion rowData={row.original} what="question" />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -121,8 +83,8 @@ const ColStartPoint = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddStartingPoint
-                title="startingPoint"
+              <AddQuestion
+                title="question"
                 useForEdit={true}
                 rowData={row.original}
               />

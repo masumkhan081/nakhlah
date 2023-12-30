@@ -1,36 +1,46 @@
-'use client'
-import { DataTable } from './share/DataTable/DataTable';
-import { LearningGoalAddItem_URL, LearningGoalGetAllItem_URL } from '../../../lib/url';
-import { goalColumns } from './share/columns';
-import { goalData } from '../../../static-data/data';
-
+"use client";
+import DataTable from "../table/DataTable";
+import ColQuestion from "../table/ColQuestion";
+import { useQuestion } from "../../../store/useAdminStore";
+import { useEffect } from "react";
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
+import { getHandler } from "@/lib/requestHandler";
 
 const Question = () => {
-    // const goalDataCall = useLearningState((state) => state.data)
-    // const getAllItemCall = useLearningState((state) => state.getAllItem)
-    // const addItemAPICall = useLearningState((state) => state.addItem)
-    // const errorMessageCall = useLearningState((state) => state.errorMessage)
-    // useEffect(() => {
-    //     if (Array.isArray(goalDataCall) && goalDataCall.length === 0) {
-    //         getAllItemCall(LearningGoalGetAllItem_URL)
-    //     }
-    // }, [goalDataCall, getAllItemCall])
-    // const {data, meta} = goalDataCall
-    // const goalData =  data !== undefined && data.map(item => {
-    //     const { id, attributes } = item;
-    //     const { goal, time } = attributes;
-    //     return {
-    //         id,
-    //         goal,
-    //         time
-    //     };
-    // });
-    return (
-        <div className='w-full bg-white  rounded-xl'>
-            {/* <DataTable columns={goalColumns} learningTitle={"goal"} addURL={LearningGoalAddItem_URL} getURL={LearningGoalGetAllItem_URL}/> */}
-            <DataTable data={goalData} columns={goalColumns} learningTitle={"goal"}/>
-        </div>
-    );
+  const questionData = useQuestion((state) => state.data);
+  const setQuestions = useQuestion((state) => state.setQuestions);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const response = await getHandler("question");
+
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            question: item.attributes.question,
+          };
+        });
+        setQuestions(data);
+      }
+    };
+    if (Array.isArray(questionData) && questionData.length === 0) {
+      fetchQuestions();
+    }
+  }, [questionData]);
+  return (
+    <div className="w-full bg-white  rounded-xl">
+      {questionData.length != 0 ? (
+        <DataTable
+          data={questionData}
+          columns={ColQuestion}
+          view={"question"}
+        />
+      ) : (
+        <CustomSkeleton />
+      )}
+    </div>
+  );
 };
 
 export default Question;

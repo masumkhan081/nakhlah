@@ -11,6 +11,7 @@ import {
   useLearnerLevel,
   useLearnerStartPoint,
   useLearnerGoal,
+  useQuestion,
 } from "@/store/useAdminStore";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../../ui-custom/CustomButton";
@@ -27,15 +28,15 @@ export default function Deletion({ rowData, what }) {
     "learner-goal": useLearnerGoal((state) => state.afterDelete),
     "learner-start-point": useLearnerStartPoint((state) => state.afterDelete),
     "learner-level": useLearnerLevel((state) => state.afterDelete),
-    "question-type": useQueType((state) => state.afterDelete),
-    "content-type": useConType((state) => state.afterDelete),
-    "content-type-category": useConTypeCategory((state) => state.afterDelete),
     "learning-journey": useLearningJourney((state) => state.afterDelete),
     "learning-unit": useLearningUnit((state) => state.afterDelete),
     "learning-level": useLearningLevel((state) => state.afterDelete),
     "learning-lesson": useLearningLesson((state) => state.afterDelete),
+    "question-type": useQueType((state) => state.afterDelete),
+    "content-type": useConType((state) => state.afterDelete),
+    "content-type-category": useConTypeCategory((state) => state.afterDelete),
+    question: useQuestion((state) => state.afterDelete),
   };
-   
 
   function onSuccess() {
     document.getElementById("closeDialog")?.click();

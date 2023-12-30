@@ -1,4 +1,4 @@
-import QueContent from '@/components/adminDashboard/QueContent';
+import QueContent from '@/components/dashboard-admin/tabular-view/QueContent';
 import React from 'react';
 
 const QueContentPage = () => {
