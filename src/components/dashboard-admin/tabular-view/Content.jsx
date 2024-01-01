@@ -1,36 +1,41 @@
-'use client'
-import { DataTable } from './share/DataTable/DataTable';
-import { LearningGoalAddItem_URL, LearningGoalGetAllItem_URL } from '../../../lib/url';
-import { goalColumns } from './share/columns';
-import { goalData } from '../../../static-data/data';
+// "use client";
+// import DataTable  from '../table/DataTable';
+// import ColContent from "../table/ColContent";
+// import { useContent } from "../../../store/useAdminStore";
+// import { useEffect } from "react";
+// import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
+// import { getHandler } from "@/lib/requestHandler";
 
+// const Content = () => {
+//     const learnerGoals = useLearnerGoal((state) => state.data);
+//     const setGoals = useLearnerGoal((state) => state.setGoals);
+//     const addEdit = useLearnerGoal((state) => state.addEdit);
+  
+//     useEffect(() => {
+//       const fetch = async () => {
+//         const response = await getHandler("learner-goal");
+//         console.log(response.data);
+//         if (response.status === 200) {
+//           const goalData = response.data.data.map((item) => {
+//             return {
+//               id: item.id,
+//               goal: item.attributes.goal,
+//               time: item.attributes.time,
+//             };
+//           });
+//           setGoals(goalData);
+//         }
+//       };
+//       if (Array.isArray(learnerGoals) && learnerGoals.length === 0) {
+//         fetch();
+//       }
+//     }, [learnerGoals]);
 
-const Content = () => {
-    // const goalDataCall = useLearningState((state) => state.data)
-    // const getAllItemCall = useLearningState((state) => state.getAllItem)
-    // const addItemAPICall = useLearningState((state) => state.addItem)
-    // const errorMessageCall = useLearningState((state) => state.errorMessage)
-    // useEffect(() => {
-    //     if (Array.isArray(goalDataCall) && goalDataCall.length === 0) {
-    //         getAllItemCall(LearningGoalGetAllItem_URL)
-    //     }
-    // }, [goalDataCall, getAllItemCall])
-    // const {data, meta} = goalDataCall
-    // const goalData =  data !== undefined && data.map(item => {
-    //     const { id, attributes } = item;
-    //     const { goal, time } = attributes;
-    //     return {
-    //         id,
-    //         goal,
-    //         time
-    //     };
-    // });
-    return (
-        <div className='w-full bg-white  rounded-xl'>
-            {/* <DataTable columns={goalColumns} learningTitle={"goal"} addURL={LearningGoalAddItem_URL} getURL={LearningGoalGetAllItem_URL}/> */}
-            <DataTable data={goalData} columns={goalColumns} learningTitle={"goal"}/>
-        </div>
-    );
-};
+//   return (
+//     <div className="w-full bg-white  rounded-xl">
+//       <DataTable data={goalData} columns={goalColumns} learningTitle={"goal"} />
+//     </div>
+//   );
+// };
 
-export default Content;
+// export default Content;

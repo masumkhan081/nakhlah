@@ -14,7 +14,7 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/Deletion";
 import AddLevel from "../modals/AddLevel";
 
-const columnLevel = [
+const colLearningLevel = [
   {
     id: "select",
     header: ({ table }) => (
@@ -140,4 +140,4 @@ const columnLevel = [
     },
   },
 ];
-export default columnLevel;
+export default colLearningLevel;

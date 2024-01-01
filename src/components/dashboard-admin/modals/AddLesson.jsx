@@ -262,7 +262,7 @@ export default function AddLesson({ rowData, useForEdit }) {
     <>
       <DialogHeader className="">
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Task Lesson
+          {useForEdit ? "Update" : "New"} Learning Lesson
         </DialogTitle>
         <DialogDescription className="textNormal textSecondaryColor">
           Select from top to add new lesson
@@ -273,7 +273,7 @@ export default function AddLesson({ rowData, useForEdit }) {
             className="flex flex-col gap-4 py-4 text-black text-lg"
           >
             <div className="flex flex-col gap-1">
-              <label>Select Journey</label>
+              <label>Select Learning Journey</label>
               <CustomSelect
                 value={selectedJourney}
                 options={journeyData}
@@ -285,7 +285,7 @@ export default function AddLesson({ rowData, useForEdit }) {
               <span className="text-red-700">{error.err1}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <label>Select Task Unit</label>
+              <label>Select Learning Unit</label>
               <CustomSelect
                 value={selectedUnit}
                 options={filteredUnits}
@@ -297,7 +297,7 @@ export default function AddLesson({ rowData, useForEdit }) {
               <span className="text-red-700">{error.err2}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <label>Select Task Level</label>
+              <label>Select Learning Level</label>
               <CustomSelect
                 value={selectedLevel}
                 options={filteredLevels}
@@ -310,14 +310,14 @@ export default function AddLesson({ rowData, useForEdit }) {
             </div>
             <div className="flex flex-col gap-1">
               <label className="flex justify-between">
-                <span>Lesson Name</span>
+                <span>Learning Lesson Name</span>
                 <span className=" text-red-700">{error.err0}</span>
               </label>
               <CustomInput
                 type="text"
                 value={lessonName}
                 onChange={(e) => setLessonName(e.target.value)}
-                ph="New Lesson"
+                ph="Enter lesson title"
               />
               <span className="text-red-700">{error.err4}</span>
             </div>

@@ -28,6 +28,7 @@ const Question = () => {
       fetchQuestions();
     }
   }, [questionData]);
+
   return (
     <div className="w-full bg-white  rounded-xl">
       {questionData.length != 0 ? (

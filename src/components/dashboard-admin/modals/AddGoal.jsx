@@ -22,13 +22,9 @@ export default function AddGoal({ rowData, useForEdit }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    let err0 = "";
-    let err1 = "";
-    if (goalName.length < 3) {
-      err0 = "Too Short";
-    } else if (targetTime < 1) {
-      err1 = "Wrong target time";
-    } else {
+    let err_0 = "";
+    let err_1 = "";
+    if (goalName.length > 2 && targetTime > 0) {
       const result = await addEdit({
         useForEdit,
         data: {
@@ -37,6 +33,7 @@ export default function AddGoal({ rowData, useForEdit }) {
         },
         id: rowData?.id,
       });
+
       if (result.status == 200) {
         useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
         toast({
@@ -46,6 +43,14 @@ export default function AddGoal({ rowData, useForEdit }) {
       } else if (result.status == 400) {
         setError(result.errors);
       }
+    } else {
+      if (goalName.length < 3) {
+        err_0 = "Too Short";
+      }
+      if (targetTime < 1) {
+        err_1 = "Wrong target time";
+      }
+      setError({ err0: err_0, err1: err_1 });
     }
   }
 

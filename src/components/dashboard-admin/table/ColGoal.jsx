@@ -95,7 +95,10 @@ const goalColumns = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="learner-goal" />
+              <Deletion
+                rowData={{ id: row.original.id, title: row.original.goal }}
+                what="learner-goal"
+              />
             </DialogContent>
           </Dialog>
           <Dialog className="">

@@ -58,17 +58,17 @@ export const adminDashboard = {
             },
             {
               id: 2,
-              title: "Learning Level",
+              title: "Learner Level",
               link: "/admin/dashboard/learner-level",
             },
             {
               id: 3,
-              title: "Learning Starting Point",
+              title: "Learner Starting Point",
               link: "/admin/dashboard/learner-starting-points",
             },
             {
               id: 4,
-              title: "Learning Goal",
+              title: "Learner Goal",
               link: "/admin/dashboard/learner-goal",
             },
           ],
@@ -82,22 +82,22 @@ export const adminDashboard = {
             {
               id: 1,
               title: "Journey",
-              link: "/admin/dashboard/learner-journey",
+              link: "/admin/dashboard/learning-journey",
             },
             {
               id: 2,
               title: "Unit",
-              link: "/admin/dashboard/task-unit",
+              link: "/admin/dashboard/learning-unit",
             },
             {
               id: 3,
               title: "Level",
-              link: "/admin/dashboard/learner-journey-levels",
+              link: "/admin/dashboard/learning-level",
             },
             {
               id: 4,
               title: "Lesson",
-              link: "/admin/dashboard/learner-lesson",
+              link: "/admin/dashboard/learning-lesson",
             },
           ],
         },
@@ -127,11 +127,11 @@ export const adminDashboard = {
               title: "Content Type category",
               link: "/admin/dashboard/content-type-category",
             },
-            {
-              id: 5,
-              title: "Content",
-              link: "/admin/dashboard/content",
-            },
+            // {
+            //   id: 5,
+            //   title: "Content",
+            //   link: "/admin/dashboard/content",
+            // },
             {
               id: 6,
               title: "Question Content",

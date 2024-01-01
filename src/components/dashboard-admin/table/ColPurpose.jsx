@@ -52,7 +52,7 @@ const columnPurpose = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className=" textNormal textSecondaryColor">
         {row.getValue("purpose")}
       </div>
     ),
@@ -93,7 +93,10 @@ const columnPurpose = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="learner-purpose" />
+              <Deletion
+                rowData={{ id: row.original.id, title: row.original.purpose }}
+                what="learner-purpose"
+              />
             </DialogContent>
           </Dialog>
           <Dialog className="">

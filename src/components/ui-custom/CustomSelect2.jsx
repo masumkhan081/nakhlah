@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { BsCaretDown } from "react-icons/bs";
+import { ChevronDown } from "lucide-react";
 
-const CustomSelect = ({ options, value, onChange, bg, label, icon, ph }) => {
+const CustomSelect2 = ({ options, value, onChange, bg, ph, icon, label }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const handleClickOutside = (e) => {
@@ -24,49 +24,46 @@ const CustomSelect = ({ options, value, onChange, bg, label, icon, ph }) => {
   };
 
   const styles = {
-    wh: "bg-wh border border-slate-300",
-    light: "bg-slate-200 text-black border border-slate-500",
+    light: "bg-slate-200 text-black border border-slate-400",
     blue: "bg-blue-700 text-white",
   };
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative h-full" ref={dropdownRef}>
       <div
-        className={` px-1.5 min-w-[110px] rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
+        className={`py-1 px-1.0 min-w-[80px] h-full border rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
         onClick={toggleDropdown}
       >
         {label && (
           <span
             className={
               bg == "blue"
-                ? "bg-blue-900 text-wh text-sm font-semibold px-0.5  rounded-md py-0.38 h-full"
-                : "bg-slate-200 text-black text-sm font-semibold px-0.5  rounded-md py-0.5 h-full"
+                ? "bg-blue-900 text-wh text-sm font-semibold px-0.5 h-full rounded-md py-0.125"
+                : "bg-slate-300 text-black text-sm font-semibold px-0.5  rounded-md py-0.125 h-full"
             }
           >
             {label}
           </span>
         )}
         {icon && icon}
-        <span>{value.title ? value.title : "Select"}</span>
-        <BsCaretDown className="w-[1.2rem] h-[1.2rem] ms-1" />
+        <span>{value.title ? value.title : ph}</span>
+        <ChevronDown className="w-[1.2rem] h-[1.2rem] ms-1" />
       </div>
 
       {isOpen ? (
         <ul className="absolute w-full z-10 top-full text-black  border  rounded-md shadow   overflow-y-auto scrollbar bg-white max-h-60">
-          {options?.map((option) => (
+          {options?.map((option, index) => (
             <li
-              key={option.id}
+              key={index}
               className={`${
-                value.title === option.title
-                  ? "bg-slate-200 border-blue-300"
-                  : "bg-white text-black"
-              } capitalize py-1 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
+                value === option ? "bg-primary" : "bg-white text-black"
+              } capitalize py-2 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
               onClick={() => {
                 onChange(option);
                 setIsOpen(false);
               }}
             >
-              {option.title}
+              {option}
             </li>
           ))}
         </ul>
@@ -75,4 +72,4 @@ const CustomSelect = ({ options, value, onChange, bg, label, icon, ph }) => {
   );
 };
 
-export default CustomSelect;
+export default CustomSelect2;

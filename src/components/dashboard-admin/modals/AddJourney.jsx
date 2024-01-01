@@ -56,7 +56,7 @@ export default function AddJourney({ rowData, useForEdit }) {
               type="text"
               value={journey}
               onChange={(e) => setJourney(e.target.value)}
-              ph="New Journey Level"
+              ph="New Learning Journey"
             />
             <span className="text-red-700">{error}</span>
           </div>

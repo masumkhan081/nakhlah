@@ -146,7 +146,7 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Task Form
+          {useForEdit ? "Update" : "New"} Learning Unit
         </DialogTitle>
 
         <form
@@ -154,7 +154,7 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Select Journey</label>
+            <label>Select Learning Journey</label>
             <CustomSelect
               value={selectedJourney}
               options={journies}
@@ -167,14 +167,14 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Task Name</span>
+              <span>Learning Unit Name</span>
               <span className="text-red-800">{error.err0}</span>
             </label>
             <CustomInput
               type="text"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
-              ph="New Task Unit"
+              ph="Enter unit title"
             />
             <span className="text-red-700">{error.err2}</span>
           </div>

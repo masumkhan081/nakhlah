@@ -6,24 +6,26 @@ import { useState } from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
 
-export default function AddStartingPoint({ rowData, title, useForEdit }) {
+export default function AddStartingPoint({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
   const addEdit = useLearnerStartPoint((state) => state.addEdit);
   const afterAdd = useLearnerStartPoint((state) => state.afterAdd);
   const afterUpdate = useLearnerStartPoint((state) => state.afterUpdate);
-  const [startPoint, setStartPoint] = useState(useForEdit ? rowData.title : "");
+  const [title, setTitle] = useState(useForEdit ? rowData.title : "");
+  const [subtitle, setSubtitle] = useState(useForEdit ? rowData.subtitle : "");
   const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (startPoint.length < 3) {
+    if (title.length < 3) {
       setError("Too Short");
     } else {
       const result = await addEdit({
         useForEdit,
         data: {
-          title: startPoint,
+          title: title,
+          subtitle: subtitle,
         },
         id: rowData?.id,
       });
@@ -51,14 +53,24 @@ export default function AddStartingPoint({ rowData, title, useForEdit }) {
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Start Point</label>
+            <label>Start Point Title</label>
             <CustomInput
               type="text"
-              value={startPoint}
-              onChange={(e) => setStartPoint(e.target.value)}
-              ph="New Journey Level"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              ph="Enter Title"
             />
             <span className="text-red-700">{error}</span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label>Start Point Subtitle</label>
+            <CustomInput
+              type="text"
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
+              ph="Enter Subtitle"
+            />
+            {/* <span className="text-red-700">{error}</span> */}
           </div>
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}

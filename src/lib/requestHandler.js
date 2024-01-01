@@ -39,13 +39,12 @@ const postMap = {
   "learning-level": `${BASE_URL}/api/learning-journey-levels`,
   "learning-lesson": `${BASE_URL}/api/learning-journey-lessons`,
   "question-type": `${BASE_URL}/api/question-types`,
+  question: `${BASE_URL}/api/questions`,
   "content-type": `${BASE_URL}/api/content-types`,
-  "content-type-category": `${BASE_URL}/api/content-type-categories`,
   content: `${BASE_URL}/api/contents`,
+  "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "question-content": `${BASE_URL}/api/question-contents`,
-  question: "api/questions?populate=*",
-
-  "question-content-option": "",
+  "question-content-option": `${BASE_URL}/api/question-content-options`,
 };
 const putMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,

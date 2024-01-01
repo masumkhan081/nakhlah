@@ -1,7 +1,14 @@
-'use client'
+"use client";
 import InputField from "../../ui-custom/InputField";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { LearningLevelAddItem_URL } from "../../../lib/url";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,90 +16,80 @@ import * as z from "zod";
 import AdminFormButton from "../../ui-custom/AdminFormButton";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { useLearningState } from "../../../store/useAdminStore";
-
+import { useLearnerLevel } from "../../../store/useAdminStore";
+import { useState } from "react";
+import CustomInput from "@/components/ui-custom/CustomInput";
+import CustomButton from "@/components/ui-custom/CustomButton";
 
 const formSchema = z.object({
-    title: z.string().min(2, {
-        message: "Fill the Title  field",
-    }),
-    picture: z.any().refine(file => file, "Please upload file"),
-})
-
+  title: z.string().min(2, {
+    message: "Fill the Title  field",
+  }),
+  picture: z.any().refine((file) => file, "Please upload file"),
+});
 
 export default function AddLearnerLevel({ rowData, title, useForEdit }) {
-    const addItemAPICall = useLearningState((state) => state.addItem)
-    const { toast } = useToast()
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            title: useForEdit ? rowData.level : '',
-            picture: useForEdit ? rowData.formats : undefined
-        }
-    })
+ //
+ const { toast } = useToast();
+ //
+ const addEdit = useLearnerLevel((state) => state.addEdit);
+ const afterAdd = useLearnerLevel((state) => state.afterAdd);
+ const afterUpdate = useLearnerLevel((state) => state.afterUpdate);
+ //
+ const [learnerLevel, setLearnerLevel] = useState(useForEdit ? rowData.level : "");
+ const [error, setError] = useState("");
 
-    const onSubmit = async (values) => {
-        const formData = new FormData();
-        formData.append("files.icon", values.picture)
-        formData.append("data", `{"level":"${values.title}"}`)
+ async function handleSubmit(e) {
+   e.preventDefault();
+   if (learnerLevel.length < 3) {
+     setError("Too Short");
+   } else {
+     const result = await addEdit({
+       useForEdit,
+       data: {
+         level: learnerLevel,
+       },
+       id: rowData?.id,
+     });
+     if (result.status == 200) {
+       useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
+       toast({
+         title: result.message,
+       });
+       document.getElementById("closeDialog")?.click();
+     } else if (result.status == 400) {
+       setError(result.error);
+     }
+   }
+ }
+  return (
+    <>
+      <DialogHeader>
+        <DialogTitle className="textHeader textPrimaryColor">
+          {useForEdit ? "Update" : "New"} Learner Level
+        </DialogTitle>
 
-        try {
-            const response = await addItemAPICall(formData, LearningLevelAddItem_URL)
-            if (response.status === 200) {
-                toast({
-                    title: `${useForEdit ? 'Update' : 'Add'} ${title}  Item Successfully`
-                })
-                document.getElementById('closeDialog')?.click();
-            }
-            else {
-                toast({
-                    title: 'Item not add'
-                })
-            }
-        } catch (error) {
-            toast({
-                title: 'Bad request'
-            })
-        }
-    }
-    return (
-        <>
-            <DialogHeader>
-                <DialogTitle className="textHeader textPrimaryColor">
-                    {useForEdit ? "Update" : "New"} Learning {title}
-                </DialogTitle>
-
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-
-
-                        <InputField form={form} name={'title'} label={`title type`} placeholder={""} type={'text'} isAdmin={true} isItem={true} />
-                        <FormField
-                            control={form.control}
-                            name="picture"
-                            render={({ field: { onChange, value, ...rest } }) => (
-                                <FormItem>
-                                    <FormLabel className='textPrimaryColor textNormal'>Upload File</FormLabel>
-                                    <FormControl>
-                                        <Input type='file'
-                                            className='py-2 px-4 border-[2px] border-[--uDSubText] textNormal textSecondaryColor'
-                                            {...rest}
-                                            onChange={(event) => {
-                                                const file = event.target.files[0]
-                                                onChange(file)
-                                            }}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <AdminFormButton title={`${useForEdit ? 'Update' : 'Add'} Item`} />
-                    </form>
-                </Form>
-            </DialogHeader>
-        </>
-    )
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 py-4 text-black text-lg"
+        >
+          <div className="flex flex-col gap-1">
+            <label>Learning Level</label>
+            <CustomInput
+              type="text"
+              value={learnerLevel}
+              onChange={(e) => setLearnerLevel(e.target.value)}
+              ph="Enter learner level"
+            />
+            <span className="text-red-700">{error}</span>
+          </div>
+          <CustomButton
+            txt={useForEdit ? "Update" : "Add"}
+            type="submit"
+            style="text-blue-800"
+          />
+        </form>
+      </DialogHeader>
+    </>
+  );
 }

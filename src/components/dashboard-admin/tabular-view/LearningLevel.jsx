@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import DataTable from "../table/DataTable";
-import columnLevel from "../table/ColLearningLevel";
+import colLearningLevel from "../table/ColLearningLevel";
 import { useLearningLevel } from "../../../store/useAdminStore";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
@@ -44,7 +44,7 @@ export default function LearningLevel() {
       {levelData.length != 0 ? (
         <DataTable
           data={levelData}
-          columns={columnLevel}
+          columns={colLearningLevel}
           view={"learning-level"}
         />
       ) : (

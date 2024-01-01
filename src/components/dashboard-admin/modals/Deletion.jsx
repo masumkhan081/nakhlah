@@ -57,17 +57,28 @@ export default function Deletion({ rowData, what }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 py-2">
-      <p className="text-center">
-        You are deleting the{" "}
-        <span className="capitalize underline">{what}:</span>
-        <span className="underline font-bold py-0.5 ms-2">{rowData.title}</span>
+    <div className="flex flex-col items-center gap-4 py-2">
+      <p className="text-center flex flex-col gap-1">
+        <span>
+          You are deleting the
+          <span className="capitalize ms-2">{what}:</span>
+        </span>
+        <span className="text-lg underline font-semibold ">{rowData.title}</span>
       </p>
-      <p className="text-center text-lg font-bold text-orange-700 drop-shadow-sm">
-        Confirm To Delete ?
-      </p>
-      <CustomButton click={handleDeletion} txt="Delete" />
-      <p className="text-red-600 font-semibold text-center">{error}</p>
+
+      <div className="flex flex-col gap-1 w-full">
+        <p className="text-center text-base  text-orange-900  ">
+          Confirm To Delete ?
+        </p>
+        <CustomButton
+          click={handleDeletion}
+          txt="Delete"
+          style={
+            "px-3 py-0.25 text-center text-base font-bold text-orange-800 drop-shadow-sm border border-slate-400 w-full"
+          }
+        />
+        <p className="text-red-600 font-semibold text-center">{error}</p>
+      </div>
     </div>
   );
 }

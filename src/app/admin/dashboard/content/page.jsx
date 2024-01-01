@@ -1,4 +1,4 @@
-import Contents from '@/components/adminDashboard/Content';
+import Contents from '@/components/dashboard-admin/tabular-view/Content';
 import React from 'react';
 
 const ContentsPage = () => {

@@ -1,4 +1,4 @@
-import TaskUnit from "@/components/dashboard-admin/tabular-view/TaskUnit";
+import TaskUnit from "@/components/dashboard-admin/tabular-view/LearningUnit";
 import React from "react";
 
 const TaskUnitPage = () => {

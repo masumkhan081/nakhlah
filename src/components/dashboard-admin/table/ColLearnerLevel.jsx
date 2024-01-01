@@ -7,7 +7,7 @@ import Deletion from "../modals/Deletion";
 import { Main_URL } from "../../../lib/url";
 import AddLearnerLevel from "../modals/AddLearnerLevel";
 
-const levelColumns = [
+const ColLearnerLevel = [
   {
     id: "select",
     header: ({ table }) => (
@@ -93,7 +93,10 @@ const levelColumns = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <Deletion rowData={row.original} what="learner-level" />
+              <Deletion
+                rowData={{ id: row.original.id, title: row.original.level }}
+                what="learner-level"
+              />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -116,4 +119,4 @@ const levelColumns = [
   },
 ];
 
-export default levelColumns;
+export default ColLearnerLevel;

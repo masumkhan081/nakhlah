@@ -102,13 +102,13 @@ export const useLearnerPurpose = create(
     },
     addEdit: async ({ useForEdit, data, id }) => {
       const response = useForEdit
-        ? await putHandler("purpose", id, {
+        ? await putHandler("learner-purpose", id, {
             data,
           })
-        : await postHandler("purpose", {
+        : await postHandler("learner-purpose", {
             data,
           });
-
+      alert("> > >:" + JSON.stringify(response));
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
@@ -123,8 +123,7 @@ export const useLearnerPurpose = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            purpose: data.attributes.purpose,
           },
         };
       }
@@ -155,20 +154,20 @@ export const useLearnerPurpose = create(
 export const useLearnerLevel = create(
   immer((set) => ({
     data: [],
-    setGoals: (data) => {
+    setLevels: (data) => {
       set((state) => {
         state.data = data;
       });
     },
     addEdit: async ({ useForEdit, data, id }) => {
       const response = useForEdit
-        ? await putHandler("goal", id, {
+        ? await putHandler("learner-level", id, {
             data,
           })
-        : await postHandler("goal", {
+        : await postHandler("learner-level", {
             data,
           });
-
+      alert(">> : " + JSON.stringify(response));
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
@@ -186,9 +185,7 @@ export const useLearnerLevel = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            //  work left
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            level: data.attributes.level,
           },
         };
       }
@@ -264,8 +261,8 @@ export const useLearnerStartPoint = create(
           message: useForEdit ? "Updated Successfully" : "Added Successfully",
           data: {
             id: data.id,
-            time: data.attributes.time,
-            goal: data.attributes.goal,
+            title: data.attributes.title,
+            subtitle: data.attributes.subtitle,
           },
         };
       }
@@ -304,10 +301,10 @@ export const useLearnerGoal = create(
     },
     addEdit: async ({ useForEdit, data, id }) => {
       const response = useForEdit
-        ? await putHandler("goal", id, {
+        ? await putHandler("learner-goal", id, {
             data,
           })
-        : await postHandler("goal", {
+        : await postHandler("learner-goal", {
             data,
           });
 

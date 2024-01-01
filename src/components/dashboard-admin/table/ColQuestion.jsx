@@ -6,7 +6,7 @@ import Deletion from "../modals/Deletion";
 import AddStartingPoint from "../modals/AddStartPoint";
 import AddQuestion from "../modals/AddQuestion";
 
-const ColStartPoint = [
+const ColQuestion = [
   {
     id: "select",
     header: ({ table }) => (
@@ -96,4 +96,4 @@ const ColStartPoint = [
   },
 ];
 
-export default ColStartPoint;
+export default ColQuestion;

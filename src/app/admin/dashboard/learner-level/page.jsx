@@ -1,10 +1,9 @@
-import LearningLevel from "@/components/dashboard-admin/tabular-view/LearningLevel";
-import React from "react";
+import LearnerLevel from "@/components/dashboard-admin/tabular-view/LearnerLevel";
 
 const LearningLevelPage = () => {
   return (
     <div>
-      <LearningLevel />
+      <LearnerLevel />
     </div>
   );
 };

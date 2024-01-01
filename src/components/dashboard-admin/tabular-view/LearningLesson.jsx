@@ -16,29 +16,37 @@ export default function LearningLesson() {
       const response = await getHandler("learning-lesson");
       console.log(response.data);
       if (response.status === 200) {
-        const data = response.data.data.map((item) => {
-          const { learning_journey_level } = item.attributes;
-          const { learning_journey_unit } =
-            learning_journey_level.data.attributes;
-          const { learning_journey } = learning_journey_unit.data.attributes;
+        const data = response?.data?.data
+          ?.filter((theData) => {
+            // alert("data :: " + JSON.stringify(theData));
+            return theData != null;
+          })
+          .map((item) => {
+            const learning_journey_level =
+              item?.attributes?.learning_journey_level;
 
-          return {
-            id: item.id,
-            title: item.attributes.title,
-            learning_journey_level: {
-              id: learning_journey_level.data.id,
-              title: learning_journey_level.data.attributes.title,
-              learning_journey_unit: {
-                id: learning_journey_unit.data.id,
-                title: learning_journey_unit.data.attributes.title,
-                learning_journey: {
-                  id: learning_journey.data.id,
-                  title: learning_journey.data.attributes.title,
+            const learning_journey_unit =
+              learning_journey_level?.data?.attributes?.learning_journey_unit;
+            const learning_journey =
+              learning_journey_unit?.data?.attributes?.learning_journey;
+
+            return {
+              id: item.id,
+              title: item.attributes?.title,
+              learning_journey_level: {
+                id: learning_journey_level?.data?.id,
+                title: learning_journey_level?.data?.attributes?.title,
+                learning_journey_unit: {
+                  id: learning_journey_unit?.data?.id,
+                  title: learning_journey_unit?.data?.attributes?.title,
+                  learning_journey: {
+                    id: learning_journey?.data?.id,
+                    title: learning_journey?.data?.attributes?.title,
+                  },
                 },
               },
-            },
-          };
-        });
+            };
+          });
         setLessons(data);
       }
     };

@@ -2,6 +2,9 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { useLearnerPurpose } from "../../../store/useAdminStore";
+import { useState } from "react";
+import CustomInput from "@/components/ui-custom/CustomInput";
+import CustomButton from "@/components/ui-custom/CustomButton";
 
 export default function AddPurpose({ rowData, title, useForEdit }) {
   //
@@ -11,7 +14,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   const afterAdd = useLearnerPurpose((state) => state.afterAdd);
   const afterUpdate = useLearnerPurpose((state) => state.afterUpdate);
   //
-  const [purpose, setPurpose] = useState(useForEdit ? rowData.title : "");
+  const [purpose, setPurpose] = useState(useForEdit ? rowData.purpose : "");
   const [error, setError] = useState("");
 
   async function handleSubmit(e) {
@@ -22,7 +25,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
       const result = await addEdit({
         useForEdit,
         data: {
-          title: purpose,
+          purpose: purpose,
         },
         id: rowData?.id,
       });
@@ -49,12 +52,12 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Purpose Name</label>
+            <label>Learning Purpose</label>
             <CustomInput
               type="text"
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
-              ph="New Journey Level"
+              ph="Enter learning purpose"
             />
             <span className="text-red-700">{error}</span>
           </div>

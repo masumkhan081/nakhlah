@@ -86,8 +86,8 @@ export default function AddLevel({ rowData, useForEdit }) {
         ? await putHandler("learning-level", rowData.id, { data })
         : await postHandler("learning-level", {
             data,
-          }); 
-   
+          });
+
       if (result.status == 200) {
         let data = result.data.data;
 
@@ -188,6 +188,13 @@ export default function AddLevel({ rowData, useForEdit }) {
     }
   }, [selectedJourney]);
 
+  useEffect(() => {
+    if (selectedJourney.id != null) {
+      useForEdit ? "" : setSelectedUnit(initStateSelection);
+      filterUnitsByJourney(selectedJourney.id);
+    }
+  }, [selectedJourney]);
+
   return (
     <>
       <DialogHeader>
@@ -235,7 +242,7 @@ export default function AddLevel({ rowData, useForEdit }) {
               type="text"
               value={levelName}
               onChange={(e) => setLevelName(e.target.value)}
-              ph="New Level Unit"
+              ph="Enter Level title"
             />
             <span className="text-red-700">{error.err3}</span>
           </div>

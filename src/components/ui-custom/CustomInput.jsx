@@ -1,15 +1,29 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 
-export default function CustomInput({ type, style, ph, value, onChange }) {
-  const cmn_style = "border border-slate-400 py-0.5 px-1";
+export default function CustomInput({
+  type,
+  style,
+  ph,
+  value,
+  onChange,
+  label,
+}) {
+  const cmn_style = "flex-grow  py-0.5 px-1";
   return (
-    <Input
-      type="text"
-      placeHolder={ph}
-      onChange={onChange}
-      value={value}
-      className={style ? `${style} ${cmn_style} ` : `${cmn_style}`}
-    />
+    <div className="w-full flex border border-slate-400 rounded-md items-center ">
+      {label && (
+        <span className="px-2 py-0.25  bg-slate-200 h-full rounded-md">
+          {label}
+        </span>
+      )}
+      <Input
+        type="text"
+        placeHolder={ph}
+        onChange={onChange}
+        value={value}
+        className={style ? `${style} ${cmn_style} ` : `${cmn_style}`}
+      />
+    </div>
   );
 }
