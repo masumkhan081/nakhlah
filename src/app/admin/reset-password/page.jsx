@@ -1,5 +1,6 @@
-import AdminFormTitle from '@/components/adminDashboard/share/AdminFormTitle';
-import AdminResetPasswordForm from '@/components/adminDashboard/AdminResetPasswordForm';
+
+import AdminResetPasswordForm from '@/components/dashboard-admin/AdminResetPasswordForm';
+import AdminFormTitle from '@/components/ui-custom/AdminFormTitle';
 import React from 'react';
 
 const AdminResetPassword = () => {

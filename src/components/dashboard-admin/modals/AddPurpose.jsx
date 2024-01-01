@@ -2,6 +2,8 @@
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { useLearnerPurpose } from "../../../store/useAdminStore";
+import CustomInput from "@/components/ui-custom/CustomInput";
+import CustomButton from "@/components/ui-custom/CustomButton";
 
 export default function AddPurpose({ rowData, title, useForEdit }) {
   //

@@ -1,21 +1,40 @@
 'use client'
 import React, { useState } from 'react';
-import Plan from './Plan/Plan';
-import { Card, CardHeader } from '@/components/ui/card';
-import TitleSection from './TitleSection/TitleSection';
-import ChoosePlan from './ChoosePlan/ChoosePlan';
-import MyPlanButton from './MyPlanButton/MyPlanButton';
-import PlanHeader from './PlanHeader/PlanHeader';
-import { PaymentSelection } from './PaymentSelection/PaymentSelection';
-import AddNewCard from './AddNewCard/AddNewCard';
+import Plan from './MyPlanPage/Plan';
+import { Card, CardFooter, CardHeader } from '@/components/ui/card';
+import TitleSection from './MyPlanPage/TitleSection';
+import ChoosePlan from './MyPlanPage/ChoosePlan';
+import PlanHeader from './MyPlanPage/PlanHeader';
+import { PaymentSelection } from './MyPlanPage/PaymentSelection';
+import AddNewCard from './MyPlanPage/AddNewCard';
 import Image from 'next/image';
+import CustomButton from '../ui-custom/CustomButton';
+const data1 = [
+    {
+        id: 1,
+        title: "Monthly plan",
+        price: '5',
+        mouth: ''
+    },
+    {
+        id: 2,
+        title: "Yearly plan",
+        price: '50',
+        mouth: '12'
+    },
+]
 
-const MyPlanPage = ({ data }) => {
+const MyPlan = ({ data }) => {
     const [id, setId] = useState(0);
-    const handleContinue = (idx) =>{
-        console.log(id)
-        if(id !== 5){
-            setId( id + 1)
+    const [clicked, setClicked] = useState(false)
+    
+    const handleClicked = () => {
+        setClicked(true)
+    }
+
+    const handleContinue = (idx) => {
+        if (id !== 5) {
+            setId(id + 1)
         }
     }
     return (
@@ -40,15 +59,17 @@ const MyPlanPage = ({ data }) => {
                                 </div>
                                 {/* choose your plan */}
                                 <div className='flex justify-between  mt-10'>
-                                    <ChoosePlan title={'Monthly plan'} price={'5'} month={''} />
-                                    <ChoosePlan title={'Monthly plan'} price={'50'} month={'12'} />
+                                    {data1.map((item, idx) => (
+                                        <ChoosePlan key={item.id} onClick={handleClicked} isClick={clicked}    title={item.title} cost={item.price} month={item.mouth} />
+                                    ))
+                                    }
                                 </div>
                             </div> :
                             // payment option choose section
                             id == 2 ?
                                 <div className='relative 2xl:h-[70vh] lg:h-[70vh] md:h-[60vh] h-[70vh] '>
                                     {/* payment section choose */}
-                                    <PaymentSelection data={data[id]} handleContinue={handleContinue}/>
+                                    <PaymentSelection data={data[id]} handleContinue={handleContinue} />
                                     {/* add new card */}
                                     <div className='absolute  w-full' >
                                         <div className='w-[50%] md:w-[40%] lg:w-[30%]  2xl:w-[25%] mx-auto mt-10'>
@@ -78,7 +99,7 @@ const MyPlanPage = ({ data }) => {
                                                 {
                                                     data[id].dateList.map(item => (
                                                         <Card key={item.id} className='normalText  bg-[--bgSecondary] sm:w-[40%] w-[45%] flex justify-center font-bold'>
-                                                            <CardHeader > 
+                                                            <CardHeader >
                                                                 <h1>{item.title}</h1>
                                                                 <h1>{item.date}</h1>
                                                             </CardHeader>
@@ -90,11 +111,14 @@ const MyPlanPage = ({ data }) => {
                                         </>
                     }
                     {/* continue button */}
-                    {id !== 2 && <MyPlanButton handleContinue={()=>handleContinue(id)} title={id === 5? 'Cancel': 'Continue'} />}
+
                 </div>
+                <CardFooter className={'sm:w-[30%]  w-[50%] mx-auto mt-10'}>
+                    {id !== 2 && <CustomButton click={() => handleContinue(id)} txt={id === 5 ? 'Cancel' : 'Continue'} style={'user-btn'} />}
+                </CardFooter>
             </Card >
         </div >
     );
 };
 
-export default MyPlanPage;
+export default MyPlan;

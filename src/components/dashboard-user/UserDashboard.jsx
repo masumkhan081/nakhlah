@@ -1,14 +1,13 @@
-import { userDashboard } from "../../../static-data/data";
+
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
-import { MdStars } from "react-icons/md";
-import ViewAll from "./ViewAll";
-import { RiMedalFill } from "react-icons/ri";
-import UserAvatar from "@/components/share/UserAvatar/UserAvatar";
-import UserPoint from "../share/UserPoint/UserPoint";
+import ViewAll from "./share/ViewAll";
+import UserPoint from "./share/UserPoint";
+import UserAvatar from "../ui-custom/UserAvatar";
+import { userDashboard } from "@/static-data/data";
 
-const UserDashboardPage = () => {
+const UserDashboard = () => {
     const { user, listOfItems } = userDashboard.home;
     const { leaderBoardList } = userDashboard
     const getBorderColor = (id) => {
@@ -82,7 +81,7 @@ const UserDashboardPage = () => {
                                     <Card key={item.id} className={`border-none ${item.id == 1 ? 'rounded-b-none ' : item.id == 4 ? 'rounded-t-none' : 'rounded-none'}  bg-[--bgSecondary] p-10`} style={{ borderBottom: getBorderColor(item.id) }}>
                                         <CardContent className='p-0 flex justify-between items-center'>
                                             <div className="flex gap-3 items-center">
-                                                <RiMedalFill className="text-[#00A948] headerText" />
+                                                {/* <RiMedalFill className="text-[#00A948] headerText" /> */}
                                                 <UserAvatar />
                                                 <h1 className="semiHeaderText font-bold pt-2">{item.name}</h1>
                                             </div>
@@ -102,6 +101,6 @@ const UserDashboardPage = () => {
     );
 };
 
-export default UserDashboardPage;
+export default UserDashboard;
 
 

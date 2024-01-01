@@ -3,11 +3,14 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Button } from '@/components/ui/button';
+
 import { Form } from '@/components/ui/form';
 import React from 'react';
-import InputField from "../../ui-custom/InputField";
+
 import { DialogClose } from "@/components/ui/dialog";
+import InputField from "@/components/ui-custom/InputField";
+import CustomButton from "@/components/ui-custom/CustomButton";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -42,15 +45,13 @@ const PaymentInput = ({ handleSubmit }) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <InputField form={form} name={'cardName'} placeholder={"Card Name"} type={'text'} isAdmin={false} payment={true} label={'Card Name'} />
-                <InputField form={form} name={'cardNumber'} placeholder={"Card Number"} type={'text'} isAdmin={false} payment={true} label={'Card Number'} />
+                <InputField form={form} name={'cardName'} placeholder={"Card Name"} type={'text'} label={'Card Name'} style={'user-input'} />
+                <InputField form={form} name={'cardNumber'} placeholder={"Card Number"} type={'text'} label={'Card Number'} style={'user-input'} />
                 <div className="flex gap-5">
-                    <InputField form={form} name={'expDate'} placeholder={"EXP date"} type={'text'} isAdmin={false} payment={true} label={'EXP Date'} />
-                    <InputField form={form} name={'cvv'} placeholder={"CVV"} type={'text'} isAdmin={false} payment={true} label={'CVV'} />
+                    <InputField form={form} name={'expDate'} placeholder={"EXP date"} type={'text'} label={'EXP Date'} style={'user-input'} />
+                    <InputField form={form} name={'cvv'} placeholder={"CVV"} type={'text'} isAdmin={false} payment={true} label={'CVV'} style={'user-input'} />
                 </div>
-                <DialogClose asChild>
-                    <Button type="submit" className='buttonColor '>Add Card</Button>
-                </DialogClose>
+                <Button type={'submit'} className='user-btn'>Add Card</Button>
             </form>
         </Form>
     );

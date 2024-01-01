@@ -1,6 +1,6 @@
-import FormHeader from '@/components/share/FormHeader';
-import ForgetPasswordForm from '@/components/ForgetPasswordPage/ForgetPasswordForm';
-import React from 'react';
+import ForgetPasswordForm from "@/components/auth/ForgetPasswordForm";
+import FormHeader from "@/components/dashboard-admin/navbar/FormHeader";
+
 
 const ForgetPassword = () => {
     return (

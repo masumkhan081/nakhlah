@@ -1,16 +1,14 @@
 'use client'
-import InputField from '../share/InputField';
 import { Form } from '../ui/form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import UserFromButton from '../share/UserFromButton/UserFromButton';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { API_URL } from '../../../lib/url';
-import { handleSubmit } from '../share/handleSubmit';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore, useUserStore } from '@/store/userStore';
 import { toast } from "@/components/ui/use-toast";
+import InputField from '../ui-custom/InputField';
+import CustomButton from '../ui-custom/CustomButton';
+import { handleSubmit } from '@/lib/handleSubmit';
 
 
 const formSchema = z.object({
@@ -27,7 +25,7 @@ const formSchema = z.object({
 
 const RegistrationFrom = () => {
     const router = useRouter()
-    const userRegisterCall = useUserStore((state)=> state.userRegister)
+    const userRegisterCall = useAuthStore((state) => state.register)
     // 1. Define your form.
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -39,41 +37,28 @@ const RegistrationFrom = () => {
     })
     // submit
     const onSubmit = async (values) => {
-        const response =  await userRegisterCall(values)
-
-        handleSubmit(response ,toast,'User Registration',router,'login')
-
         try {
-            const response = await axios.post(`${API_URL}/register`, {
-                email,
-                username,
-                password,
-            });
+            const response = await userRegisterCall(values)
 
-            console.log(response)
-            
-            if (response.status === 200) {
-              // Registration successful
-              const userData = response.data;
-              console.log('Registration successful. User data:', userData);
-              router.push('/login')
-            } else {
-              
-              console.log('Registration failed. Status:', response.status, 'Response:', response.data);
-            }
-          } catch (error) {
-            console.error('Registration error:', error.message);
-          }
+            handleSubmit(response, toast, 'User Registration ', router, 'login')
+        } catch (error) {
+            toast({
+                title: `Register failed`
+            })
+        }
     }
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
-                <InputField form={form} name={'email'} placeholder={"Email"} type={'email'} isAdmin={false} />
-                <InputField form={form} name={'username'} placeholder={"User Name"} type={'text'} isAdmin={false} />
-                <InputField form={form} name={'password'} placeholder={"Password"} type={'password'} isAdmin={false} />
-                
-                <UserFromButton title={'Sign Up'}/>
+                <InputField form={form} name={'email'} placeholder={"Email"} type={'email'} style={'user-input'} />
+                <InputField form={form} name={'username'} placeholder={"User Name"} type={'text'} style={'user-input'} />
+                <InputField form={form} name={'password'} placeholder={"Password"} type={'password'} style={'user-input'} />
+                <CustomButton
+                    txt={'Sign Up'}
+                    type="submit"
+                    style="user-btn"
+                />
             </form>
         </Form>
     );

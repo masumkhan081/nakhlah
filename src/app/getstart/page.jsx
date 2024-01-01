@@ -1,4 +1,4 @@
-import GetStartPage from '@/components/getStartPage/GetStartPage';
+import GetStartPage from '@/components/get-start/GetStartPage';
 import React from 'react';
 
 const GetStart = () => {

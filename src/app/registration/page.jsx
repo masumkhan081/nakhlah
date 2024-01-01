@@ -1,8 +1,8 @@
-import FormHeader from '@/components/share/FormHeader';
-import OrSection from '@/components/share/OrSection';
-import RegistrationFrom from '@/components/RegistrationPage/RegistrationFrom';
-import ThirdPartyLogin from '@/components/share/ThirdPartyLogin';
-import React from 'react';
+import RegistrationFrom from "@/components/auth/RegistrationFrom";
+import FormHeader from "@/components/dashboard-admin/navbar/FormHeader";
+import OrSection from "@/components/ui-custom/OrSection";
+import ThirdPartyLogin from "@/components/ui-custom/ThirdPartyLogin";
+
 
 const Registration = () => {
     return (

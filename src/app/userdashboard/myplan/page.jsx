@@ -1,12 +1,12 @@
-import { userDashboard } from '../../../static-data/data';
-import MyPlanPage from '@/components/userDashboard/MyPlanPage/MyPlanPage';
-import React from 'react';
+import MyPlan from "@/components/dashboard-user/MyPlan";
+import { userDashboard } from "@/static-data/data";
 
-const MyPlan = () => {
+
+const MyPlanPage = () => {
     const data = userDashboard.myPlan
     return (
-        <MyPlanPage data={data}/>
+        <MyPlan data={data}/>
     );
 };
 
-export default MyPlan;
+export default MyPlanPage;

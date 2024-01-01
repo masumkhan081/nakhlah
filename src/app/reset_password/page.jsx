@@ -1,6 +1,5 @@
-import FormHeader from '@/components/share/FormHeader';
-import ResetPasswordForm from '@/components/ResetPasswordPage/ResetPasswordForm';
-
+import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
+import FormHeader from '@/components/dashboard-admin/navbar/FormHeader';
 import React from 'react';
 
 const ChangePassword = () => {

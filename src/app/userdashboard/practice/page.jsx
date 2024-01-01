@@ -1,10 +1,9 @@
-import PracticePage from '@/components/userDashboard/PracticePage/PracticePage';
-import React from 'react';
+import Practice from "@/components/dashboard-user/Practice";
 
-const Practice = () => {
+const PracticePage = () => {
     return (
-        <PracticePage/>
+        <Practice/>
     );
 };
 
-export default Practice;
+export default PracticePage;

@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import NotificationAvatar from '@/components/share/NotificationAvatar/NotificationAvatar';
-import UserAvatar from '@/components/share/UserAvatar/UserAvatar';
+import NotificationAvatar from '@/components/ui-custom/NotificationAvatar';
+import UserAvatar from '@/components/ui-custom/UserAvatar';
+
 
 const UserNavbar = () => {
     return (

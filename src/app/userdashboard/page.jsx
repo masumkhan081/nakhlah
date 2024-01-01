@@ -1,11 +1,12 @@
-import UserDashboardPage from '@/components/userDashboard/UserDashboardPage/UserDashboardPage';
-import React from 'react';
+import UserDashboard from "@/components/dashboard-user/UserDashboard";
 
-const UserDashBoard = () => {
-    
+
+
+const UserDashBoardPage = () => {
+
     return (
-    <UserDashboardPage  />
+        <UserDashboard />
     );
 };
 
-export default UserDashBoard;
+export default UserDashBoardPage;

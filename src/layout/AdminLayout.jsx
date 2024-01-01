@@ -25,7 +25,7 @@ const AdminLayout = ({ child }) => {
         <div className="flex w-full min-h-screen items-center justify-center bg-[--uDBg]">
           <div className=" bg-white text-[--uDText] 1xl:w-[25%]  xl:w-[30%] text-[16px] py-10 rounded-xl xl:w[35%] lg:w-[40%] md:w-[40%] sm:w-[50%] w-full sm:h-auto h-screen flex flex-col  justify-center">
             <>
-              <div className="text-center my-5">
+              <div className="text-center my-2">
                 <h1 className="headerText font-bold  pt-1">Nakhlah</h1>
               </div>
               <div className="w-[85%] mx-auto 2xl:mb-16 mb-5">{child}</div>

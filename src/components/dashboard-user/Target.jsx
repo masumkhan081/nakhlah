@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TargetPage = () => {
+const Target = () => {
     return (
         <div>
             <h1 className='text-2xl font-bold italic text-center py-3'>DashBoard Target Page</h1>
@@ -8,4 +8,4 @@ const TargetPage = () => {
     );
 };
 
-export default TargetPage;
+export default Target;

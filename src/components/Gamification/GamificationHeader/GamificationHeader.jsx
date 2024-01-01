@@ -1,5 +1,6 @@
-import { Dates } from '../.ImageLocation';
+
 import { Progress } from '@/components/ui/progress';
+import { Dates } from '@/lib/ImageLocation';
 import { TimerReset } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';

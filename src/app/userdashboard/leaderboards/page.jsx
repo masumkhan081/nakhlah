@@ -1,10 +1,10 @@
-import LeaderBoardPage from '@/components/userDashboard/LeaderBoardPage/LeaderBoardPage';
-import React from 'react';
+import LeaderBoard from "@/components/dashboard-user/LeaderBoard";
 
-const LeaderBoards = () => {
+
+const LeaderBoardPage = () => {
     return (
-        <LeaderBoardPage/>
+        <LeaderBoard/>
     );
 };
 
-export default LeaderBoards;
+export default LeaderBoardPage;

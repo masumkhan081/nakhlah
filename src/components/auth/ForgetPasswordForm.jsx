@@ -1,14 +1,15 @@
 'use client'
 import { Form } from '@/components/ui/form';
 import React from 'react';
-import InputField from '../share/InputField';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import UserFromButton from '../share/UserFromButton/UserFromButton';
-import axios from 'axios';
-import { Forget_Reset_URL } from '../../../lib/url';
 import { useRouter } from 'next/navigation';
+import CustomButton from '../ui-custom/CustomButton';
+import InputField from '../ui-custom/InputField';
+import { toast } from "@/components/ui/use-toast";
+import { handleSubmit } from '@/lib/handleSubmit';
+import { useAuthStore } from '@/store/userStore';
 
 
 const formSchema = z.object({
@@ -19,6 +20,7 @@ const formSchema = z.object({
 })
 
 const ForgetPasswordForm = () => {
+    const userForgetCall = useAuthStore((state)=> state.forget)
     const router = useRouter()
     // 1. Define your form.
     const form = useForm({
@@ -30,25 +32,26 @@ const ForgetPasswordForm = () => {
     // submit
     const onSubmit = async (values) => {
         try {
-            const response = await axios.post(`${Forget_Reset_URL}/forgot-password`, {
-                ...values
-            });
-            if (response.status === 200) {
-                const userData = response.data;
-            } else {
-                console.log('email send fail. Status:', response.status, 'Response:', response.data);
-            }
-
-        } catch (error) {
-            console.error('Error found', error.message)
-        }
+            const response = await userForgetCall(values)
+            handleSubmit(response, toast, 'Email Send', router, '')
+ 
+         } catch (error) {
+             // console.error('Email Send', error.message)
+             toast({
+                 title: `Email send failed`
+             })
+         }
     }
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-                <InputField form={form} name={'email'} placeholder={"Email"} type={'email'} isAdmin={false} />
-                <UserFromButton title={'Confirm'} />
+                <InputField form={form} name={'email'} placeholder={"Email"} type={'email'} style={'user-input'} />
+                <CustomButton
+                    txt={'Confirm'}
+                    type="submit"
+                    style="user-btn"
+                />
             </form>
         </Form>
     );

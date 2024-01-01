@@ -1,21 +1,29 @@
-import { API_URL } from "../../../lib/url";
+import { API_URL, Forget_Reset_URL } from "@/lib/url";
 import axios from "axios";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-export const useUserStore = create(
+export const useAuthStore = create(
   immer((set) => ({
-    userLogin: async (values) => {
-      const response = await axios.post(`${API_URL}`, {
+    login: async (values) => {
+      return await axios.post(`${API_URL}`, {
         ...values,
       });
-      return response;
     },
-    userRegister: async (values) => {
-      const response = await axios.post(`${API_URL}/register`, {
+    register: async (values) => {
+      return await axios.post(`${API_URL}/register`, {
         ...values,
       });
-      return response;
     },
+    forget: async (values) => {
+      return await axios.post(`${Forget_Reset_URL}/forgot-password`, {
+        ...values
+      });
+    },
+    reset: async ( code ,values) =>{
+      return await axios.post(`${Forget_Reset_URL}/reset-password`, {
+            code, ...values
+        });
+    }
   }))
 );

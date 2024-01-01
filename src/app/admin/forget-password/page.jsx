@@ -1,5 +1,6 @@
-import AdminFormTitle from '@/components/adminDashboard/share/AdminFormTitle';
-import AdminForgetPasswordForm from '@/components/adminDashboard/AdminForgetPasswordForm';
+
+import AdminForgetPasswordForm from '@/components/dashboard-admin/AdminForgetPasswordForm';
+import AdminFormTitle from '@/components/ui-custom/AdminFormTitle';
 
 const AdminForgetPassword = () => {
     return (

@@ -1,13 +1,15 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { gamificationData } from '../data';
-import GamificationHeader from './GamificationHeader/GamificationHeader';
+
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import Image from 'next/image';
 import { CheckCircle2, Volume2, XCircle } from 'lucide-react';
 import { Button } from '../ui/button';
+import { gamificationData } from '@/static-data/data';
+import GamificationHeader from './GamificationHeader/GamificationHeader';
 import GamificationOption from './GamificationOption/GamificationOption';
 import GamificationOptionImage from './GamificationOptionImage/GamificationOptionImage';
+
 
 const GamificationPage = () => {
     const [qNo, setQNo] = useState(0)
@@ -17,7 +19,7 @@ const GamificationPage = () => {
     const [isChecked, setIsChecked] = useState(false)
     const [element, setElement] = useState('')
 
-    
+
     // choose ans click
     const handleItem = (item) => {
         console.log(item)
@@ -69,7 +71,7 @@ const GamificationPage = () => {
                                     <div className='flex flex-col gap-4 mt-10'>
                                         {
                                             data.option.map((item, idx) => (
-                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={true} item={item} element={element} isRight={isRight} isChecked={isChecked}/>
+                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={true} item={item} element={element} isRight={isRight} isChecked={isChecked} />
                                             ))
                                         }
                                     </div>
@@ -82,7 +84,7 @@ const GamificationPage = () => {
                                 <div className='flex justify-between '>
                                     {
                                         data.option.slice(0, 2).map((item, idx) => (
-                                            <GamificationOptionImage handleItem={handleItem} key={idx} item={item} element={element} check={data.optionName[idx]}  isRight={isRight} isChecked={isChecked}/>
+                                            <GamificationOptionImage handleItem={handleItem} key={idx} item={item} element={element} check={data.optionName[idx]} isRight={isRight} isChecked={isChecked} />
                                         ))
                                     }
                                 </div>
@@ -94,7 +96,7 @@ const GamificationPage = () => {
                                 <div className='flex justify-between '>
                                     {
                                         data.option.slice(2,).map((item, idx) => (
-                                            <GamificationOptionImage handleItem={handleItem} key={idx} check={data.optionName[idx + 2]} item={item} element={element} isRight={isRight} isChecked={isChecked}/>
+                                            <GamificationOptionImage handleItem={handleItem} key={idx} check={data.optionName[idx + 2]} item={item} element={element} isRight={isRight} isChecked={isChecked} />
                                         ))
                                     }
                                 </div>
@@ -105,7 +107,7 @@ const GamificationPage = () => {
                                     <div className='flex justify-between '>
                                         {
                                             data.option.slice(0, 2).map((item, idx) => (
-                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked}/>
+                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked} />
                                             ))
                                         }
                                     </div>
@@ -117,7 +119,7 @@ const GamificationPage = () => {
                                     <div className='flex justify-between '>
                                         {
                                             data.option.slice(2, 4).map((item, idx) => (
-                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked}/>
+                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked} />
                                             ))
                                         }
                                     </div>
@@ -128,7 +130,7 @@ const GamificationPage = () => {
                                     <div className='flex justify-between '>
                                         {
                                             data.option.slice(0, 2).map((item, idx) => (
-                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked}/>
+                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked} />
                                             ))
                                         }
                                     </div>
@@ -140,7 +142,7 @@ const GamificationPage = () => {
                                     <div className='flex justify-between '>
                                         {
                                             data.option.slice(2, 4).map((item, idx) => (
-                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked}/>
+                                                <GamificationOption handleItem={handleItem} key={idx} isSentence={false} item={item} element={element} isRight={isRight} isChecked={isChecked} />
                                             ))
                                         }
                                     </div>
@@ -164,16 +166,16 @@ const GamificationPage = () => {
                                 }
                             </div>
                             <div className='w-[25%] '>
-                                <Button onClick={handleSkip} className='buttonColor'>Continue</Button>
+                                <Button onClick={handleSkip} className='user-btn'>Continue</Button>
                             </div>
                         </div>
                         :
                         <div className=' flex items-center justify-between h-full'>
                             <div className='sm:w-[20%] w-[30%]'>
-                                <Button onClick={handleSkip} className='buttonColor'>Skip</Button>
+                                <Button onClick={handleSkip} className='user-btn'>Skip</Button>
                             </div>
                             <div className='sm:w-[20%] w-[30%]'>
-                                <Button disabled={!isClicked} onClick={handleCheck} className='buttonColor'>Check</Button>
+                                <Button disabled={!isClicked} onClick={handleCheck} className='user-btn'>Check</Button>
                             </div>
 
                         </div>

@@ -1,10 +1,9 @@
-import TargetPage from '@/components/userDashboard/TargetPage/TargetPage';
-import React from 'react';
+import Target from "@/components/dashboard-user/Target";
 
-const Target = () => {
+const TargetPage = () => {
     return (
-        <TargetPage/>
+        <Target/>
     );
 };
 
-export default Target;
+export default TargetPage;

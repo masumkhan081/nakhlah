@@ -128,11 +128,23 @@
   @apply bg-gradient-to-b from-[#ff4b4b] to-[#740e0e] ;
 }
 
-
-
-.buttonColor{
-  @apply bg-gradient-to-b from-[#F79011]  to-[#F38908] w-full  text-[--buttonSecondary] lg:text-[18px] md:text-[16px] text-[14px] shadow-4xl ;
+/* user */
+.user-btn{
+  @apply bg-gradient-to-b from-[#F79011] to-[#F38908] border-none w-full  text-[--buttonSecondary] lg:text-[18px] md:text-[16px] text-[14px] shadow-4xl hover:shadow-none transform duration-100 hover:translate-y-1 ;
 }
+
+.user-input{
+  @apply normalText py-3 px-4 border-2 border-[--inputBorderPrimary] bg-[--bgSecondary] placeholder:text-black
+}
+/* admin */
+.admin-input{
+  @apply border border-slate-400 py-2 px-1
+}
+
+.admin-btn{
+  @apply text-blue-800 w-full py-1 text-lg border border-slate-300
+}
+
 .border-2{
   @apply border-[3px];
 }

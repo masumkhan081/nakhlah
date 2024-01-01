@@ -1,10 +1,10 @@
-import LearnPage from '@/components/userDashboard/LearnPage/LearnPage';
-import React from 'react';
+import Learn from "@/components/dashboard-user/Learn";
 
-const Learn = () => {
+
+const LearnPage = () => {
     return (
-        <LearnPage/>
+        <Learn/>
     );
 };
 
-export default Learn;
+export default LearnPage;

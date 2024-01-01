@@ -2,11 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import React from 'react';
 import { MdCancel, MdCheckCircle } from 'react-icons/md';
-import TitleSection from '../TitleSection/TitleSection';
+import TitleSection from './TitleSection';
 
 const Plan = ({ data, isSummaryPage}) => {
     const {  lists, service } = data
-    console.log(data.paymentList)
     return (
         <Card className=' border-none shadow-none'>
             <TitleSection data={data} isSummaryPage={isSummaryPage}/>

@@ -1,5 +1,6 @@
-import FormHeader from '@/components/share/FormHeader';
-import MobileNumberForm from '@/components/MobileNumberPage/MobileNumberForm';
+import MobileNumberForm from "@/components/auth/MobileNumberForm";
+import FormHeader from "@/components/dashboard-admin/navbar/FormHeader";
+
 
 const MobileNumber = () => {
     return (
