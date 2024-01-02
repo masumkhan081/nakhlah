@@ -1,10 +1,10 @@
-// import ConTypeCategory from "@/components/dashboard-admin/tabular-view/ConTypeCategory";
+import ConTypeCategory from "@/components/dashboard-admin/tabular-view/ConTypeCategory";
 import React from "react";
 
 const ConTypeCategoryPage = () => {
   return (
     <div>
-      {/* <ConTypeCategory /> */}
+      <ConTypeCategory/>
     </div>
   );
 };
