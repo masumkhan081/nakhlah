@@ -1,14 +1,14 @@
-import AdminFormTitle from '@/components/adminDashboard/share/AdminFormTitle';
-import AdminResetPasswordForm from '@/components/adminDashboard/AdminResetPasswordForm';
-import React from 'react';
+// import AdminFormTitle from '@/components/adminDashboard/share/AdminFormTitle';
+// import AdminResetPasswordForm from '@/components/adminDashboard/AdminResetPasswordForm';
+// import React from 'react';
 
-const AdminResetPassword = () => {
-    return (
-        <>
-            <AdminFormTitle title={'ResetPassword'}/>
-            <AdminResetPasswordForm/>
-        </>
-    );
-};
+// const AdminResetPassword = () => {
+//     return (
+//         <>
+//             <AdminFormTitle title={'ResetPassword'}/>
+//             <AdminResetPasswordForm/>
+//         </>
+//     );
+// };
 
-export default AdminResetPassword;
+// export default AdminResetPassword;

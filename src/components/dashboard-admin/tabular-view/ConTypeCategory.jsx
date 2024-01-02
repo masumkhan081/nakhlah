@@ -4,7 +4,7 @@ import {
   LearningGoalAddItem_URL,
   LearningGoalGetAllItem_URL,
 } from "../../../lib/url";
-import colConTypeCategory from "../table/ColConTypeCategory";
+import ColConTypeCategory from "../table/ColConTypeCategory";
 import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -41,7 +41,7 @@ const ConTypeCategory = () => {
       {conTypeCatagories.length != 0 ? (
         <DataTable
           data={conTypeCatagories}
-          columns={colConTypeCategory}
+          columns={ColConTypeCategory}
           view={"content-type-category"}
         />
       ) : (

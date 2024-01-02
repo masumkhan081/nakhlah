@@ -4,7 +4,7 @@ import {
   LearningGoalAddItem_URL,
   LearningGoalGetAllItem_URL,
 } from "../../../lib/url";
-import colContentType from "../table/ColContentType";
+import ColContentType from "../table/ColContentType";
 import { useConType } from "../../../store/useAdminStore";
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -40,7 +40,7 @@ const ContentType = () => {
       {conTypeData.length != 0 ? (
         <DataTable
           data={conTypeData}
-          columns={colContentType}
+          columns={ColContentType}
           view="content-type"
         />
       ) : (
