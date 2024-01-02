@@ -5,8 +5,9 @@ import Image from "next/image";
 import { MdStars } from "react-icons/md";
 import ViewAll from "./ViewAll";
 import { RiMedalFill } from "react-icons/ri";
-import UserAvatar from "@/components/share/UserAvatar/UserAvatar";
+   
 import UserPoint from "../share/UserPoint/UserPoint";
+import UserAvatar from "@/components/ui-custom/UserAvatar";
 
 const UserDashboardPage = () => {
     const { user, listOfItems } = userDashboard.home;
@@ -83,7 +84,7 @@ const UserDashboardPage = () => {
                                         <CardContent className='p-0 flex justify-between items-center'>
                                             <div className="flex gap-3 items-center">
                                                 <RiMedalFill className="text-[#00A948] headerText" />
-                                                <UserAvatar />
+                                                <UserAvatar /> 
                                                 <h1 className="semiHeaderText font-bold pt-2">{item.name}</h1>
                                             </div>
                                             <div className="2xl:w-[10%] w-[15%]">
