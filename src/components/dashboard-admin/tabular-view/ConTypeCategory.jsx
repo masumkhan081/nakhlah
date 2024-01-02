@@ -4,7 +4,7 @@ import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
-import ColConTypeCategory from "../table/ColConTypeCategory";
+// import ColConTypeCategory from "../table/ColConTypeCategory";
 
 const ConTypeCategory = () => {
   return <>hi hello</>;
