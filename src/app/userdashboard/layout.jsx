@@ -1,7 +1,6 @@
-import UserNavbar from '@/components/userDashboard/share/UserNavbar/UserNavbar'
-import { gumelaArabic } from '../../../public/assets/js/fonts'
-import { userDashboard } from '../../../static-data/data'
-import { Card } from '@/components/ui/card'
+import UserNavbar from "@/components/dashboard-user/share/UserNavbar/UserNavbar"
+
+ 
 
 export const metadata = {
     title: 'User DashBoard',

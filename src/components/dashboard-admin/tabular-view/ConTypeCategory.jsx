@@ -1,10 +1,7 @@
 "use client";
 import DataTable from "../table/DataTable";
- 
- 
 import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import ColConTypeCategory from "../table/ColConTypeCategory";
