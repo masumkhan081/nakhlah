@@ -61,7 +61,7 @@ export default function AddQueType({ rowData, useForEdit }) {
               type="text"
               value={queType}
               onChange={(e) => setQueType(e.target.value)}
-              ph="New queType Level"
+              ph="Enter question type"
             />
             <span className="text-red-700">{error}</span>
           </div>

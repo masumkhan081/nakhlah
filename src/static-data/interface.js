@@ -127,11 +127,11 @@ export const adminDashboard = {
               title: "Content Type category",
               link: "/admin/dashboard/content-type-category",
             },
-            // {
-            //   id: 5,
-            //   title: "Content",
-            //   link: "/admin/dashboard/content",
-            // },
+            {
+              id: 5,
+              title: "Content",
+              link: "/admin/dashboard/content",
+            },
             {
               id: 6,
               title: "Question Content",

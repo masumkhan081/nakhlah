@@ -11,41 +11,36 @@ import { useEffect, useState } from "react";
 import CustomInput from "../../ui-custom/CustomInput";
 //
 import {
-  level_by_journey_get_url,
-  journey_get_url,
-  level_add_url,
-} from "../../../lib/url";
-import {
-  useLearningJourney,
-  useLearningUnit,
-  useLearningLevel,
+  useConTypeCategory,
+  useConType,
+  useContent,
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 
-export default function AddLevel({ rowData, useForEdit }) {
+export default function AddContent({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
   const initStateSelection = {
     id: null,
     title: "",
   };
-  const [levelName, setLevelName] = useState(useForEdit ? rowData.title : "");
-  const [selectedJourney, setSelectedJourney] = useState(
+  const [content, setContent] = useState(useForEdit ? rowData.title : "");
+  const [selectedCategory, setSelectedCategory] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_unit.learning_journey.id,
-          title: rowData.learning_journey_unit.learning_journey.title,
+          id: rowData.content_type_category.id,
+          title: rowData.content_type_category.title,
         }
       : initStateSelection
   );
-  const [filteredUnits, setFilteredUnits] = useState([]);
-  const [selectedUnit, setSelectedUnit] = useState(
+
+  const [selectedType, setSelectedType] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_unit.id,
-          title: rowData.learning_journey_unit.title,
+          id: rowData.content_type.id,
+          title: rowData.content_type.title,
         }
       : initStateSelection
   );
@@ -53,17 +48,18 @@ export default function AddLevel({ rowData, useForEdit }) {
     err0: "",
     err1: "",
     err2: "",
-    err3: "",
   });
 
-  const journeyData = useLearningJourney((state) => state.data);
-  const setJournies = useLearningJourney((state) => state.setJournies);
+  const categoryData = useConTypeCategory((state) => state.data);
+  const setConTypeCategories = useConTypeCategory(
+    (state) => state.setConTypeCategories
+  );
   //
-  const unitData = useLearningUnit((state) => state.data);
-  const setUnits = useLearningUnit((state) => state.setUnits);
+  const typeData = useConType((state) => state.data);
+  const setConTypes = useConType((state) => state.setConTypes);
   //
-  const afterUpdate = useLearningLevel((state) => state.afterUpdate);
-  const afterAdd = useLearningLevel((state) => state.afterAdd);
+  const afterUpdate = useContent((state) => state.afterUpdate);
+  const afterAdd = useContent((state) => state.afterAdd);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -71,20 +67,23 @@ export default function AddLevel({ rowData, useForEdit }) {
     let err_2 = "";
     let err_3 = "";
     if (
-      selectedJourney.title != "" &&
-      selectedUnit.title != "" &&
-      !(levelName.length < 3)
+      selectedCategory.title != "" &&
+      selectedType.title != "" &&
+      !(content.length < 3)
     ) {
       const data = {
-        title: levelName,
-        learning_journey_unit: {
-          connect: [selectedUnit.id],
+        title: content,
+        content_type: {
+          connect: [selectedType.id],
+        },
+        content_type_category: {
+          connect: [selectedCategory.id],
         },
       };
 
       const result = useForEdit
-        ? await putHandler("learning-level", rowData.id, { data })
-        : await postHandler("learning-level", {
+        ? await putHandler("content", rowData.id, { data })
+        : await postHandler("content", {
             data,
           });
 
@@ -94,13 +93,13 @@ export default function AddLevel({ rowData, useForEdit }) {
         data = {
           id: data.id,
           title: data.attributes.title,
-          learning_journey_unit: {
-            id: selectedUnit.id,
-            title: selectedUnit.title,
-            learning_journey: {
-              id: selectedJourney.id,
-              title: selectedJourney.title,
-            },
+          content_type: {
+            id: selectedType.id,
+            title: selectedType.title,
+          },
+          content_type_category: {
+            id: selectedCategory.id,
+            title: selectedCategory.title,
           },
         };
 
@@ -120,13 +119,13 @@ export default function AddLevel({ rowData, useForEdit }) {
         });
       }
     } else {
-      if (selectedJourney.id == null) {
-        err_1 = "Select Journey Level First";
+      if (selectedCategory.id == null) {
+        err_1 = "Select content type category";
       }
-      if (selectedUnit.id == null) {
-        err_2 = "Select A Task Before Creating New Level";
+      if (selectedType.id == null) {
+        err_2 = "Select content type";
       }
-      if (levelName.length < 3) {
+      if (content.length < 3) {
         err_3 = "Too Short";
       }
       setError({ err1: err_1, err2: err_2, err3: err_3 });
@@ -138,8 +137,8 @@ export default function AddLevel({ rowData, useForEdit }) {
   }
 
   useEffect(() => {
-    const fetchJournies = async () => {
-      const response = await getHandler("learning-journey");
+    const fetchCategories = async () => {
+      const response = await getHandler("content-type-category");
       if (response.status === 200) {
         const dataRenderable = response.data.data.map((item) => {
           return {
@@ -147,95 +146,83 @@ export default function AddLevel({ rowData, useForEdit }) {
             title: item.attributes.title,
           };
         });
-        setJournies(dataRenderable);
+        setConTypeCategories(dataRenderable);
       }
     };
 
-    if (Array.isArray(journeyData) && journeyData.length === 0) {
-      fetchJournies();
+    if (Array.isArray(categoryData) && categoryData.length === 0) {
+      fetchCategories();
     }
-  }, [journeyData]);
-  useEffect(() => {
-    const fetchUnits = async () => {
-      const response = await getHandler("learning-unit");
-      console.log(response.data);
-      if (response.status === 200) {
-        const data = response.data.data.map((item) => {
-          const { learning_journey } = item.attributes;
+  }, [categoryData]);
 
+  useEffect(() => {
+    const fetchTypes = async () => {
+      const response = await getHandler("content-type");
+
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
           return {
             id: item.id,
             title: item.attributes.title,
-            learning_journey: {
-              id: learning_journey.data.id,
-              title: learning_journey.data.attributes.title,
-            },
           };
         });
-        setUnits(data);
+        setConTypes(dataRenderable);
       }
     };
 
-    if (Array.isArray(unitData) && unitData.length === 0) {
-      fetchUnits();
+    if (Array.isArray(typeData) && typeData.length === 0) {
+      fetchTypes();
     }
-  }, [unitData]);
-
-  useEffect(() => {
-    if (selectedJourney.id != null) {
-      useForEdit ? "" : setSelectedUnit(initStateSelection);
-      filterUnitsByJourney(selectedJourney.id);
-    }
-  }, [selectedJourney]);
+  }, [typeData]);
 
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Task Level
+          {useForEdit ? "Update" : "New"} Content
         </DialogTitle>
-        <DialogDescription className="textNormal textSecondaryColor">
-          Select from top to add new level
-        </DialogDescription>
+        {/* <DialogDescription className="textNormal textSecondaryColor">
+           instructions
+        </DialogDescription> */}
 
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-4 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Select Journey</label>
+            <label>Content Type Category</label>
             <CustomSelect
-              value={selectedJourney}
-              options={journeyData}
+              value={selectedCategory}
+              options={categoryData}
               bg="light"
               onChange={(value) =>
-                setSelectedJourney({ id: value.id, title: value.title })
+                setSelectedCategory({ id: value.id, title: value.title })
               }
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col gap-1">
-            <label>Select Task Unit</label>
+            <label>Content Type</label>
             <CustomSelect
-              value={selectedUnit}
-              options={filteredUnits}
+              value={selectedType}
+              options={typeData}
               bg="light"
               onChange={(value) =>
-                setSelectedUnit({ id: value.id, title: value.title })
+                setSelectedType({ id: value.id, title: value.title })
               }
             />
             <span className="text-red-700">{error.err2}</span>
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Level Name</span>
+              <span>Content</span>
               <span className=" text-red-800">{error.err0}</span>
             </label>
             <CustomInput
               type="text"
-              value={levelName}
-              onChange={(e) => setLevelName(e.target.value)}
-              ph="Enter Level title"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              ph="Enter content"
             />
             <span className="text-red-700">{error.err3}</span>
           </div>

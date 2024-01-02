@@ -52,11 +52,11 @@ export default function DataTable({ data, columns, view }) {
     onPaginationChange: setPagination,
   });
   return (
-    <div className="w-[90%] mx-auto">
+    <div className="w-[90%] mx-auto ">
       {/* <DataTableHeader addURL={addURL} table={table} title={learningTitle} addItemAPICall={addItemAPICall} errorMessageCall={errorMessageCall}/> */}
       <DataTableHeader table={table} view={view} />
 
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-scroll">
         <Table>
           <TableHeader>
             {table?.getHeaderGroups()?.map((headerGroup) => (

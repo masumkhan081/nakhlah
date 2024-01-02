@@ -12,6 +12,9 @@ import {
   useLearnerStartPoint,
   useLearnerGoal,
   useQuestion,
+  useContent,
+  useQueContent,
+  useQueContOption,
 } from "@/store/useAdminStore";
 import { Button } from "@/components/ui/button";
 import CustomButton from "../../ui-custom/CustomButton";
@@ -36,6 +39,9 @@ export default function Deletion({ rowData, what }) {
     "content-type": useConType((state) => state.afterDelete),
     "content-type-category": useConTypeCategory((state) => state.afterDelete),
     question: useQuestion((state) => state.afterDelete),
+    content: useContent((state) => state.afterDelete),
+    "question-content": useQueContent((state) => state.afterDelete),
+    "question-content-option": useQueContOption((state) => state.afterDelete),
   };
 
   function onSuccess() {
@@ -63,7 +69,9 @@ export default function Deletion({ rowData, what }) {
           You are deleting the
           <span className="capitalize ms-2">{what}:</span>
         </span>
-        <span className="text-lg underline font-semibold ">{rowData.title}</span>
+        <span className="text-lg underline font-semibold ">
+          {rowData.title}
+        </span>
       </p>
 
       <div className="flex flex-col gap-1 w-full">

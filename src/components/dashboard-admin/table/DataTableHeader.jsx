@@ -23,6 +23,9 @@ import AddQueType from "../modals/AddQueType";
 import AddContentType from "../modals/AddContentType";
 import AddConTypeCategory from "../modals/AddConTypeCategory";
 import AddQuestion from "../modals/AddQuestion";
+import AddContent from "../modals/AddContent";
+import AddQueContent from "../modals/AddQueContent";
+import AddQueContOption from "../modals/AddQueContOption";
 
 const viewMap = {
   // learning journey
@@ -39,7 +42,10 @@ const viewMap = {
   "question-type": "id_question_type",
   "content-type": "id_content_type",
   "content-type-category": "id_content_type_category",
-  "question":"id_question",
+  question: "id_question",
+  content: "id_content",
+  "question-content": "id_question_content",
+  "question-content_option": "id_question_content_option",
 };
 
 // {table,title, addURL, addItemAPICall, errorMessageCall}
@@ -82,12 +88,14 @@ const DataTableHeader = ({ table, view }) => {
             {view == "content-type-category" && (
               <AddConTypeCategory title={view} />
             )}
-            {view == "question" && (
-              <AddQuestion title={view} />
+            {view == "question" && <AddQuestion title={view} />}{" "}
+            {view == "content" && <AddContent title={view} />}
+            {view == "question-content" && <AddQueContent title={view} />}
+            {view == "question-content-option" && (
+              <AddQueContOption title={view} />
             )}
           </DialogContent>
         </Dialog>
-    
       </div>
     </div>
   );
