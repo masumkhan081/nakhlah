@@ -4,7 +4,7 @@ import React from "react";
 const ConTypeCategoryPage = () => {
   return (
     <div>
-      <ConTypeCategory />
+      {/* <ConTypeCategory /> */}
     </div>
   );
 };

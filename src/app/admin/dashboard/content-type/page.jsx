@@ -5,7 +5,7 @@ import React from 'react';
 const ContentTypePage = () => {
     return (
         <div>
-            <ContentType/>
+            {/* <ContentType/> */}
         </div>
     );
 };
