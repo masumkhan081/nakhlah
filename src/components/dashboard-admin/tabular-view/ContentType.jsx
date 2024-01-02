@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import ColContentType from "../table/ColContentType";
+ 
 
 const ContentType = () => {
   //

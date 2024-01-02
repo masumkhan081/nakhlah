@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import ColConTypeCategory from "../table/ColConTypeCategory";
+ 
 
 const ConTypeCategory = () => {
   const conTypeCatagories = useConTypeCategory((state) => state.data);
