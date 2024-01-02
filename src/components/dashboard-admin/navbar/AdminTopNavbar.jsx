@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 import UserAvatar from "../../ui-custom/UserAvatar";
