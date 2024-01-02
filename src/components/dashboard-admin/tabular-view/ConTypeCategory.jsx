@@ -1,12 +1,13 @@
 "use client";
 import DataTable from "../table/DataTable";
  
-import ColConTypeCategory from "../table/ColConTypeCategory";
+ 
 import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
+import ColConTypeCategory from "../table/ColConTypeCategory";
 
 const ConTypeCategory = () => {
   const conTypeCatagories = useConTypeCategory((state) => state.data);

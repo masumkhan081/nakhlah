@@ -1,15 +1,11 @@
 "use client";
 import DataTable from "../table/DataTable";
-import {
-  LearningGoalAddItem_URL,
-  LearningGoalGetAllItem_URL,
-} from "../../../lib/url";
-import ColContentType from "../table/ColContentType";
+ 
 import { useConType } from "../../../store/useAdminStore";
-import { useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect } from "react"; 
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
+import ColContentType from "../table/ColContentType";
 
 const ContentType = () => {
   //
