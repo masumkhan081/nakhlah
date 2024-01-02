@@ -14,7 +14,7 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/Deletion";
 import AddConTypeCategory from "../modals/AddConTypeCategory";
 
-const columnConTypeCategory = [
+const ColumnConTypeCategory = [
   {
     id: "select",
     header: ({ table }) => (
@@ -100,4 +100,4 @@ const columnConTypeCategory = [
   },
 ];
 
-export default columnConTypeCategory;
+export default ColumnConTypeCategory;

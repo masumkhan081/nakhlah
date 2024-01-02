@@ -14,7 +14,7 @@ import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/Deletion";
 import AddContentType from "../modals/AddContentType";
 
-const columnContentType = [
+const ColumnContentType = [
   {
     id: "select",
     header: ({ table }) => (
@@ -104,4 +104,4 @@ const columnContentType = [
   },
 ];
 
-export default columnContentType;
+export default ColumnContentType;
