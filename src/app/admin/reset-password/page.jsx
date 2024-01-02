@@ -2,13 +2,14 @@
 // import AdminResetPasswordForm from '@/components/adminDashboard/AdminResetPasswordForm';
 // import React from 'react';
 
-// const AdminResetPassword = () => {
-//     return (
-//         <>
-//             <AdminFormTitle title={'ResetPassword'}/>
-//             <AdminResetPasswordForm/>
-//         </>
-//     );
-// };
+const AdminResetPassword = () => {
+    return (
+        <>
+        hi
+            {/* <AdminFormTitle title={'ResetPassword'}/>
+            <AdminResetPasswordForm/> */}
+        </>
+    );
+};
 
-// export default AdminResetPassword;
+export default AdminResetPassword;
