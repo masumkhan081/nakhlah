@@ -1,10 +1,10 @@
-import TargetPage from '@/components/userDashboard/TargetPage/TargetPage';
-import React from 'react';
+// import TargetPage from '@/components/userDashboard/TargetPage/TargetPage';
+// import React from 'react';
 
-const Target = () => {
-    return (
-        <TargetPage/>
-    );
-};
+// const Target = () => {
+//     return (
+//         <TargetPage/>
+//     );
+// };
 
-export default Target;
+// export default Target;

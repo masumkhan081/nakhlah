@@ -1,9 +1,6 @@
 "use client";
 import DataTable from "../table/DataTable";
-import {
-  LearningGoalAddItem_URL,
-  LearningGoalGetAllItem_URL,
-} from "../../../lib/url";
+ 
 import ColConTypeCategory from "../table/ColConTypeCategory";
 import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
