@@ -4,7 +4,7 @@ import { FaEarListen } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { SiReacthookform } from "react-icons/si";
-import { ShieldQuestion, LineChart, User, BookUser, Users } from "lucide-react";
+import { ShieldQuestion, LineChart, User, BookUser, Users, PersonStanding, AreaChart } from "lucide-react";
 
 export const tabsJourney = [
   {
@@ -98,27 +98,27 @@ export const adminDashboard = {
         {
           id: 1,
           title: "Dashboard",
-          icon: <FiHome />,
+          icon: <AreaChart  className="w-6 h-6 text-slate-700"/>,
           link: "/admin/dashboard",
           subLinks: null,
         },
         {
           id: 2,
           title: "User",
-          icon: <User className="w-6 h-6 text-slate-800" />,
+          icon: <User className="w-6 h-6 text-slate-700" />,
           link: "#",
           subLinks: [
             {
               id: 1,
               title: "User Group",
-              icon: <Users className="w-6 h-6 text-slate-800" />,
+              icon: <Users className="w-5 h-5 text-slate-700" />,
               link: "#",
               subLinks: null,
             },
             {
               id: 2,
               title: "User List",
-              icon: <BookUser className="w-6 h-6 text-slate-800" />,
+              icon: <BookUser className="w-5 h-5 text-slate-700" />,
               link: "#",
               subLinks: null,
             },
@@ -138,7 +138,7 @@ export const adminDashboard = {
         {
           id: 2,
           title: "Learning Content",
-          icon: <SiReacthookform className="w-6 h-6 text-slate-800" />,
+          icon: <SiReacthookform className="w-6 h-6 text-slate-700" />,
           link: "/admin/learning-materials",
         },
         {
@@ -150,7 +150,7 @@ export const adminDashboard = {
         {
           id: 4,
           title: "Customer",
-          icon: <AiOutlineUnorderedList />,
+          icon: <PersonStanding className="w-6 h-6 text-slate-600" />,
           link: "#",
           subLinks: null,
         },
