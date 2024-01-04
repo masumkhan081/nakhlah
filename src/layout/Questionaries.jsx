@@ -33,7 +33,7 @@ export default function Questionaries({ content }) {
   return (
     <div className="flex flex-col flex-wrap gap-2 p-2 w-full h-full">
       <div className=" rounded-md py-1 flex justify-start    ">
-        <EnhancedText kind={"two"} color=" text-black">
+        <EnhancedText kind={"two"} color=" text-slate-800">
           {tabularView.currentView}
         </EnhancedText>
       </div>
@@ -55,9 +55,11 @@ export default function Questionaries({ content }) {
       </div>
 
       {tabularView.currentView == "Questions" && <Question />}
-      {tabularView.currentView == "Question Types" && <QueType/>}
+      {tabularView.currentView == "Question Types" && <QueType />}
       {tabularView.currentView == "Content Types" && <ContentType />}
-      {tabularView.currentView == "Content Type Categories" && <ConTypeCategory />}
+      {tabularView.currentView == "Content Type Categories" && (
+        <ConTypeCategory />
+      )}
     </div>
   );
 }

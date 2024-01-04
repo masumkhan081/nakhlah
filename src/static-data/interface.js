@@ -4,7 +4,7 @@ import { FaEarListen } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { SiReacthookform } from "react-icons/si";
-import { ShieldQuestion, LineChart } from "lucide-react";
+import { ShieldQuestion, LineChart, User, BookUser } from "lucide-react";
 
 export const tabsJourney = [
   {
@@ -105,20 +105,20 @@ export const adminDashboard = {
         {
           id: 2,
           title: "User",
-          icon: <FiHome />,
+          icon: <User className="w-6 h-6 text-slate-800" />,
           link: "#",
           subLinks: [
             {
               id: 1,
               title: "User Group",
-              icon: <AiOutlineUnorderedList />,
+              icon: <UsersRound className="w-6 h-6 text-slate-800" />,
               link: "#",
               subLinks: null,
             },
             {
               id: 2,
               title: "User List",
-              icon: <AiOutlineUnorderedList />,
+              icon: <BookUser className="w-6 h-6 text-slate-800" />,
               link: "#",
               subLinks: null,
             },
@@ -132,19 +132,19 @@ export const adminDashboard = {
         {
           id: 1,
           title: "Learning Journey",
-          icon: <SiReacthookform />,
+          icon: <LineChart className="w-6 h-6 text-slate-600" />,
           link: "/admin/learning-journey",
         },
         {
           id: 2,
           title: "Learning Content",
-          icon: <LineChart />,
+          icon: <SiReacthookform className="w-6 h-6 text-slate-800" />,
           link: "/admin/learning-materials",
         },
         {
           id: 3,
           title: "Questionaires",
-          icon: <ShieldQuestion />,
+          icon: <ShieldQuestion className="w-6 h-6 text-slate-600" />,
           link: "/admin/questionaries",
         },
         {

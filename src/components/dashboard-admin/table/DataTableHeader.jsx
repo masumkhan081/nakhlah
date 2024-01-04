@@ -66,7 +66,7 @@ export default function DataTableHeader({ table, view, filter }) {
           onChange={(event) =>
             table.getColumn(viewMap[view])?.setFilterValue(event.target.value)
           }
-          className="max-w-sm  text-slate-700 px-3 py-1 placeholder:text-slate-500 "
+          className="max-w-[350px] min-w-[220px]  text-slate-700 px-3 py-1 placeholder:text-slate-500 "
         />
       </div>
 
