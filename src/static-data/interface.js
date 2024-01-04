@@ -4,7 +4,7 @@ import { FaEarListen } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { SiReacthookform } from "react-icons/si";
-import { ShieldQuestion, LineChart, User, BookUser } from "lucide-react";
+import { ShieldQuestion, LineChart, User, BookUser, Users } from "lucide-react";
 
 export const tabsJourney = [
   {
@@ -111,9 +111,9 @@ export const adminDashboard = {
             {
               id: 1,
               title: "User Group",
-              icon: <UsersRound className="w-6 h-6 text-slate-800" />,
+              icon: <Users className="w-6 h-6 text-slate-800" />,
               link: "#",
-              subLinks: null, 
+              subLinks: null,
             },
             {
               id: 2,
