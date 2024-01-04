@@ -23,7 +23,7 @@ export default function LearningJourney({ content }) {
 
   const active_button = (btn) =>
     btn === tabularView.currentView
-      ? " bg-slate-200 border-slate-400 "
+      ? " bg-slate-200 border-slate-400  shadow-sm"
       : " bg-slate-100 border-slate-200";
 
   return (

@@ -14,6 +14,7 @@ import {
   useConTypeCategory,
   useConType,
   useContent,
+  useTabularView,
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
@@ -26,6 +27,7 @@ export default function AddContent({ rowData, useForEdit }) {
     id: null,
     title: "",
   };
+   
   const [content, setContent] = useState(useForEdit ? rowData.title : "");
   const [selectedCategory, setSelectedCategory] = useState(
     useForEdit
@@ -175,11 +177,14 @@ export default function AddContent({ rowData, useForEdit }) {
     }
   }, [typeData]);
 
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
+
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Content
+        {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
         {/* <DialogDescription className="textNormal textSecondaryColor">
            instructions
@@ -187,7 +192,7 @@ export default function AddContent({ rowData, useForEdit }) {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 py-4 text-black text-lg"
+          className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
             <label>Content Type Category</label>
@@ -222,7 +227,7 @@ export default function AddContent({ rowData, useForEdit }) {
               type="text"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              ph="Enter content"
+              ph="Enter content" style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err3}</span>
           </div>
@@ -230,7 +235,7 @@ export default function AddContent({ rowData, useForEdit }) {
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-            style="text-blue-800"
+            style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>

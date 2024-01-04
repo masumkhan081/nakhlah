@@ -1,7 +1,10 @@
 "use client";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { useLearnerPurpose } from "../../../store/useAdminStore";
+import {
+  useLearnerPurpose,
+  useTabularView,
+} from "../../../store/useAdminStore";
 import { useState } from "react";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomButton from "@/components/ui-custom/CustomButton";
@@ -9,7 +12,7 @@ import CustomButton from "@/components/ui-custom/CustomButton";
 export default function AddPurpose({ rowData, title, useForEdit }) {
   //
   const { toast } = useToast();
-  //
+ 
   const addEdit = useLearnerPurpose((state) => state.addEdit);
   const afterAdd = useLearnerPurpose((state) => state.afterAdd);
   const afterUpdate = useLearnerPurpose((state) => state.afterUpdate);
@@ -39,7 +42,6 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
         id: rowData?.id,
       });
       if (result.status == 200) {
-        
         useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
         toast({
           title: result.message,
@@ -50,16 +52,18 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
       }
     }
   }
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
   return (
     <>
-      <DialogHeader className={"overflow-y-scroll"}>
-        <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Learner Purpose
+      <DialogHeader className={" py-0"}>
+        <DialogTitle className="font-mono text-xl text-slate-700 py-0.25">
+        {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 py-4 text-black text-lg"
+          className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
             <label>Learning Purpose</label>
@@ -68,21 +72,25 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
               ph="Enter learning purpose"
+              style="py-0.25 px-1"
             />
             <span className="text-red-700">{error}</span>
           </div>
-
-          <input type="file" onChange={onImageChange} className="filetype" />
-          <img
-            alt="preview image"
-            src={image}
-            className="w-12 h-12 rounded-full "
-          />
+          <div className="flex gap-2 items-center">
+            <input type="file" onChange={onImageChange} className="" />
+            {image && (
+              <img
+                alt=" image"
+                src={image}
+                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+              />
+            )}
+          </div>
 
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-            style="text-blue-800"
+            style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>

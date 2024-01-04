@@ -203,7 +203,7 @@ export default function AddQueContOption({ rowData, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "Add"} Answer options to question
+        {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
         {/* <DialogDescription className="textNormal textSecondaryColor">
            instructions
@@ -272,7 +272,7 @@ export default function AddQueContOption({ rowData, useForEdit }) {
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-            style="text-blue-800"
+             style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>

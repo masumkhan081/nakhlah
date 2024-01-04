@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  DialogDescription, 
+  DialogDescription,
   DialogHeader,
-  DialogTitle, 
-} from "@/components/ui/dialog"; 
+  DialogTitle,
+} from "@/components/ui/dialog";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
 import { useToast } from "@/components/ui/use-toast";
@@ -14,9 +14,11 @@ import {
   useLearningJourney,
   useLearningLevel,
   useLearningUnit,
+  useTabularView,
 } from "../../../store/useAdminStore";
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+import { ChevronLast } from "lucide-react";
 
 export default function AddLesson({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -39,8 +41,11 @@ export default function AddLesson({ rowData, useForEdit }) {
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_level.learning_journey_unit.learning_journey.id,
-          title: rowData.learning_journey_level.learning_journey_unit.learning_journey.title,
+          id: rowData.learning_journey_level.learning_journey_unit
+            .learning_journey.id,
+          title:
+            rowData.learning_journey_level.learning_journey_unit
+              .learning_journey.title,
         }
       : initStateSelection
   );
@@ -246,90 +251,95 @@ export default function AddLesson({ rowData, useForEdit }) {
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      useForEdit ? "" : setSelectedUnit(initStateSelection);
+      setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
 
   useEffect(() => {
     if (selectedUnit.id != null) {
-      useForEdit ? "" : setSelectedLevel(initStateSelection);
+      setSelectedLevel(initStateSelection);
       filterLevelsByUnit(selectedUnit.id);
     }
   }, [selectedUnit]);
 
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
   return (
-    <>
-      <DialogHeader className="">
-        <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Learning Lesson
-        </DialogTitle>
-        <DialogDescription className="textNormal textSecondaryColor">
-          Select from top to add new lesson
-        </DialogDescription>
-        <div className="overflow-y-scroll h-[430px] pr-4 ">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-4 py-4 text-black text-lg"
-          >
-            <div className="flex flex-col gap-1">
-              <label>Select Learning Journey</label>
-              <CustomSelect
-                value={selectedJourney}
-                options={journeyData}
-                bg="light"
-                onChange={(value) =>
-                  setSelectedJourney({ id: value.id, title: value.title })
-                }
-              />
-              <span className="text-red-700">{error.err1}</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label>Select Learning Unit</label>
-              <CustomSelect
-                value={selectedUnit}
-                options={filteredUnits}
-                bg="light"
-                onChange={(value) =>
-                  setSelectedUnit({ id: value.id, title: value.title })
-                }
-              />
-              <span className="text-red-700">{error.err2}</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label>Select Learning Level</label>
-              <CustomSelect
-                value={selectedLevel}
-                options={filteredLevels}
-                bg="light"
-                onChange={(value) =>
-                  setSelectedLevel({ id: value.id, title: value.title })
-                }
-              />
-              <span className="text-red-700">{error.err3}</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="flex justify-between">
-                <span>Learning Lesson Name</span>
-                <span className=" text-red-700">{error.err0}</span>
-              </label>
-              <CustomInput
-                type="text"
-                value={lessonName}
-                onChange={(e) => setLessonName(e.target.value)}
-                ph="Enter lesson title"
-              />
-              <span className="text-red-700">{error.err4}</span>
-            </div>
+    <DialogHeader className="">
+      <DialogTitle className="textHeader textPrimaryColor h-fit py-0 flex flex-col">
+        {useForEdit ? "Update" : "New"} {addWhat}
+        <p className="textNormal textSecondaryColor my-0 py-0 h-fit flex gap-2 items-center">
+          Level <ChevronLast className="w-4 h-4" /> Task
+          <ChevronLast className="w-4 h-4" /> Task Unit
+          <ChevronLast className="w-4 h-4" />{" "}
+          <span className="font-semibold text-slate-800">Lesson</span>
+        </p>
+      </DialogTitle>
 
-            <CustomButton
-              txt={useForEdit ? "Update" : "Add"}
-              type="submit"
-              style="text-blue-800"
+      <div className="overflow-y-scroll h-[430px] pr-2 ">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 py-2 text-black text-lg"
+        >
+          <div className="flex flex-col ">
+            <label>Select Learning Level</label>
+            <CustomSelect
+              value={selectedJourney}
+              options={journeyData}
+              bg="light"
+              onChange={(value) =>
+                setSelectedJourney({ id: value.id, title: value.title })
+              }
             />
-          </form>
-        </div>
-      </DialogHeader>
-    </>
+            <span className="text-red-700">{error.err1}</span>
+          </div>
+          <div className="flex flex-col">
+            <label>Select Task</label>
+            <CustomSelect
+              value={selectedUnit}
+              options={filteredUnits}
+              bg="light"
+              onChange={(value) =>
+                setSelectedUnit({ id: value.id, title: value.title })
+              }
+            />
+            <span className="text-red-700">{error.err2}</span>
+          </div>
+          <div className="flex flex-col ">
+            <label>Select Task Unit</label>
+            <CustomSelect
+              value={selectedLevel}
+              options={filteredLevels}
+              bg="light"
+              onChange={(value) =>
+                setSelectedLevel({ id: value.id, title: value.title })
+              }
+            />
+            <span className="text-red-700">{error.err3}</span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="flex justify-between">
+              <span>Learning Lesson Name</span>
+              <span className=" text-red-700">{error.err0}</span>
+            </label>
+            <CustomInput
+              type="text"
+              value={lessonName}
+              onChange={(e) => setLessonName(e.target.value)}
+              ph="Enter lesson title"
+              style="py-0.25 px-1"
+            />
+            <span className="text-red-700">{error.err4}</span>
+          </div>
+
+          <CustomButton
+            txt={useForEdit ? "Update" : "Add"}
+            type="submit"
+            style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
+          />
+        </form>
+      </div>
+    </DialogHeader>
   );
 }

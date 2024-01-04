@@ -23,7 +23,7 @@ export default function LearningContent({ content }) {
 
   const active_button = (btn) =>
     btn === tabularView.currentView
-      ? " bg-slate-200 border-slate-400 "
+      ? " bg-slate-200 border-slate-400 shadow-sm"
       : " bg-slate-100 border-slate-200";
 
   return (
@@ -40,7 +40,7 @@ export default function LearningContent({ content }) {
             <CustomButton
               key={ind}
               txt={item.title}
-              style={`px-2 text-sm h-fit py-0.25 font-normal font-sans ${active_button(
+              style={`px-2 text-sm h-fit py-0.25 font-normal font-sans hover:shadow-md hover:drop-shadow-sm ${active_button(
                 item.title
               )}`}
               click={() => {

@@ -13,6 +13,7 @@ import {
   useConTypeCategory,
   useQueType,
   useQuestion,
+  useTabularView,
 } from "../../../store/useAdminStore";
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
@@ -21,7 +22,9 @@ import QueConOption from "../tabular-view/QueConOption";
 
 export default function AddQuestion({ rowData, useForEdit }) {
   const { toast } = useToast();
-  //
+  //  
+ 
+
   const afterUpdate = useQuestion((state) => state.afterUpdate);
   const afterAdd = useQuestion((state) => state.afterAdd);
 
@@ -68,12 +71,14 @@ export default function AddQuestion({ rowData, useForEdit }) {
       });
     }
   }
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
 
   return (
     <>
       <DialogHeader className="">
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Question
+        {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
         {/* <DialogDescription className="textNormal textSecondaryColor">
           Start from top to {useForEdit ? "update" : "add"} question
@@ -89,7 +94,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
                 type="text"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                ph="Enter the question"
+                ph="Enter the question" style="py-0.25 px-1"
               />
               <span className="text-red-700">{error.err0}</span>
             </div>

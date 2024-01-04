@@ -22,7 +22,7 @@ export default function CustomInput({
         placeHolder={ph}
         onChange={onChange}
         value={value}
-        className={style ? `${style} ${cmn_style} ` : `${cmn_style}`}
+        className={style ? `${style}  ` : `${cmn_style}`}
       />
     </div>
   );

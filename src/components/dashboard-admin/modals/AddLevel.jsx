@@ -19,14 +19,18 @@ import {
   useLearningJourney,
   useLearningUnit,
   useLearningLevel,
+  useTabularView,
 } from "../../../store/useAdminStore";
 import CustomSelect from "../../ui-custom/CustomSelect";
 import CustomButton from "../../ui-custom/CustomButton";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+import { ChevronLast } from "lucide-react";
 
 export default function AddLevel({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
+  const tabularView = useTabularView((state) => state.data);
+
   const initStateSelection = {
     id: null,
     title: "",
@@ -188,22 +192,26 @@ export default function AddLevel({ rowData, useForEdit }) {
     }
   }, [selectedJourney]);
 
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
   return (
     <>
       <DialogHeader>
-        <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Task Level
+        <DialogTitle className="textHeader textPrimaryColor h-fit py-0 flex flex-col">
+          {useForEdit ? "Update" : "New"} {addWhat}
+          <p className="textNormal textSecondaryColor my-0 py-0 h-fit flex gap-2 items-center">
+            Level <ChevronLast className="w-4 h-4" /> Task
+            <ChevronLast className="w-4 h-4" />
+            <span className="font-semibold text-slate-800">Task Unit</span>
+          </p>
         </DialogTitle>
-        <DialogDescription className="textNormal textSecondaryColor">
-          Select from top to add new level
-        </DialogDescription>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 py-4 text-black text-lg"
+          className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Select Journey</label>
+            <label>Select Level</label>
             <CustomSelect
               value={selectedJourney}
               options={journeyData}
@@ -215,7 +223,7 @@ export default function AddLevel({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col gap-1">
-            <label>Select Task Unit</label>
+            <label>Select Task</label>
             <CustomSelect
               value={selectedUnit}
               options={filteredUnits}
@@ -228,14 +236,15 @@ export default function AddLevel({ rowData, useForEdit }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Level Name</span>
+              <span>Task Unit Title</span>
               <span className=" text-red-800">{error.err0}</span>
             </label>
             <CustomInput
               type="text"
               value={levelName}
               onChange={(e) => setLevelName(e.target.value)}
-              ph="Enter Level title"
+              ph="Enter task unit title"
+              style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err3}</span>
           </div>
@@ -243,7 +252,7 @@ export default function AddLevel({ rowData, useForEdit }) {
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-            style="text-blue-800"
+            style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>

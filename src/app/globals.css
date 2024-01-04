@@ -27,14 +27,14 @@
   background: #ffffff;
 }
 ::-webkit-scrollbar-button {
-  background: #c9370a;
-  height: 10px;
+  background: #ffffff;
+  height: 0px;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
   background: #1b7460;
   height: 20px;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 
 @layer base {

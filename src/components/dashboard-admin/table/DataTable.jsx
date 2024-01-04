@@ -59,6 +59,7 @@ export default function DataTable({ data, columns, view, filter }) {
       <div className="max-h-[300px]  rounded-md border  ">
         <Table>
           <TableHeader
+          className="bg-slate-100 py-0 h-fit"
             style={{
               position: "-webkit-sticky" ,
               position: "sticky",

@@ -52,7 +52,8 @@ const viewMap = {
 
 // {table,title, addURL, addItemAPICall, errorMessageCall}
 export default function DataTableHeader({ table, view, filter }) {
-  const tabularView = useTabularView((state) => state.data);
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
 
   return (
     <div className="flex items-center justify-between py-4">
@@ -61,12 +62,12 @@ export default function DataTableHeader({ table, view, filter }) {
           <Filter className="w-5 h-5 mx-1 text-slate-700" />
         </span>
         <Input
-          placeholder={`Filter ${tabularView.currentView}`}
+          placeholder={`Filter ${currentView}`}
           value={table.getColumn(viewMap[view])?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn(viewMap[view])?.setFilterValue(event.target.value)
           }
-          className="max-w-[350px] min-w-[220px]  text-slate-700 px-3 py-1 placeholder:text-slate-500 "
+          className="max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
         />
       </div>
 
@@ -74,9 +75,9 @@ export default function DataTableHeader({ table, view, filter }) {
         {/* modal button add new item */}
         <Dialog className="">
           <DialogTrigger asChild>
-            <Button className="text-sm font-semibold font-sans border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
+            <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-200 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
               <Plus className="w-5 h-5 mx-1" />
-              <span className="">{`Add ${tabularView.currentView}`}</span>
+              <span className="">{`Add ${addWhat}`}</span>
             </Button>
           </DialogTrigger>
 

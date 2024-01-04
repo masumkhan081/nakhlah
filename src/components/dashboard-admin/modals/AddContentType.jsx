@@ -4,7 +4,7 @@ import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useToast } from "@/components/ui/use-toast";
 import CustomInput from "../../ui-custom/CustomInput";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-import { useConType } from "../../../store/useAdminStore";
+import { useConType, useTabularView } from "../../../store/useAdminStore";
 import { useState } from "react";
 import CustomButton from "../../ui-custom/CustomButton";
 
@@ -12,6 +12,8 @@ export default function AddContentType({ rowData, useForEdit }) {
   //
   const { toast } = useToast();
   // 
+
+  
   const addEdit = useConType((state) => state.addEdit);
   const afterAdd = useConType((state) => state.afterAdd);
   const afterUpdate = useConType((state) => state.afterUpdate);
@@ -42,17 +44,18 @@ export default function AddContentType({ rowData, useForEdit }) {
       }
     }
   }
-
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Content Type
+        {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 py-4 text-black text-lg"
+          className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
             <label>Content Type</label>
@@ -60,14 +63,14 @@ export default function AddContentType({ rowData, useForEdit }) {
               type="text"
               value={contentType}
               onChange={(e) => setContentType(e.target.value)}
-              ph="Content type"
+              ph="Content type" style="py-0.25 px-1"
             />
             <span className="text-red-700">{error}</span>
           </div>
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-            style="text-blue-800"
+            style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>

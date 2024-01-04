@@ -1,7 +1,7 @@
 "use client";
 
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useLearnerGoal } from "../../../store/useAdminStore";
+import { useLearnerGoal, useTabularView } from "../../../store/useAdminStore";
 import { useToast } from "@/components/ui/use-toast";
 import CustomInput from "../../ui-custom/CustomInput";
 import { useState } from "react";
@@ -9,7 +9,9 @@ import CustomButton from "../../ui-custom/CustomButton";
 
 export default function AddGoal({ rowData, useForEdit }) {
   //
-  const { toast } = useToast();
+  const { toast } = useToast();  
+  const tabularView = useTabularView((state) => state.data);
+
   const afterAdd = useLearnerGoal((state) => state.afterAdd);
   const afterUpdate = useLearnerGoal((state) => state.afterUpdate);
   const addEdit = useLearnerGoal((state) => state.addEdit);
@@ -54,18 +56,21 @@ export default function AddGoal({ rowData, useForEdit }) {
     }
   }
 
+  const currentView = useTabularView((state) => state.data.currentView);
+  const addWhat = currentView.slice(0, currentView.length - 1);
+
   return (
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-          {useForEdit ? "Update" : "New"} Learning Goal
+        {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 py-4 text-black text-lg"
+          className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col">
             <label className="flex justify-between">
               <span>Goal Name</span>
             </label>
@@ -73,12 +78,12 @@ export default function AddGoal({ rowData, useForEdit }) {
               type="text"
               value={goalName}
               onChange={(e) => setGoalName(e.target.value)}
-              ph="Goal name"
+              ph="Goal name" style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col">
             <label className="flex justify-between">
               <span>Target time</span>
             </label>
@@ -86,7 +91,7 @@ export default function AddGoal({ rowData, useForEdit }) {
               type="text"
               value={targetTime}
               onChange={(e) => setTargetTime(e.target.value)}
-              ph="Target time"
+              ph="Target time" style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
@@ -94,7 +99,7 @@ export default function AddGoal({ rowData, useForEdit }) {
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-            style="text-blue-800"
+             style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>
