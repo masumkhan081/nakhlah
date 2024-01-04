@@ -4,7 +4,15 @@ import { FaEarListen } from "react-icons/fa6";
 import { FiHome } from "react-icons/fi";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { SiReacthookform } from "react-icons/si";
-import { ShieldQuestion, LineChart, User, BookUser, Users, PersonStanding, AreaChart } from "lucide-react";
+import {
+  ShieldQuestion,
+  LineChart,
+  User,
+  BookUser,
+  Users,
+  PersonStanding,
+  AreaChart,
+} from "lucide-react";
 
 export const tabsJourney = [
   {
@@ -31,14 +39,9 @@ export const tabsJourney = [
 
 export const tabsLesson = [
   {
-    id: 4,
-    title: "Unit Lessons",
-    link: "/admin/learning-materials/unit-lessons",
-  },
-  {
-    id: 3,
-    title: "Task Units",
-    link: "/admin/learning-materials/task-units",
+    id: 1,
+    title: "Learning Levels",
+    link: "/admin/learning-materials/levels",
   },
   {
     id: 2,
@@ -46,9 +49,14 @@ export const tabsLesson = [
     link: "/admin/learning-materials/tasks",
   },
   {
-    id: 1,
-    title: "Learning Levels",
-    link: "/admin/learning-materials/levels",
+    id: 3,
+    title: "Task Units",
+    link: "/admin/learning-materials/task-units",
+  },
+  {
+    id: 4,
+    title: "Task Lessons",
+    link: "/admin/learning-materials/unit-lessons",
   },
 ];
 
@@ -98,7 +106,7 @@ export const adminDashboard = {
         {
           id: 1,
           title: "Dashboard",
-          icon: <AreaChart  className="w-6 h-6 text-slate-700"/>,
+          icon: <AreaChart className="w-6 h-6 text-slate-700" />,
           link: "/admin/dashboard",
           subLinks: null,
         },
@@ -137,7 +145,7 @@ export const adminDashboard = {
         },
         {
           id: 2,
-          title: "Learning Content",
+          title: "Learning Lesson",
           icon: <SiReacthookform className="w-6 h-6 text-slate-700" />,
           link: "/admin/learning-materials",
         },

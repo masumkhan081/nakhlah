@@ -59,7 +59,7 @@ export default function DataTableHeader({ table, view, filter }) {
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center border border-slate-300 rounded-md">
         <span className="h-full border-r border-slate-400 ">
-          <Filter className="w-5 h-5 mx-1 text-slate-700" />
+          <Filter className="w-5 h-5 mx-1 text-slate-600" />
         </span>
         <Input
           placeholder={`Filter ${currentView}`}
@@ -75,7 +75,7 @@ export default function DataTableHeader({ table, view, filter }) {
         {/* modal button add new item */}
         <Dialog className="">
           <DialogTrigger asChild>
-            <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-200 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
+            <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
               <Plus className="w-5 h-5 mx-1" />
               <span className="">{`Add ${addWhat}`}</span>
             </Button>

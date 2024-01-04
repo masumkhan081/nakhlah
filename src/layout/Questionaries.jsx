@@ -44,7 +44,7 @@ export default function Questionaries({ content }) {
             <CustomButton
               key={ind}
               txt={item.title}
-              style={`px-2 text-sm h-fit py-0.25 font-normal font-sans ${active_button(
+              style={`px-2 text-sm h-fit py-0.25 font-normal font-sans hover:shadow-md hover:drop-shadow-sm ${active_button(
                 item.title
               )}`}
               click={() => {
