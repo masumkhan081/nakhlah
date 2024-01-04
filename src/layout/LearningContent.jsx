@@ -35,9 +35,10 @@ export default function LearningContent({ content }) {
       </div>
 
       <div className="flex gap-2">
-        {tabsLesson.map((item) => {
+        {tabsLesson.map((item, ind) => {
           return (
             <CustomButton
+              key={ind}
               txt={item.title}
               style={`px-2 text-sm h-fit py-0.25 font-normal font-sans ${active_button(
                 item.title
