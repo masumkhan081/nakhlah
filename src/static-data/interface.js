@@ -113,7 +113,7 @@ export const adminDashboard = {
               title: "User Group",
               icon: <UsersRound className="w-6 h-6 text-slate-800" />,
               link: "#",
-              subLinks: null,
+              subLinks: null, 
             },
             {
               id: 2,
