@@ -3,11 +3,10 @@ import DataTable from "../table/DataTable";
 import { useConTypeCategory } from "../../../store/useAdminStore";
 import { useEffect } from "react";
 import { getHandler } from "@/lib/requestHandler";
-import CustomSkeleton from "@/components/ui-custom/CustomSkeleton"; 
+import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import ColContentCategory from "../table/ColContentCategory";
 
- 
-export default function ConTypeCategory()   {
+export default function ConTypeCategory() {
   const conTypeCatagories = useConTypeCategory((state) => state.data);
   const setConTypeCategories = useConTypeCategory(
     (state) => state.setConTypeCategories
@@ -41,8 +40,8 @@ export default function ConTypeCategory()   {
           view={"content-type-category"}
         />
       ) : (
-        <CustomSkeleton/>
+        <CustomSkeleton />
       )}
     </div>
   );
-};
+}

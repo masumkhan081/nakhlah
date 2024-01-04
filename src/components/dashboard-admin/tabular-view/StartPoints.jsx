@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 import DataTable from "../table/DataTable";
 import { useLearnerStartPoint } from "../../../store/useAdminStore";
 import ColStartPoint from "../table/ColStartPoint";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
-const LearningStartingPoint = () => {
+export default function StartPoints() {
   //
   const startPoints = useLearnerStartPoint((state) => state.data);
   const setStartPoints = useLearnerStartPoint((state) => state.setStartPoints);
@@ -17,6 +16,7 @@ const LearningStartingPoint = () => {
       const response = await getHandler("learner-start-point");
       console.log(response.data);
       if (response.status === 200) {
+        // alert(JSON.stringify(response.data.data));
         const data = response.data.data.map((item) => {
           return {
             id: item.id,
@@ -41,10 +41,8 @@ const LearningStartingPoint = () => {
           view={"learner-start-point"}
         />
       ) : (
-        <CustomSkeleton/>
+        <CustomSkeleton />
       )}
     </div>
   );
-};
-
-export default LearningStartingPoint;
+}

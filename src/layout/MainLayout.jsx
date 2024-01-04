@@ -13,7 +13,7 @@ const MainLayout = ({ child }) => {
       path == "/forget-password" ||
       path == "/reset-password" ||
       path == "/getstart" ? (
-        <div className="bg-[--bgPrimary] min-h-screen flex justify-center items-center">
+        <div className="bg-[--bgPrimary] min-h-screen max-h-screen flex justify-center items-center">
           <div
             className={`w-full  sm:w-[80%]   lg:w-[70%]    sm:my-10 my-0  bg-white  rounded-md`}
           >

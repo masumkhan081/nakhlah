@@ -6,7 +6,7 @@ import { useLearningLevel } from "../../../store/useAdminStore";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
-export default function LearningLevel() {
+export default function TaskUnits() {
   const levelData = useLearningLevel((state) => state.data);
   const setLevels = useLearningLevel((state) => state.setLevels);
 

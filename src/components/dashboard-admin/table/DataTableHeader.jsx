@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Filter, Plus } from "lucide-react";
 //
 import AddGoal from "../modals/AddGoal";
 import AddPurpose from "../modals/AddPurpose";
@@ -27,6 +27,7 @@ import AddQuestion from "../modals/AddQuestion";
 import AddContent from "../modals/AddContent";
 import AddQueContent from "../modals/AddQueContent";
 import AddQueContOption from "../modals/AddQueContOption";
+import { useTabularView } from "@/store/useAdminStore";
 
 const viewMap = {
   // learning journey
@@ -46,31 +47,36 @@ const viewMap = {
   question: "id_question",
   content: "id_content",
   "question-content": "id_question_content",
-  "question-content_option": "id_question_content_option",
+  "question-content-option": "id_question_content_option",
 };
 
 // {table,title, addURL, addItemAPICall, errorMessageCall}
-const DataTableHeader = ({ table, view }) => {
+export default function DataTableHeader({ table, view, filter }) {
+  const tabularView = useTabularView((state) => state.data);
+
   return (
     <div className="flex items-center justify-between py-4">
-      <Input
-        placeholder={`Filter ${view}...`}
-        // value={table.getColumn(`${title}`)?.getFilterValue() ?? ""}
-        // onChange={(event) =>
-        //   table.getColumn(`${title}`)?.setFilterValue(event.target.value)
-        // }
-        value={table.getColumn(viewMap[view])?.getFilterValue() ?? ""}
-        onChange={(event) =>
-          table.getColumn(viewMap[view])?.setFilterValue(event.target.value)
-        }
-        className="max-w-sm border-[1px] textSecondaryColor  px-3 py-[10px] placeholder:text-xl "
-      />
+      <div className="flex items-center border border-slate-300 rounded-md">
+        <span className="h-full border-r border-slate-400 ">
+          <Filter className="w-5 h-5 mx-1 text-slate-700" />
+        </span>
+        <Input
+          placeholder={`Filter ${tabularView.currentView}`}
+          value={table.getColumn(viewMap[view])?.getFilterValue() ?? ""}
+          onChange={(event) =>
+            table.getColumn(viewMap[view])?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm  text-slate-700 px-3 py-1 placeholder:text-slate-500 "
+        />
+      </div>
+
       <div className="flex items-center gap-4">
         {/* modal button add new item */}
         <Dialog className="">
           <DialogTrigger asChild>
-            <Button className="textNormal textSecondaryColor gap-2 border-[1px] py-2 px-3">
-              <IoIosAddCircleOutline /> <span className="">Add New</span>
+            <Button className="text-sm font-semibold font-sans border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
+              <Plus className="w-5 h-5 mx-1" />
+              <span className="">{`Add ${tabularView.currentView}`}</span>
             </Button>
           </DialogTrigger>
 
@@ -100,6 +106,4 @@ const DataTableHeader = ({ table, view }) => {
       </div>
     </div>
   );
-};
-
-export default DataTableHeader;
+}

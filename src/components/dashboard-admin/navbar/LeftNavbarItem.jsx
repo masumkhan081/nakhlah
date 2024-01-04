@@ -30,7 +30,7 @@ const LeftNavbarItem = ({ item }) => {
             </div>
             <div className={` mt-2  ${isClicked? 'translate-y-0 ease-out duration-500':'-translate-y-10 '}`}>
             {isClicked && (
-                subLinks.map(item => (
+                subLinks?.map(item => (
                     <div key={item.id} className='ml-2 textSmall  hover:pl-2 transform duration-200 ease-in'>
                         <Link href={item.link} className='flex gap-2 py-2 items-center '><LuCircle className='text-[10px]' /><span className='pt-2'>{item.title}</span></Link>
                     </div>

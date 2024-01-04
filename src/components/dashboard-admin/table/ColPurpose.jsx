@@ -40,6 +40,7 @@ const columnPurpose = [
     },
   },
   {
+    id:"id_learner_purpose",
     accessorKey: "purpose",
     header: ({ column }) => {
       return (
@@ -54,7 +55,7 @@ const columnPurpose = [
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("purpose")}
+        {row.getValue("id_learner_purpose")}
       </div>
     ),
   },
@@ -90,7 +91,8 @@ const columnPurpose = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="" />
+                <Trash2 className="w-5 h-5" />
+               
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -103,7 +105,7 @@ const columnPurpose = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <ClipboardEdit className="" />
+                <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">

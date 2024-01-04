@@ -41,6 +41,7 @@ const ColLearnerLevel = [
     },
   },
   {
+    id:"id_learner_level",
     accessorKey: "level",
     header: ({ column }) => {
       return (
@@ -56,7 +57,7 @@ const ColLearnerLevel = [
     cell: ({ row }) => {
       return (
         <div className="lowercase textNormal textSecondaryColor">
-          {row.getValue("level")}
+          {row.getValue("id_learner_level")}
         </div>
       );
     },
@@ -91,7 +92,7 @@ const ColLearnerLevel = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="" />
+                <Trash2 className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -104,7 +105,7 @@ const ColLearnerLevel = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <ClipboardEdit className="" />
+                <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">

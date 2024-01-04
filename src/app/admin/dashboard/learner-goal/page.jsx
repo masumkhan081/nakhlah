@@ -1,4 +1,4 @@
-import LearningGoal from '@/components/dashboard-admin/tabular-view/LearnerGoal';
+import LearningGoal from '@/components/dashboard-admin/tabular-view/Goals';
 import React from 'react';
 
 const LearningGoalPage = () => {

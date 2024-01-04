@@ -15,6 +15,7 @@ const LearnerLevel = () => {
     const fetch = async () => {
       const response = await getHandler("learner-level");
       if (response.status === 200) {
+        // alert(JSON.stringify(response.data.data));
         const levelData = response.data.data.map((item) => {
           const { icon } = item.attributes;
           const formats = {

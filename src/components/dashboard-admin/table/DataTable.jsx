@@ -22,7 +22,7 @@ import { useLearningState } from "../../../store/useAdminStore";
 import { handleGetItem } from "../../../lib/handleGetData";
 import { useEffect, useState } from "react";
 
-export default function DataTable({ data, columns, view }) {
+export default function DataTable({ data, columns, view, filter }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -52,18 +52,28 @@ export default function DataTable({ data, columns, view }) {
     onPaginationChange: setPagination,
   });
   return (
-    <div className="w-[90%] mx-auto ">
+    <div className="w-[98%] mx-auto h-full">
       {/* <DataTableHeader addURL={addURL} table={table} title={learningTitle} addItemAPICall={addItemAPICall} errorMessageCall={errorMessageCall}/> */}
       <DataTableHeader table={table} view={view} />
 
-      <div className="rounded-md border overflow-x-scroll">
+      <div className="max-h-[300px]  rounded-md border  ">
         <Table>
-          <TableHeader>
+          <TableHeader
+            style={{
+              position: "-webkit-sticky" ,
+              position: "sticky",
+              top: "0",
+            }}
+          >
             {table?.getHeaderGroups()?.map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="h-fit  py-0" style={{
+              position: "-webkit-sticky" ,
+              position: "sticky",
+              top: "0",
+            }}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-slate-800 font-bold h-fit  py-0">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -80,11 +90,12 @@ export default function DataTable({ data, columns, view }) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="h-fit py-0 "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-1">
+                    <TableCell key={cell.id} className="h-fit py-0 ">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -97,7 +108,7 @@ export default function DataTable({ data, columns, view }) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-fit py-0 border text-center  "
                 >
                   No results.
                 </TableCell>

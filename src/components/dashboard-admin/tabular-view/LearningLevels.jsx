@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 
-export default function LearningJourney() {
+export default function LearningLevels() {
   const journeyData = useLearningJourney((state) => state.data);
   const setJournies = useLearningJourney((state) => state.setJournies);
 
@@ -31,7 +31,7 @@ export default function LearningJourney() {
   }, [journeyData]);
 
   return (
-    <div className="w-full bg-white  rounded-xl">
+    <div className="w-full bg-white  rounded-xl   ">
       {journeyData.length != 0 ? (
         <DataTable
           data={journeyData}

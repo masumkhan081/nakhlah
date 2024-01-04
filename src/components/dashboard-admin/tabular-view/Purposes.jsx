@@ -7,7 +7,7 @@ import { getHandler } from "../../../lib/requestHandler";
 import columnPurpose from "../table/ColPurpose";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const LearningPurpose = () => {
+export default function Purposes  () {
   const learnerPurposes = useLearnerPurpose((state) => state.data);
   const setPurposes = useLearnerPurpose((state) => state.setPurposes);
 
@@ -15,6 +15,7 @@ const LearningPurpose = () => {
     const fetch = async () => {
       const response = await getHandler("learner-purpose");
       if (response.status === 200) {
+        // alert(JSON.stringify(response.data.data));
         const purposeData = response.data.data.map((item) => {
           const { icon } = item.attributes;
           const formats = {
@@ -61,4 +62,4 @@ const LearningPurpose = () => {
   );
 };
 
-export default LearningPurpose;
+

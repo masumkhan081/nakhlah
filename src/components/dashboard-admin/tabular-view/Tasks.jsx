@@ -6,7 +6,7 @@ import { useLearningUnit } from "../../../store/useAdminStore";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { getHandler } from "@/lib/requestHandler";
 
-const TaskUnit = () => {
+export default function Tasks() {
   //
   const unitData = useLearningUnit((state) => state.data);
   const setUnits = useLearningUnit((state) => state.setUnits);
@@ -50,4 +50,4 @@ const TaskUnit = () => {
   );
 };
 
-export default TaskUnit;
+

@@ -70,7 +70,7 @@ const ColContentCategory = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText] h-fit py-0.5 ">
-                <Trash2 className="" />
+                <Trash2 className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -80,7 +80,7 @@ const ColContentCategory = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText] h-fit py-0.5">
-                <ClipboardEdit className="" />
+                <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">

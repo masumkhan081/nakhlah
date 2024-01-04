@@ -17,6 +17,14 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   const [purpose, setPurpose] = useState(useForEdit ? rowData.purpose : "");
   const [error, setError] = useState("");
 
+  const [image, setImage] = useState(null);
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (purpose.length < 3) {
@@ -26,10 +34,12 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
         useForEdit,
         data: {
           purpose: purpose,
+          "files.icon": image,
         },
         id: rowData?.id,
       });
       if (result.status == 200) {
+        
         useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
         toast({
           title: result.message,
@@ -42,7 +52,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   }
   return (
     <>
-      <DialogHeader>
+      <DialogHeader className={"overflow-y-scroll"}>
         <DialogTitle className="textHeader textPrimaryColor">
           {useForEdit ? "Update" : "New"} Learner Purpose
         </DialogTitle>
@@ -61,6 +71,14 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
             />
             <span className="text-red-700">{error}</span>
           </div>
+
+          <input type="file" onChange={onImageChange} className="filetype" />
+          <img
+            alt="preview image"
+            src={image}
+            className="w-12 h-12 rounded-full "
+          />
+
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"

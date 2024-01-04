@@ -64,7 +64,7 @@ const columnTaskUnit = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="">{row.getValue("id_task_titel")}</div>,
+    cell: ({ row }) => <div className="textSecondaryColor">{row.getValue("id_task_titel")}</div>,
   },
   {
     id: "journeyOfTask",
@@ -99,7 +99,7 @@ const columnTaskUnit = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="" />
+                <Trash2 className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -109,7 +109,7 @@ const columnTaskUnit = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <ClipboardEdit className="" />
+                <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">

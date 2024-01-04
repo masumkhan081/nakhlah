@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
-:root{
+:root {
   --uDBg: #f3f4f7;
   --uDText: #5b5b5b;
   --uDSubText: #9d9d9d;
@@ -11,14 +10,32 @@
   --uDHoverButton: rgba(120, 137, 255, 1);
   --bgPrimary: #f3f3f3;
   --bgSecondary: #efeeee;
-  --buttonPrimary: linear-gradient(180deg,_#F790011_0%,_#F38908_100%);
+  --buttonPrimary: linear-gradient(180deg, _#F790011_0%, _#F38908_100%);
   --cardPrimary: #00913e;
   --shadowPrimary: #dd800f;
   --buttonSecondary: #5e2b76;
   --inputBorderPrimary: #4c2a41;
-  --progressPrimary: linear-gradient(180deg,_#00A948_0%,_#005524_100%);
+  --progressPrimary: linear-gradient(180deg, _#00A948_0%, _#005524_100%);
 }
 
+::-webkit-scrollbar {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track-piece {
+  background: #ffffff;
+}
+::-webkit-scrollbar-button {
+  background: #c9370a;
+  height: 10px;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b7460;
+  height: 20px;
+  border-radius: 10px;
+}
 
 @layer base {
   :root {
@@ -92,80 +109,73 @@
   body {
     @apply bg-background text-foreground;
   }
-  
 }
 
-.headerText{
+.headerText {
   @apply lg:text-5xl md:text-3xl text-2xl;
 }
-.semiHeaderText{
+.semiHeaderText {
   @apply lg:text-4xl md:text-2xl text-xl;
 }
-.normalText{
+.normalText {
   @apply lg:text-2xl md:text-xl text-[18px];
 }
-.smallText{
+.smallText {
   @apply lg:text-xl md:text-[16px] text-[14px];
 }
 
-.progressPrimary{
+.progressPrimary {
   @apply bg-gradient-to-b from-[#00A948]  to-[#005524];
 }
-.progressSecondary{
+.progressSecondary {
   @apply bg-gradient-to-b from-[#F79001] to-[#F38908];
 }
-.buttonSecondary{
-  @apply bg-gradient-to-b from-[#5e2b76] to-[#4c2a41] ;
+.buttonSecondary {
+  @apply bg-gradient-to-b from-[#5e2b76] to-[#4c2a41];
 }
-.buttonClick{
-  @apply bg-gradient-to-b from-[#f3f3f3] to-[#888888] ;
+.buttonClick {
+  @apply bg-gradient-to-b from-[#f3f3f3] to-[#888888];
 }
-.right{
-  @apply bg-gradient-to-b from-[#8dff4b] to-[#17740e] ;
-}
-
-.wrong{
-  @apply bg-gradient-to-b from-[#ff4b4b] to-[#740e0e] ;
+.right {
+  @apply bg-gradient-to-b from-[#8dff4b] to-[#17740e];
 }
 
-
-
-.buttonColor{
-  @apply bg-gradient-to-b from-[#F79011]  to-[#F38908] w-full  text-[--buttonSecondary] lg:text-[18px] md:text-[16px] text-[14px] shadow-4xl ;
+.wrong {
+  @apply bg-gradient-to-b from-[#ff4b4b] to-[#740e0e];
 }
-.border-2{
+
+.buttonColor {
+  @apply bg-gradient-to-b from-[#F79011]  to-[#F38908] w-full  text-[--buttonSecondary] lg:text-[18px] md:text-[16px] text-[14px] shadow-4xl;
+}
+.border-2 {
   @apply border-[3px];
 }
 
-
 /* admin dashboard css */
-.textHeader{
-  @apply text-3xl 
+.textHeader {
+  @apply text-3xl;
 }
-.textSemiHeader{
-  @apply text-2xl 
+.textSemiHeader {
+  @apply text-2xl;
 }
-.textNormal{
-  @apply 2xl:text-xl text-[16px]
+.textNormal {
+  @apply 2xl:text-xl text-[16px];
 }
 .textSmall {
-  @apply 2xl:text-[16px] text-[14px] 
+  @apply 2xl:text-[16px] text-[14px];
 }
 
-.textPrimaryColor{
-  @apply text-[--uDText]
+.textPrimaryColor {
+  @apply text-[--uDText];
 }
-.textSecondaryColor{
-  @apply text-[--uDSubText]
-}
-
-.textHoverPrimaryColor{
-  @apply hover:text-[--uDHoverText]
+.textSecondaryColor {
+  @apply text-slate-500;
 }
 
-.adminDashboard{
-  @apply w-[79%] 2xl:w-[15%] min-[1920px]:w-[12%]
-} 
+.textHoverPrimaryColor {
+  @apply hover:text-[--uDHoverText];
+}
 
-
-
+.adminDashboard {
+  @apply w-[79%] 2xl:w-[15%] min-[1920px]:w-[12%];
+}

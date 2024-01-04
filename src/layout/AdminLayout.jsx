@@ -12,17 +12,17 @@ const AdminLayout = ({ child }) => {
   const route = useRouter();
   const isOpenCall = useNavbarState((state) => state.isOpen);
   const toggleNavbarCall = useNavbarState((state) => state.toggleNavbar);
-  const delay = useSpring({
-    width: isOpenCall ? "81%" : "100%",
-    delay: 40,
-  });
+  // const delay = useSpring({
+  //   width: isOpenCall ? "81%" : "100%",
+  //   delay: 40,
+  // });
 
   return (
     <>
       {path === "/admin" ||
       path === "/admin/forget-password" ||
       path === "/admin/reset-password" ? (
-        <div className="flex w-full min-h-screen items-center justify-center bg-[--uDBg]">
+        <div className="flex w-full min-h-screen max-h-screen items-center justify-center bg-[--uDBg]">
           <div className=" bg-white text-[--uDText] 1xl:w-[25%]  xl:w-[30%] text-[16px] py-10 rounded-xl xl:w[35%] lg:w-[40%] md:w-[40%] sm:w-[50%] w-full sm:h-auto h-screen flex flex-col  justify-center">
             <>
               <div className="text-center my-5">
@@ -42,7 +42,8 @@ const AdminLayout = ({ child }) => {
               <div className="w-[17%] fixed">
                 <AdminLeftNavbar open={isOpenCall} />
               </div>
-              <animated.div style={delay} className={`absolute right-0`}>
+
+              <animated.div className={`absolute right-0 w-[80%]`}>
                 <ScrollArea className="h-[83vh] bg-white rounded-xl">
                   {child}
                 </ScrollArea>

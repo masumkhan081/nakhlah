@@ -6,7 +6,7 @@ import { useLearningLesson } from "../../../store/useAdminStore";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { getHandler } from "@/lib/requestHandler";
 
-export default function LearningLesson() {
+export default function Lessons() {
   //
   const lessonData = useLearningLesson((state) => state.data);
   const setLessons = useLearningLesson((state) => state.setLessons);
@@ -56,7 +56,7 @@ export default function LearningLesson() {
   }, [lessonData]);
 
   return (
-    <div className="w-full bg-white  rounded-xl">
+    <div className=" flex-grow w-full bg-white  rounded-xl   ">
       {lessonData.length != 0 ? (
         <DataTable
           data={lessonData}

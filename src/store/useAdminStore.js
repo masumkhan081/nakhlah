@@ -90,7 +90,28 @@ export const useAdminAuth = create(
   }))
 );
 
-// ______________________________________  learning section
+// ______________________________________  tabular view
+
+export const useTabularView = create(
+  immer((set) => ({
+    data: {
+      currentPage: "",
+      currentView: "",
+    },
+    setTabularView: (data) => {
+      set((state) => {
+        state.data = {
+          ...state.data,
+          ...data,
+          // currentPage: data.currentPage,
+          // currentView: data.currentView,
+        };
+      });
+    },
+  }))
+);
+
+// ______________________________________  learning journey
 
 export const useLearnerPurpose = create(
   immer((set) => ({
@@ -108,7 +129,6 @@ export const useLearnerPurpose = create(
         : await postHandler("learner-purpose", {
             data,
           });
-      alert("> > >:" + JSON.stringify(response));
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
@@ -167,7 +187,7 @@ export const useLearnerLevel = create(
         : await postHandler("learner-level", {
             data,
           });
-      alert(">> : " + JSON.stringify(response));
+     
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
@@ -368,6 +388,169 @@ export const useLearnerGoal = create(
     },
   }))
 );
+
+// ______________________________________  learning content
+
+export const useLearningJourney = create(
+  immer((set) => ({
+    data: [],
+    setJournies: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {
+      const response = useForEdit
+        ? await putHandler("learning-journey", id, {
+            data,
+          })
+        : await postHandler("learning-journey", {
+            data,
+          });
+      if (response.status == 400) {
+        let errors = response.data.error.details.errors;
+        return {
+          status: response.status,
+          error: errors[0].message,
+        };
+      }
+      if (response.status == 200) {
+        let data = response.data.data;
+        return {
+          status: response.status,
+          message: useForEdit ? "Updated Successfully" : "Added Successfully",
+          data: {
+            id: data.id,
+            title: data.attributes.title,
+          },
+        };
+      }
+    },
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useLearningUnit = create(
+  immer((set) => ({
+    data: [],
+
+    setUnits: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+    addEdit: async ({ useForEdit, data, id }) => {},
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useLearningLevel = create(
+  immer((set) => ({
+    data: [],
+
+    setLevels: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+export const useLearningLesson = create(
+  immer((set) => ({
+    data: [],
+    setLessons: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+
+    afterAdd: (data) => {
+      set((state) => {
+        state.data = [data, ...state.data];
+      });
+    },
+    afterUpdate: (data) => {
+      set((state) => {
+        state.data = state.data.map((item) => {
+          if (item.id == data.id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    afterDelete: (id) => {
+      set((state) => {
+        state.data = state.data.filter((item) => item.id != id);
+      });
+    },
+  }))
+);
+
+// ______________________________________  learning question
+
 export const useQueType = create(
   immer((set) => ({
     data: [],
@@ -705,7 +888,6 @@ export const useQueContent = create(
     },
     afterUpdate: (data) => {
       set((state) => {
-        
         state.data = state.data.map((item) => {
           if (item.id == data.id) {
             return data;
@@ -781,164 +963,6 @@ export const useQueContOption = create(
     },
   }))
 );
-export const useLearningJourney = create(
-  immer((set) => ({
-    data: [],
-    setJournies: (data) => {
-      set((state) => {
-        state.data = data;
-      });
-    },
-    addEdit: async ({ useForEdit, data, id }) => {
-      const response = useForEdit
-        ? await putHandler("learning-journey", id, {
-            data,
-          })
-        : await postHandler("learning-journey", {
-            data,
-          });
-      if (response.status == 400) {
-        let errors = response.data.error.details.errors;
-        return {
-          status: response.status,
-          error: errors[0].message,
-        };
-      }
-      if (response.status == 200) {
-        let data = response.data.data;
-        return {
-          status: response.status,
-          message: useForEdit ? "Updated Successfully" : "Added Successfully",
-          data: {
-            id: data.id,
-            title: data.attributes.title,
-          },
-        };
-      }
-    },
-    afterAdd: (data) => {
-      set((state) => {
-        state.data = [data, ...state.data];
-      });
-    },
-    afterUpdate: (data) => {
-      set((state) => {
-        state.data = state.data.map((item) => {
-          if (item.id == data.id) {
-            return data;
-          } else {
-            return item;
-          }
-        });
-      });
-    },
-
-    afterDelete: (id) => {
-      set((state) => {
-        state.data = state.data.filter((item) => item.id != id);
-      });
-    },
-  }))
-);
-export const useLearningUnit = create(
-  immer((set) => ({
-    data: [],
-
-    setUnits: (data) => {
-      set((state) => {
-        state.data = data;
-      });
-    },
-    addEdit: async ({ useForEdit, data, id }) => {},
-    afterAdd: (data) => {
-      set((state) => {
-        state.data = [data, ...state.data];
-      });
-    },
-    afterUpdate: (data) => {
-      set((state) => {
-        state.data = state.data.map((item) => {
-          if (item.id == data.id) {
-            return data;
-          } else {
-            return item;
-          }
-        });
-      });
-    },
-    afterDelete: (id) => {
-      set((state) => {
-        state.data = state.data.filter((item) => item.id != id);
-      });
-    },
-  }))
-);
-export const useLearningLevel = create(
-  immer((set) => ({
-    data: [],
-
-    setLevels: (data) => {
-      set((state) => {
-        state.data = data;
-      });
-    },
-
-    afterAdd: (data) => {
-      set((state) => {
-        state.data = [data, ...state.data];
-      });
-    },
-    afterUpdate: (data) => {
-      set((state) => {
-        state.data = state.data.map((item) => {
-          if (item.id == data.id) {
-            return data;
-          } else {
-            return item;
-          }
-        });
-      });
-    },
-    afterDelete: (id) => {
-      set((state) => {
-        state.data = state.data.filter((item) => item.id != id);
-      });
-    },
-  }))
-);
-export const useLearningLesson = create(
-  immer((set) => ({
-    data: [],
-    setLessons: (data) => {
-      set((state) => {
-        state.data = data;
-      });
-    },
-
-    afterAdd: (data) => {
-      set((state) => {
-        state.data = [data, ...state.data];
-      });
-    },
-    afterUpdate: (data) => {
-      set((state) => {
-        state.data = state.data.map((item) => {
-          if (item.id == data.id) {
-            return data;
-          } else {
-            return item;
-          }
-        });
-      });
-    },
-    afterDelete: (id) => {
-      set((state) => {
-        state.data = state.data.filter((item) => item.id != id);
-      });
-    },
-  }))
-);
-// _______________________________________  learning section
 
 export const useModal = create(
   immer((set) => ({

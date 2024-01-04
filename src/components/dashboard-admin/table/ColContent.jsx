@@ -111,7 +111,7 @@ const ColContent = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="" />
+                <Trash2 className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -121,7 +121,7 @@ const ColContent = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <ClipboardEdit className="" />
+                <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">

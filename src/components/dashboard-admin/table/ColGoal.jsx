@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,13 +34,14 @@ const goalColumns = [
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
       return (
-        <div className="textSecondaryColor textNormal">
+        <div className="textSecondaryColor textNormal  ">
           {row.getValue("id")}
         </div>
       );
     },
   },
   {
+    id: "id_learner_goal",
     accessorKey: "goal",
     header: ({ column }) => {
       return (
@@ -55,8 +56,8 @@ const goalColumns = [
     },
     cell: ({ row }) => {
       return (
-        <div className="lowercase textNormal textSecondaryColor">
-          {row.getValue("goal")}
+        <div className="lowercase textNormal textSecondaryColor  ">
+          {row.getValue("id_learner_goal")}
         </div>
       );
     },
@@ -75,7 +76,7 @@ const goalColumns = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
+      <div className="lowercase textNormal textSecondaryColor  ">
         {row.getValue("time")}
       </div>
     ),
@@ -92,7 +93,7 @@ const goalColumns = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <Trash2 className="" />
+                <Trash2 className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
@@ -105,7 +106,7 @@ const goalColumns = [
           <Dialog className="">
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
-                <ClipboardEdit className="" />
+                <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
