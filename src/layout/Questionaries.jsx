@@ -12,6 +12,7 @@ import Question from "@/components/dashboard-admin/tabular-view/Question";
 import QueType from "@/components/dashboard-admin/tabular-view/QueType";
 import ContentType from "@/components/dashboard-admin/tabular-view/ContentType";
 import ConTypeCategory from "@/components/dashboard-admin/tabular-view/ConTypeCategory";
+import Content from "@/components/dashboard-admin/tabular-view/Content";
 
 export default function Questionaries({ content }) {
   //
@@ -61,6 +62,7 @@ export default function Questionaries({ content }) {
       {tabularView.currentView == "Content Type Categories" && (
         <ConTypeCategory />
       )}
+      {tabularView.currentView == "Contents" && <Content />}
     </div>
   );
 }

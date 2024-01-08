@@ -72,6 +72,11 @@ export const tabsQuestionaries = [
     link: "/admin/questionaries/question-type",
   },
   {
+    id: 5,
+    title: "Contents",
+    link: "/admin/dashboard/content",
+  },
+  {
     id: 3,
     title: "Content Types",
     link: "/admin/questionaries/content-type",
@@ -81,11 +86,7 @@ export const tabsQuestionaries = [
     title: "Content Type Categories",
     link: "/admin/questionaries/content-type-categories",
   },
-  // {
-  //   id: 5,
-  //   title: "Content",
-  //   link: "/admin/dashboard/content",
-  // },
+
   // {
   //   id: 6,
   //   title: "Question Content",

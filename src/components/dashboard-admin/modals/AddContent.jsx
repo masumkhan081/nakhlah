@@ -27,7 +27,7 @@ export default function AddContent({ rowData, useForEdit }) {
     id: null,
     title: "",
   };
-   
+
   const [content, setContent] = useState(useForEdit ? rowData.title : "");
   const [selectedCategory, setSelectedCategory] = useState(
     useForEdit
@@ -127,7 +127,7 @@ export default function AddContent({ rowData, useForEdit }) {
       if (selectedType.id == null) {
         err_2 = "Select content type";
       }
-      if (content.length < 3) {
+      if (content.length < 1) {
         err_3 = "Too Short";
       }
       setError({ err1: err_1, err2: err_2, err3: err_3 });
@@ -184,7 +184,7 @@ export default function AddContent({ rowData, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-        {useForEdit ? "Update" : "New"} {addWhat}
+          {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
         {/* <DialogDescription className="textNormal textSecondaryColor">
            instructions
@@ -227,7 +227,8 @@ export default function AddContent({ rowData, useForEdit }) {
               type="text"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              ph="Enter content" style="py-0.25 px-1"
+              ph="Enter content"
+              style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err3}</span>
           </div>

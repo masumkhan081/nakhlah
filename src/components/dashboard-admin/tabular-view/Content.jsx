@@ -16,7 +16,6 @@ const Content = () => {
 
       if (response.status === 200) {
         const contentData = response.data.data.map((item) => {
-          // alert("::: " + JSON.stringify(item.attributes?.content_type));
           return {
             id: item.id,
             title: item.attributes?.title,
