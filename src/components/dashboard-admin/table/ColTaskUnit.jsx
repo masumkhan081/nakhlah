@@ -64,7 +64,9 @@ const columnTaskUnit = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="textSecondaryColor">{row.getValue("id_task_titel")}</div>,
+    cell: ({ row }) => {
+      const rowId = parseInt(row.id) + 1;
+    <div className="textSecondaryColor">{rowId}</div>},
   },
   {
     id: "journeyOfTask",

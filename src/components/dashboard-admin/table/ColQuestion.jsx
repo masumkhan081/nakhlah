@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -52,11 +52,14 @@ const ColQuestion = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="lowercase textNormal textSecondaryColor">
-        {row.getValue("id_question")}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const rowId = parseInt(row.id) + 1;
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {rowId}
+        </div>
+      );
+    },
   },
   {
     id: "actions",

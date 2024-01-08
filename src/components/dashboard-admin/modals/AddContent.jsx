@@ -195,11 +195,11 @@ export default function AddContent({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Content Type Category</label>
             <CustomSelect
+              label={"Content Type Category"}
               value={selectedCategory}
               options={categoryData}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedCategory({ id: value.id, title: value.title })
               }
@@ -209,9 +209,10 @@ export default function AddContent({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <label>Content Type</label>
             <CustomSelect
+              label={"Content Type"}
               value={selectedType}
               options={typeData}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedType({ id: value.id, title: value.title })
               }

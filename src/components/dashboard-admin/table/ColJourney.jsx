@@ -42,10 +42,10 @@ const columnJourney = [
     accessorKey: "id",
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
-      // const rowId = parseInt(row.id) + 1;
+       const rowId = parseInt(row.id) + 1;
       return (
         <div className="textSecondaryColor textNormal">
-          {row.getValue("id")}{" "}
+          {rowId}
         </div>
       );
     },
