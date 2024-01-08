@@ -348,7 +348,10 @@ export default function AddQuestion({ rowData, useForEdit }) {
 
               {Object.keys(options).map((option, index) => {
                 return (
-                  <div className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-2 px-2  ">
+                  <div
+                    key={index}
+                    className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-2 px-2  "
+                  >
                     <div className="flex justify-between border-b border-blue-300 pb-1">
                       <p className="flex justify-between text-base bg-blue-100 rounded-full h-1.5 font-semibold">
                         <span className="px-2">Answer Option</span>
