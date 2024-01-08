@@ -163,11 +163,11 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Select Learning Journey</label>
             <CustomSelect
+              label={"Select Learning Journey"}
               value={selectedJourney}
               options={journies}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedJourney({ id: value.id, title: value.title })
               }

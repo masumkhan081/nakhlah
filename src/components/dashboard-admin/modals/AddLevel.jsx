@@ -211,11 +211,11 @@ export default function AddLevel({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col gap-1">
-            <label>Select Level</label>
             <CustomSelect
               value={selectedJourney}
+              label={"Select Level"}
               options={journeyData}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedJourney({ id: value.id, title: value.title })
               }
@@ -223,11 +223,11 @@ export default function AddLevel({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col gap-1">
-            <label>Select Task</label>
             <CustomSelect
               value={selectedUnit}
+              label={"Select Task"}
               options={filteredUnits}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedUnit({ id: value.id, title: value.title })
               }

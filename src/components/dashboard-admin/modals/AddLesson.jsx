@@ -283,11 +283,11 @@ export default function AddLesson({ rowData, useForEdit }) {
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
           <div className="flex flex-col ">
-            <label>Select Learning Level</label>
             <CustomSelect
               value={selectedJourney}
+              label={"Select Learning Level"}
               options={journeyData}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedJourney({ id: value.id, title: value.title })
               }
@@ -295,11 +295,12 @@ export default function AddLesson({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col">
-            <label>Select Task</label>
+            <label></label>
             <CustomSelect
               value={selectedUnit}
               options={filteredUnits}
-              bg="light"
+              bg="wh"
+              label={"Select Task"}
               onChange={(value) =>
                 setSelectedUnit({ id: value.id, title: value.title })
               }
@@ -307,11 +308,11 @@ export default function AddLesson({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err2}</span>
           </div>
           <div className="flex flex-col ">
-            <label>Select Task Unit</label>
             <CustomSelect
+              label={"Select Task Unit"}
               value={selectedLevel}
               options={filteredLevels}
-              bg="light"
+              bg="wh"
               onChange={(value) =>
                 setSelectedLevel({ id: value.id, title: value.title })
               }

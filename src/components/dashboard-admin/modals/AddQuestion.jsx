@@ -9,12 +9,16 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import {
+  useLearningJourney,
   useConType,
   useConTypeCategory,
   useContent,
   useQueType,
   useQuestion,
   useTabularView,
+  useLearningLesson,
+  useLearningLevel,
+  useLearningUnit,
 } from "../../../store/useAdminStore";
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
@@ -268,8 +272,198 @@ export default function AddQuestion({ rowData, useForEdit }) {
   const addWhat = currentView.slice(0, currentView.length - 1);
 
   const [addNewState, setAddNewState] = useState("");
-
   function handleAdd() {}
+
+  //  -------------------------------------------------------------- journey portion
+  const journeyData = useLearningJourney((state) => state.data);
+  const setJournies = useLearningJourney((state) => state.setJournies);
+  const [selectedJourney, setSelectedJourney] = useState(
+    useForEdit
+      ? {
+          id: rowData.learning_journey_level.learning_journey_unit
+            .learning_journey.id,
+          title:
+            rowData.learning_journey_level.learning_journey_unit
+              .learning_journey.title,
+        }
+      : initStateSelection
+  );
+  useEffect(() => {
+    const fetchJournies = async () => {
+      const response = await getHandler("learning-journey");
+      if (response.status === 200) {
+        const dataRenderable = response.data.data.map((item) => {
+          return {
+            id: item.id,
+            title: item.attributes.title,
+          };
+        });
+        setJournies(dataRenderable);
+      }
+    };
+
+    if (Array.isArray(journeyData) && journeyData.length === 0) {
+      fetchJournies();
+    }
+  }, [journeyData]);
+  useEffect(() => {
+    if (selectedJourney.id != null) {
+      setSelectedUnit(initStateSelection);
+      filterUnitsByJourney(selectedJourney.id);
+    }
+  }, [selectedJourney]);
+  //
+  //  -------------------------------------------------------------- Task Unit Portion
+  const unitData = useLearningUnit((state) => state.data);
+  const setUnits = useLearningUnit((state) => state.setUnits);
+  function filterUnitsByJourney(id) {
+    setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
+  }
+  const [filteredUnits, setFilteredUnits] = useState([]);
+  const [selectedUnit, setSelectedUnit] = useState(
+    useForEdit
+      ? {
+          id: rowData.learning_journey_level.learning_journey_unit.id,
+          title: rowData.learning_journey_level.learning_journey_unit.title,
+        }
+      : initStateSelection
+  );
+  useEffect(() => {
+    const fetchUnits = async () => {
+      const response = await getHandler("learning-unit");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey } = item.attributes;
+
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey: {
+              id: learning_journey.data.id,
+              title: learning_journey.data.attributes.title,
+            },
+          };
+        });
+        setUnits(data);
+      }
+    };
+    if (Array.isArray(unitData) && unitData.length === 0) {
+      fetchUnits();
+    }
+  }, [unitData]);
+  useEffect(() => {
+    if (selectedUnit.id != null) {
+      setSelectedLevel(initStateSelection);
+      filterLevelsByUnit(selectedUnit.id);
+    }
+  }, [selectedUnit]);
+  //
+  //  -------------------------------------------------------------- Task Level Portion
+  const levelData = useLearningLevel((state) => state.data);
+  const setLevels = useLearningLevel((state) => state.setLevels);
+  function filterLevelsByUnit(id) {
+    setFilteredLevels(
+      levelData.filter((item) => item.learning_journey_unit.id == id)
+    );
+  }
+  const [filteredLevels, setFilteredLevels] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState(
+    useForEdit
+      ? {
+          id: rowData.learning_journey_level.id,
+          title: rowData.learning_journey_level.title,
+        }
+      : initStateSelection
+  );
+  useEffect(() => {
+    const fetchLevels = async () => {
+      const response = await getHandler("learning-level");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response.data.data.map((item) => {
+          const { learning_journey_unit } = item.attributes;
+          const { learning_journey } = learning_journey_unit.data.attributes;
+          return {
+            id: item.id,
+            title: item.attributes.title,
+            learning_journey_unit: {
+              id: learning_journey_unit.data.id,
+              title: learning_journey_unit.data.attributes.title,
+              learning_journey: {
+                id: learning_journey.data.id,
+                title: learning_journey.data.attributes.title,
+              },
+            },
+          };
+        });
+        setLevels(data);
+      }
+    };
+    if (Array.isArray(levelData) && levelData.length === 0) {
+      fetchLevels();
+    }
+  }, [levelData]);
+  useEffect(() => {
+    if (selectedLevel.id != null) {
+      setSelectedLesson(initStateSelection);
+      filterLessonsByLevel(selectedLevel.id);
+    }
+  }, [selectedLevel]);
+  //
+  //  -------------------------------------------------------------- Task Lesson Portion
+  const lessonData = useLearningLesson((state) => state.data);
+  const setLessons = useLearningLesson((state) => state.setLessons);
+  const [selectedLesson, setSelectedLesson] = useState(initStateSelection);
+  function filterLessonsByLevel(id) {
+    setFilteredLessons(
+      lessonData.filter((item) => item.learning_journey_level.id == id)
+    );
+  }
+  const [filteredLessons, setFilteredLessons] = useState([]);
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("learning-lesson");
+      console.log(response.data);
+      if (response.status === 200) {
+        const data = response?.data?.data
+          ?.filter((theData) => {
+            // alert("data :: " + JSON.stringify(theData));
+            return theData != null;
+          })
+          .map((item) => {
+            const learning_journey_level =
+              item?.attributes?.learning_journey_level;
+
+            const learning_journey_unit =
+              learning_journey_level?.data?.attributes?.learning_journey_unit;
+            const learning_journey =
+              learning_journey_unit?.data?.attributes?.learning_journey;
+
+            return {
+              id: item.id,
+              title: item.attributes?.title,
+              learning_journey_level: {
+                id: learning_journey_level?.data?.id,
+                title: learning_journey_level?.data?.attributes?.title,
+                learning_journey_unit: {
+                  id: learning_journey_unit?.data?.id,
+                  title: learning_journey_unit?.data?.attributes?.title,
+                  learning_journey: {
+                    id: learning_journey?.data?.id,
+                    title: learning_journey?.data?.attributes?.title,
+                  },
+                },
+              },
+            };
+          });
+        setLessons(data);
+      }
+    };
+    if (Array.isArray(lessonData) && lessonData.length === 0) {
+      fetch();
+    }
+  }, [lessonData]);
 
   const initOptionData = {
     category: initStateSelection,
@@ -310,6 +504,50 @@ export default function AddQuestion({ rowData, useForEdit }) {
             onSubmit={handleSubmit}
             className="flex flex-col gap-3 py-2 text-black text-lg"
           >
+            <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
+              Select Learning Lesson
+            </EnhancedText>
+            <div className="flex flex-col gap-2 ">
+              <CustomSelect
+                label={"Learner Level"}
+                value={selectedJourney}
+                options={journeyData}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedJourney({ id: value.id, title: value.title })
+                }
+              />
+              <CustomSelect
+                label={"Task"}
+                value={selectedUnit}
+                options={filteredUnits}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedUnit({ id: value.id, title: value.title })
+                }
+              />
+
+              <CustomSelect
+                label={"Task level"}
+                value={selectedLevel}
+                options={filteredLevels}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedLevel({ id: value.id, title: value.title })
+                }
+              />
+
+              <CustomSelect
+                label={"Task Lesson"}
+                value={selectedLesson}
+                options={filteredLessons}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedLesson({ id: value.id, title: value.title })
+                }
+              />
+            </div>
+
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
               Set The Question
             </EnhancedText>
