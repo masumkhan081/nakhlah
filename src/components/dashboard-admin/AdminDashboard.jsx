@@ -75,11 +75,11 @@ const AdminDashboardPage = () => {
         </Card>
       ))}
 
-      <div className="flex gap-2 bg-slate-500">
+      {/* <div className="flex gap-2 bg-slate-500">
         <Image src={img1} width={50} height={50} alt="Picture of the author" />
         <Image src={img2} width={50} height={50} alt="Picture of the author" />
         <Image className="bg-white" src={img3} width={50} height={50} alt="Picture of the author" />
-      </div>
+      </div> */}
     </div>
   );
 };
