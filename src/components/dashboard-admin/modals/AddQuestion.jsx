@@ -183,7 +183,19 @@ export default function AddQuestion({ rowData, useForEdit }) {
     let err_5 = "";
     let err_6 = "";
 
-    if (question.length > 2) {
+    let rightAns = Object.keys(rightAndWrong).find(
+      (item) => rightAndWrong[item] == true
+    );
+    let wrongAns = Object.keys(rightAndWrong).filter(
+      (item) => rightAndWrong[item] == false
+    );
+
+    if (
+      question.length > 2 &&
+      selectedLesson.id &&
+      wrongAns.length == 3 &&
+      rightAns
+    ) {
       const queResult = useForEdit
         ? await putHandler("question", rowData.id, {
             data: { question: question },
@@ -192,17 +204,10 @@ export default function AddQuestion({ rowData, useForEdit }) {
             data: { question: question },
           });
       if (queResult.status == 200) {
-        let rightAns = Object.keys(rightAndWrong).find(
-          (item) => rightAndWrong[item] == true
-        );
-        let wrongAns = Object.keys(rightAndWrong).filter(
-          (item) => rightAndWrong[item] == false
-        );
-
-        alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
-        alert("wrongAns : " + JSON.stringify(wrongAns));
-        alert("rightAns : " + JSON.stringify(rightAns));
-        alert("options: " + JSON.stringify(options));
+        // alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
+        // alert("wrongAns : " + JSON.stringify(wrongAns));
+        // alert("rightAns : " + JSON.stringify(rightAns));
+        // alert("options: " + JSON.stringify(options));
 
         const queContResult = useForEdit
           ? await putHandler("question-content", rowData.id, {
@@ -212,10 +217,23 @@ export default function AddQuestion({ rowData, useForEdit }) {
               data: {
                 question: { connect: [queResult.data.data.id] },
                 question_type: { connect: [selectedQueType.id] },
-                content: { connect: [options[rightAns].id] },
+                content: { connect: [options[rightAns].content.id] },
               },
             });
-        alert("queContResult: " + JSON.stringify(queContResult));
+        alert(
+          "queOptResult: " +
+            JSON.stringify({
+              question_content: { connect: [queContResult.data.data.id] },
+              content: {
+                connect: [
+                  options[wrongAns[0]].content.id,
+                  options[wrongAns[1]].content.id,
+                  options[wrongAns[2]].content.id,
+                ],
+              },
+            })
+        );
+
         const queOptionResult = useForEdit
           ? await putHandler("question-content-option", rowData.id, {
               data: {},
@@ -225,15 +243,15 @@ export default function AddQuestion({ rowData, useForEdit }) {
                 question_content: { connect: [queContResult.data.data.id] },
                 content: {
                   connect: [
-                    options[rightAns[0]].content.id,
-                    options[rightAns[1]].content.idoptions[rightAns[2]].content
-                      .id,
+                    options[wrongAns[0]].content.id,
+                    options[wrongAns[1]].content.id,
+                    options[wrongAns[2]].content.id,
                   ],
                 },
               },
             });
 
-        alert(JSON.stringify(queOptionResult));
+        alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
         // const data = {
         //   id: queResult.data.data.id,
@@ -249,15 +267,18 @@ export default function AddQuestion({ rowData, useForEdit }) {
         setError({ err0: queResult.error });
       }
     }
-
     //  specific errors
     else {
-      if (question.length < 3) {
-        err_1 = "Too Short";
+      if (selectedLesson.id == null) {
+        err_0 = "Select A Lesson";
       }
       if (selectedQueType.id == null) {
-        err_0 = "Select Question Type";
+        err_1 = "Select Question Type";
       }
+      if (question.length < 3) {
+        err_2 = "Too Short";
+      }
+
       setError({
         err0: err_0,
         err1: err_1,
@@ -546,35 +567,40 @@ export default function AddQuestion({ rowData, useForEdit }) {
                   setSelectedLesson({ id: value.id, title: value.title })
                 }
               />
+              {error.err0 !== "" && (
+                <span className="text-red-700">{error.err0}</span>
+              )}
             </div>
 
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
               Set The Question
             </EnhancedText>
             <div className="flex flex-col gap-1">
-              <CustomSelect
-                label={"Select Question Type"}
-                value={selectedQueType}
-                options={queTypeData}
-                bg="wh"
-                onChange={(value) =>
-                  setSelectedQueType({ id: value.id, title: value.title })
-                }
-              />
-              {error.err0 !== "" && (
-                <span className="text-red-700">{error.err0}</span>
-              )}
-            </div>
-            <div className="flex flex-col ">
-              <label className=" ">Question</label>
-              <CustomInput
-                type="text"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                ph="Enter the question"
-                style="py-0.12 px-1"
-              />
-              <span className="text-red-700">{error.err1}</span>
+              <div className="flex flex-col gap-1">
+                <CustomSelect
+                  label={"Select Question Type"}
+                  value={selectedQueType}
+                  options={queTypeData}
+                  bg="wh"
+                  onChange={(value) =>
+                    setSelectedQueType({ id: value.id, title: value.title })
+                  }
+                />
+                {error.err1 !== "" && (
+                  <span className="text-red-700">{error.err1}</span>
+                )}
+              </div>
+              <div className="flex flex-col ">
+                <label className=" ">Question</label>
+                <CustomInput
+                  type="text"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  ph="Enter the question"
+                  style="py-0.12 px-1"
+                />
+                <span className="text-red-700">{error.err2}</span>
+              </div>
             </div>
 
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">

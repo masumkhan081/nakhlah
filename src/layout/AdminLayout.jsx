@@ -33,7 +33,7 @@ const AdminLayout = ({ child }) => {
           </div>
         </div>
       ) : (
-        <div className="bg-[--uDBg] min-h-screen">
+        <div className="bg-[--uDBg] min-h-screen max-h-screen">
           <div className="w-[95%] h-full mx-auto ">
             <div className="py-3">
               <AdminTopNavbar open={isOpenCall} handleOpen={toggleNavbarCall} />

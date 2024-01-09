@@ -30,7 +30,7 @@ const Question = () => {
   }, [questionData]);
 
   return (
-    <div className="w-full bg-white  rounded-xl">
+    <div className="w-full bg-white rounded-xl">
       {questionData.length != 0 ? (
         <DataTable
           data={questionData}

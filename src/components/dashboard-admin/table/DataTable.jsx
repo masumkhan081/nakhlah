@@ -29,7 +29,7 @@ export default function DataTable({ data, columns, view, filter }) {
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
   const table = useReactTable({
     data,
@@ -53,28 +53,26 @@ export default function DataTable({ data, columns, view, filter }) {
   });
   return (
     <div className="w-[98%] mx-auto h-full">
-      {/* <DataTableHeader addURL={addURL} table={table} title={learningTitle} addItemAPICall={addItemAPICall} errorMessageCall={errorMessageCall}/> */}
       <DataTableHeader table={table} view={view} />
 
-      <div className="max-h-[300px]  rounded-md border  ">
-        <Table>
+      <div className="max-h-[300px] rounded-md border overflow-y-scroll relative ">
+        <Table className="relative">
           <TableHeader
-          className="bg-slate-100 py-0 h-fit"
             style={{
-              position: "-webkit-sticky" ,
+              position: "-webkit-sticky",
               position: "sticky",
               top: "0",
             }}
+            className="bg-slate-100 py-0 h-fit sticky top-0"
           >
             {table?.getHeaderGroups()?.map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="h-fit  py-0" style={{
-              position: "-webkit-sticky" ,
-              position: "sticky",
-              top: "0",
-            }}>
+              <TableRow key={headerGroup.id} className="h-fit  py-0">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-slate-800 font-bold h-fit  py-0">
+                    <TableHead
+                      key={header.id}
+                      className="text-slate-800 font-bold h-fit  py-0"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(

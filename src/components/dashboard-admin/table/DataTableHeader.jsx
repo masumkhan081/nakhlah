@@ -56,7 +56,10 @@ export default function DataTableHeader({ table, view, filter }) {
   const addWhat = currentView.slice(0, currentView.length - 1);
 
   return (
-    <div className="flex items-center justify-between py-4">
+    <div
+      className="flex items-center justify-between py-3  "
+     
+    >
       <div className="flex items-center border border-slate-300 rounded-md">
         <span className="h-full border-r border-slate-400 ">
           <Filter className="w-5 h-5 mx-1 text-slate-600" />

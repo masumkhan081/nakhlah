@@ -2,6 +2,12 @@
 import { useNavbarState } from "@/store/useAdminStore";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Progress } from "../ui/progress";
+import Image from "next/image";
+
+import img1 from "../../../public/q.png";
+import img2 from "../../../public/q.jpg";
+import img3 from "../../../public/q.svg";
+
 import { useEffect, useState } from "react";
 
 const AdminDashboardPage = () => {
@@ -35,7 +41,7 @@ const AdminDashboardPage = () => {
   const [progress, setProgress] = useState(13);
 
   useEffect(() => {
-    const timer = setTimeout(() => setProgress(66), 500);
+    const timer = setTimeout(() => setProgress(66), 50);
     return () => clearTimeout(timer);
   }, []);
 
@@ -68,6 +74,12 @@ const AdminDashboardPage = () => {
           </CardContent>
         </Card>
       ))}
+
+      <div className="flex gap-2 bg-slate-500">
+        <Image src={img1} width={50} height={50} alt="Picture of the author" />
+        <Image src={img2} width={50} height={50} alt="Picture of the author" />
+        <Image className="bg-white" src={img3} width={50} height={50} alt="Picture of the author" />
+      </div>
     </div>
   );
 };

@@ -53,10 +53,9 @@ const ColQuestion = [
       );
     },
     cell: ({ row }) => {
-      const rowId = parseInt(row.id) + 1;
       return (
         <div className="lowercase textNormal textSecondaryColor">
-          {rowId}
+          {row.getValue("id_question")}
         </div>
       );
     },
