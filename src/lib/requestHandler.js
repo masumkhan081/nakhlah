@@ -27,7 +27,8 @@ const getMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   content: `${BASE_URL}/api/contents?populate=*`,
-  question: `${BASE_URL}/api/questions?populate=*`,
+  // question: `${BASE_URL}/api/questions?populate=*`,
+  "question":`${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
 };

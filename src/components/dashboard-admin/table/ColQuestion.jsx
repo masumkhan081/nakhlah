@@ -39,7 +39,7 @@ const ColQuestion = [
     },
   },
   {
-    id: "id_question",
+    id: "id_question_title",
     accessorKey: "question",
     header: ({ column }) => {
       return (
@@ -55,7 +55,122 @@ const ColQuestion = [
     cell: ({ row }) => {
       return (
         <div className="lowercase textNormal textSecondaryColor">
-          {row.getValue("id_question")}
+          {row.getValue("id_question_title")}
+        </div>
+      );
+    },
+  },
+  // que type title
+  {
+    id: "id_question_type",
+    accessorKey: "question_type",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Que Type
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {row.getValue("id_question_type")}
+        </div>
+      );
+    },
+  },
+  // lesson title
+  {
+    id: "id_lesson",
+    accessorKey: "lesson.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Lesson
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {row.getValue("id_lesson")}
+        </div>
+      );
+    },
+  },
+  // task unit
+  {
+    id: "id_task_unit",
+    accessorKey: "task_unit.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Task Unit
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {row.getValue("id_task_unit")}
+        </div>
+      );
+    },
+  },
+  // task unit
+  {
+    id: "id_task_title",
+    accessorKey: "task.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Task
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {row.getValue("id_task_title")}
+        </div>
+      );
+    },
+  },
+  // levekl
+  {
+    id: "id_level_title",
+    accessorKey: "level.title",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Learning Level
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="lowercase textNormal textSecondaryColor">
+          {row.getValue("id_level_title")}
         </div>
       );
     },

@@ -173,122 +173,6 @@ export default function AddQuestion({ rowData, useForEdit }) {
     }
   }, [contents]);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    let err_0 = "";
-    let err_1 = "";
-    let err_2 = "";
-    let err_3 = "";
-    let err_4 = "";
-    let err_5 = "";
-    let err_6 = "";
-
-    let rightAns = Object.keys(rightAndWrong).find(
-      (item) => rightAndWrong[item] == true
-    );
-    let wrongAns = Object.keys(rightAndWrong).filter(
-      (item) => rightAndWrong[item] == false
-    );
-
-    if (
-      question.length > 2 &&
-      selectedLesson.id &&
-      wrongAns.length == 3 &&
-      rightAns
-    ) {
-      const queResult = useForEdit
-        ? await putHandler("question", rowData.id, {
-            data: { question: question },
-          })
-        : await postHandler("question", {
-            data: { question: question },
-          });
-      if (queResult.status == 200) {
-        alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
-        alert("wrongAns : " + JSON.stringify(wrongAns));
-        alert("rightAns : " + JSON.stringify(rightAns));
-        alert("options: " + JSON.stringify(options));
-
-        const queContResult = useForEdit
-          ? await putHandler("question-content", rowData.id, {
-              data: {},
-            })
-          : await postHandler("question-content", {
-              data: {
-                question: { connect: [queResult.data.data.id] },
-                question_type: { connect: [selectedQueType.id] },
-                content: { connect: [options[rightAns].content.id] },
-              },
-            });
-        alert(
-          "queOptResult: " +
-            JSON.stringify({
-              question_content: { connect: [queContResult.data.data.id] },
-              content: {
-                connect: [
-                  options[wrongAns[0]].content.id,
-                  options[wrongAns[1]].content.id,
-                  options[wrongAns[2]].content.id,
-                ],
-              },
-            })
-        );
-
-        const queOptionResult = useForEdit
-          ? await putHandler("question-content-option", rowData.id, {
-              data: {},
-            })
-          : await postHandler("question-content-option", {
-              data: {
-                question_content: { connect: [queContResult.data.data.id] },
-                content: {
-                  connect: [
-                    options[wrongAns[0]].content.id,
-                    options[wrongAns[1]].content.id,
-                    options[wrongAns[2]].content.id,
-                  ],
-                },
-              },
-            });
-
-        alert("queOptionResult: " + JSON.stringify(queOptionResult));
-
-        // const data = {
-        //   id: queResult.data.data.id,
-        //   question: queResult.data.data.attributes.question,
-        // };
-        // useForEdit ? afterUpdate(data) : afterAdd(data);
-        // toast({
-        //   title: queResult.message,
-        // });
-
-        document.getElementById("closeDialog")?.click();
-      } else if (queResult.status == 400) {
-        setError({ err0: queResult.error });
-      }
-    }
-    //  specific errors
-    else {
-      if (selectedLesson.id == null) {
-        err_0 = "Select A Lesson";
-      }
-      if (selectedQueType.id == null) {
-        err_1 = "Select Question Type";
-      }
-      if (question.length < 3) {
-        err_2 = "Too Short";
-      }
-
-      setError({
-        err0: err_0,
-        err1: err_1,
-        err2: err_2,
-        err4: err_4,
-        err5: err_5,
-        err6: err_6,
-      });
-    }
-  }
   const currentView = useTabularView((state) => state.data.currentView);
   const addWhat = currentView.slice(0, currentView.length - 1);
 
@@ -487,8 +371,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
   }, [lessonData]);
 
   const initOptionData = {
-    category: initStateSelection,
-    type: initStateSelection,
+    // category: initStateSelection,
+    // type: initStateSelection,
     content: initStateSelection,
   };
   const initRightWrong = {
@@ -510,6 +394,122 @@ export default function AddQuestion({ rowData, useForEdit }) {
   function handleMark(obj) {
     setRightAndWrong({ ...initRightWrong, ...obj });
   }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    let err_0 = "";
+    let err_1 = "";
+    let err_2 = "";
+    let err_3 = "";
+    let err_4 = "";
+    let err_5 = "";
+    let err_6 = "";
+
+    let rightAns = Object.keys(rightAndWrong).find(
+      (item) => rightAndWrong[item] == true
+    );
+    let wrongAns = Object.keys(rightAndWrong).filter(
+      (item) => rightAndWrong[item] == false
+    );
+
+    if (
+      question.length > 2 &&
+      selectedLesson.id &&
+      wrongAns.length == 3 &&
+      rightAns
+    ) {
+      const queResult = useForEdit
+        ? await putHandler("question", rowData.id, {
+            data: { question: question },
+          })
+        : await postHandler("question", {
+            data: { question: question },
+          });
+      if (queResult.status == 200) {
+        alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
+        alert("wrongAns : " + JSON.stringify(wrongAns));
+        alert("rightAns : " + JSON.stringify(rightAns));
+        alert("options: " + JSON.stringify(options));
+
+        const queContResult = useForEdit
+          ? await putHandler("question-content", rowData.id, {
+              data: {},
+            })
+          : await postHandler("question-content", {
+              data: {
+                question: { connect: [queResult.data.data.id] },
+                question_type: { connect: [selectedQueType.id] },
+                content: { connect: [options[rightAns].content.id] },
+              },
+            });
+        alert(
+          "queOptResult: " +
+            JSON.stringify({
+              question_content: { connect: [queContResult.data.data.id] },
+              content: {
+                connect: [
+                  options[wrongAns[0]].content.id,
+                  options[wrongAns[1]].content.id,
+                  options[wrongAns[2]].content.id,
+                ],
+              },
+            })
+        );
+
+        const queOptionResult = useForEdit
+          ? await putHandler("question-content-option", rowData.id, {
+              data: {},
+            })
+          : await postHandler("question-content-option", {
+              data: {
+                question_content: { connect: [queContResult.data.data.id] },
+                content: {
+                  connect: [
+                    options[wrongAns[0]].content.id,
+                    options[wrongAns[1]].content.id,
+                    options[wrongAns[2]].content.id,
+                  ],
+                },
+              },
+            });
+
+        alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
+        // const data = {
+        //   id: queResult.data.data.id,
+        //   question: queResult.data.data.attributes.question,
+        // };
+        // useForEdit ? afterUpdate(data) : afterAdd(data);
+        // toast({
+        //   title: queResult.message,
+        // });
+
+        document.getElementById("closeDialog")?.click();
+      } else if (queResult.status == 400) {
+        setError({ err0: queResult.error });
+      }
+    }
+    //  specific errors
+    else {
+      if (selectedLesson.id == null) {
+        err_0 = "Select A Lesson";
+      }
+      if (selectedQueType.id == null) {
+        err_1 = "Select Question Type";
+      }
+      if (question.length < 3) {
+        err_2 = "Too Short";
+      }
+
+      setError({
+        err0: err_0,
+        err1: err_1,
+        err2: err_2,
+        err4: err_4,
+        err5: err_5,
+        err6: err_6,
+      });
+    }
+  }
 
   return (
     <>
@@ -523,7 +523,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
         <div className="overflow-y-scroll h-[400px] pr-3 w-full ">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-3 py-2 text-black text-lg"
+            className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
           >
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
               Select Learning Lesson
@@ -575,7 +575,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
               Set The Question
             </EnhancedText>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2 rounded-md border border-slate-400 py-3 px-2">
               <div className="flex flex-col gap-1">
                 <CustomSelect
                   label={"Select Question Type"}
@@ -590,8 +590,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
                   <span className="text-red-700">{error.err1}</span>
                 )}
               </div>
-              <div className="flex flex-col ">
-                <label className=" ">Question</label>
+              <div className="flex flex-col gap-0 ">
+                <span className="">Question</span>
                 <CustomInput
                   type="text"
                   value={question}
@@ -614,12 +614,12 @@ export default function AddQuestion({ rowData, useForEdit }) {
                 return (
                   <div
                     key={index}
-                    className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-2 px-2  "
+                    className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-3 px-2  "
                   >
-                    <div className="flex justify-between border-b border-blue-300 pb-1">
-                      <p className="flex justify-between text-base bg-blue-100 rounded-full h-1.5 font-semibold">
+                    <div className="flex justify-between   pb-1">
+                      <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
                         <span className="px-2">Answer Option</span>
-                        <span className="px-1 h-full rounded-full bg-blue-300 font-bold">
+                        <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
                           {index + 1}
                         </span>
                       </p>
@@ -638,7 +638,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
                         </label>
                       </div>
                     </div>
-                    <CustomSelect
+                    {/* <CustomSelect
                       value={options[option].category}
                       label="Content Type Category"
                       options={conTypeCatagories}
@@ -651,8 +651,9 @@ export default function AddQuestion({ rowData, useForEdit }) {
                       addNewText="New Content Type Category"
                       addNewAfterClick={handleAdd}
                       bg="wh"
-                    />
-                    <CustomSelect
+                    /> */}
+
+                    {/* <CustomSelect
                       value={options[option].type}
                       label="Content Type"
                       options={contentTypes}
@@ -665,7 +666,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
                       addNewText="New Content Type"
                       addNewAfterClick={handleAdd}
                       bg="wh"
-                    />
+                    /> */}
                     <CustomSelect
                       value={options[option].content}
                       label="Content"
