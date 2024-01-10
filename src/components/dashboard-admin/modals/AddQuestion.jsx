@@ -204,10 +204,10 @@ export default function AddQuestion({ rowData, useForEdit }) {
             data: { question: question },
           });
       if (queResult.status == 200) {
-        // alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
-        // alert("wrongAns : " + JSON.stringify(wrongAns));
-        // alert("rightAns : " + JSON.stringify(rightAns));
-        // alert("options: " + JSON.stringify(options));
+        alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
+        alert("wrongAns : " + JSON.stringify(wrongAns));
+        alert("rightAns : " + JSON.stringify(rightAns));
+        alert("options: " + JSON.stringify(options));
 
         const queContResult = useForEdit
           ? await putHandler("question-content", rowData.id, {
