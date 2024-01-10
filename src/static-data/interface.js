@@ -108,7 +108,7 @@ export const adminDashboard = {
           id: 1,
           title: "Dashboard",
           icon: <AreaChart className="w-6 h-6 text-slate-700" />,
-          link: "/admin/dashboard",
+          link: "/admin",
           subLinks: null,
         },
         {

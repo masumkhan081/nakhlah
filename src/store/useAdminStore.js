@@ -65,24 +65,38 @@ export const useAdminAuth = create(
     errorMessage: "",
     isAdminLogin: getInitialLoggedIn(),
     adminAuth: async (values) => {
-      try {
-        const response = await axios.post(`${Admin_URL}/login`, {
-          ...values,
-        });
-        if (response.status === 200) {
-          localStorage.setItem(KEY, true);
-          set((state) => {
-            state.isAdminLogin = true;
-          });
-        }
-        return response;
-      } catch (error) {
+
+      const response = await axios.post(`${Admin_URL}/login`, {
+        ...values,
+      });
+      if (response.status === 200) {
+        localStorage.setItem(KEY, true);
         set((state) => {
-          state.errorMessage = "Bad Request 400";
+          state.isAdminLogin = true;
         });
       }
+      return response;
+
     },
-    AdminLogout: async () =>
+    forgetPassword: async (values) => {
+      return await axios.post(`${Admin_URL}/forgot-password`, {
+        ...values,
+      });
+
+    },
+    resetPassword: async (values) => {
+      const response = await axios.post(`${Admin_URL}/reset-password`, {
+        ...values,
+      });
+      if (response.status === 200) {
+        localStorage.setItem(KEY, false);
+        set((state) => {
+          state.isAdminLogin = false;
+        });
+      }
+      return response;
+    },
+    adminLogout: async () =>
       set((state) => {
         localStorage.removeItem(KEY);
         state.isAdminLogin = false;
