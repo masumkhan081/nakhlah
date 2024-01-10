@@ -1,20 +1,31 @@
-// import AdminDashboardPage from '@/components/adminDashboard/AdminDashboardPage';
-// import AdminSignInForm from '@/components/adminDashboard/AdminSignInForm';
-// import AdminFormTitle from '@/components/adminDashboard/share/AdminFormTitle';
-// import Link from 'next/link';
-
-import React from 'react'
+import DeveloperAMA from "@/components/dashboard-admin/Home/DeveloperAMA";
+import MenuCards from "@/components/dashboard-admin/Home/MenuCards";
+import Orders from "@/components/dashboard-admin/Home/Orders";
+import RecentOrders from "@/components/dashboard-admin/Home/RecentOrders";
+import Revenue from "@/components/dashboard-admin/Home/Revenue";
+import SocialMedia from "@/components/dashboard-admin/Home/SocialMedia";
+import TasksOverview from "@/components/dashboard-admin/Home/TasksOverview";
+import Transactions from "@/components/dashboard-admin/Home/Transactions";
 
 const Admin = () => {
     return (
         <>
-
-        core page
-            {/* <AdminFormTitle title={'Login'}/>
-            <AdminSignInForm/>
-            <div className='flex justify-center mt-3'>
-                <Link href={'/admin/forget-password'} className='hover:text-[--uDHoverText] text-xl'>Forget Password</Link>
-            </div> */}
+            <MenuCards />
+            {/* second section */}
+            <div className="my-4 flex gap-5">
+                <Revenue/>
+                <SocialMedia/>
+            </div>
+            {/* third section */}
+            <div className="my-4 flex gap-5">
+                <RecentOrders/>
+                <Orders/>
+            </div>
+            <div className="my-4 flex gap-5">
+                <TasksOverview/>
+                <DeveloperAMA/>
+                <Transactions/>
+            </div>
         </>
     );
 };

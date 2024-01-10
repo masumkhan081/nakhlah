@@ -251,14 +251,14 @@ export default function AddLesson({ rowData, useForEdit }) {
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      setSelectedUnit(initStateSelection);
+      useForEdit ? "" : setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
 
   useEffect(() => {
     if (selectedUnit.id != null) {
-      setSelectedLevel(initStateSelection);
+      useForEdit ? "" : setSelectedLevel(initStateSelection);
       filterLevelsByUnit(selectedUnit.id);
     }
   }, [selectedUnit]);
@@ -295,7 +295,7 @@ export default function AddLesson({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col">
-            <label></label>
+            {/* <label>{selectedUnit}</label> */}
             <CustomSelect
               value={selectedUnit}
               options={filteredUnits}

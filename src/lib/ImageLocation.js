@@ -24,7 +24,8 @@ import Tree from '../../public/assets/images/tree.png';
 import Book from '../../public/assets/images/book.png';
 import Car from '../../public/assets/images/car.png';
 import Bike from '../../public/assets/images/bike.png';
+import AMA from '../../public/assets/images/AMA.jpeg';
 
 
-export {Minutes10,Minutes20,Minutes30,Minutes45, Man1, Man2, Man3, Culture, Business, Travel, Worker, USA, Bangladesh,SAU,im,ApplePay, Bkash, Nogod, Rocket, Crown,Dates,Cartoon,Tree,Book,Car, Bike}
+export {Minutes10,Minutes20,Minutes30,Minutes45, Man1, Man2, Man3, Culture, Business, Travel, Worker, USA, Bangladesh,SAU,im,ApplePay, Bkash, Nogod, Rocket, Crown,Dates,Cartoon,Tree,Book,Car, Bike, AMA}
 

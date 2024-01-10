@@ -9,7 +9,6 @@ export default function AdminDashboardLayout({ children }) {
     return (
         <section className="">
             <AdminLayout  child={children}/>
-        </section>
-// 
+        </section> 
     )
 }
