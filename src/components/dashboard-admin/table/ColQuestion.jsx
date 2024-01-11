@@ -63,7 +63,7 @@ const ColQuestion = [
   // que type title
   {
     id: "id_question_type",
-    accessorKey: "question_type",
+    accessorKey: "question_type.title",
     header: ({ column }) => {
       return (
         <Button

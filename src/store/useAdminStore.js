@@ -65,7 +65,6 @@ export const useAdminAuth = create(
     errorMessage: "",
     isAdminLogin: getInitialLoggedIn(),
     adminAuth: async (values) => {
-
       const response = await axios.post(`${Admin_URL}/login`, {
         ...values,
       });
@@ -76,13 +75,11 @@ export const useAdminAuth = create(
         });
       }
       return response;
-
     },
     forgetPassword: async (values) => {
       return await axios.post(`${Admin_URL}/forgot-password`, {
         ...values,
       });
-
     },
     resetPassword: async (values) => {
       const response = await axios.post(`${Admin_URL}/reset-password`, {
@@ -201,7 +198,7 @@ export const useLearnerLevel = create(
         : await postHandler("learner-level", {
             data,
           });
-     
+
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
@@ -661,6 +658,7 @@ export const useQuestion = create(
       }
     },
     afterAdd: (data) => {
+      alert("after add: " + JSON.stringify(data));
       set((state) => {
         state.data = [data, ...state.data];
       });

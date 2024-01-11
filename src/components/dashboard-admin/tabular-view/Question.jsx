@@ -15,7 +15,7 @@ const Question = () => {
       const response = await getHandler("question");
 
       if (response.status === 200) {
-        alert(JSON.stringify(response.data.data));
+        // alert(JSON.stringify(response.data.data));
         const data = response.data.data.map((item) => {
           //
           const { question } = item.attributes.question_content.data.attributes;
@@ -31,7 +31,10 @@ const Question = () => {
           return {
             id: item.id,
             question: question.data?.attributes?.question,
-            question_type: question_type?.data?.attributes?.title,
+            question_type: {
+              id: question_type?.data?.id,
+              title: question_type?.data?.attributes?.title,
+            },
             lesson: {
               id: learning_journey_lesson.data.id,
               title: learning_journey_lesson.data.attributes.title,

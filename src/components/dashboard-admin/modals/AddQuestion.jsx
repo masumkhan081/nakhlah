@@ -3,11 +3,7 @@ import { useToast } from "@/components/ui/use-toast";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomSelect from "@/components/ui-custom/CustomSelect";
-import {
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   useLearningJourney,
   useConType,
@@ -22,10 +18,7 @@ import {
 } from "../../../store/useAdminStore";
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
-import CustomSelect2 from "@/components/ui-custom/CustomSelect2";
-import QueConOption from "../tabular-view/QueConOption";
 import EnhancedText from "@/components/ui-custom/EnhancedText";
-import { Just_Another_Hand } from "next/font/google";
 
 export default function AddQuestion({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -48,8 +41,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
   const [selectedQueType, setSelectedQueType] = useState(
     useForEdit
       ? {
-          id: rowData.id,
-          title: rowData.title,
+          id: rowData.question_type.id,
+          title: rowData.question_type.title,
         }
       : initStateSelection
   );
@@ -78,14 +71,14 @@ export default function AddQuestion({ rowData, useForEdit }) {
   const setConTypeCategories = useConTypeCategory(
     (state) => state.setConTypeCategories
   );
-  const [selectedConCategory, setSelectedConCategory] = useState(
-    useForEdit
-      ? {
-          id: rowData.content_type_category.id,
-          title: rowData.content_type_category.title,
-        }
-      : initStateSelection
-  );
+  // const [selectedConCategory, setSelectedConCategory] = useState(
+  //   useForEdit
+  //     ? {
+  //         id: rowData.content_type_category.id,
+  //         title: rowData.content_type_category.title,
+  //       }
+  //     : initStateSelection
+  // );
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("content-type-category");
@@ -108,14 +101,14 @@ export default function AddQuestion({ rowData, useForEdit }) {
 
   const contentTypes = useConType((state) => state.data);
   const setConTypes = useConType((state) => state.setConTypes);
-  const [selectedConType, setSelectedConType] = useState(
-    useForEdit
-      ? {
-          id: rowData.content_type.id,
-          title: rowData.content_type.title,
-        }
-      : initStateSelection
-  );
+  // const [selectedConType, setSelectedConType] = useState(
+  //   useForEdit
+  //     ? {
+  //         id: rowData.content_type.id,
+  //         title: rowData.content_type.title,
+  //       }
+  //     : initStateSelection
+  // );
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("content-type");
@@ -185,11 +178,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
   const [selectedJourney, setSelectedJourney] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_level.learning_journey_unit
-            .learning_journey.id,
-          title:
-            rowData.learning_journey_level.learning_journey_unit
-              .learning_journey.title,
+          id: rowData.level.id,
+          title: rowData.level.title,
         }
       : initStateSelection
   );
@@ -213,7 +203,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
   }, [journeyData]);
   useEffect(() => {
     if (selectedJourney.id != null) {
-      setSelectedUnit(initStateSelection);
+      useForEdit ? "" : setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
@@ -228,8 +218,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
   const [selectedUnit, setSelectedUnit] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_level.learning_journey_unit.id,
-          title: rowData.learning_journey_level.learning_journey_unit.title,
+          id: rowData.task.id,
+          title: rowData.task.title,
         }
       : initStateSelection
   );
@@ -259,7 +249,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
   }, [unitData]);
   useEffect(() => {
     if (selectedUnit.id != null) {
-      setSelectedLevel(initStateSelection);
+      useForEdit ? "" : setSelectedLevel(initStateSelection);
       filterLevelsByUnit(selectedUnit.id);
     }
   }, [selectedUnit]);
@@ -276,8 +266,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
   const [selectedLevel, setSelectedLevel] = useState(
     useForEdit
       ? {
-          id: rowData.learning_journey_level.id,
-          title: rowData.learning_journey_level.title,
+          id: rowData.task_unit.id,
+          title: rowData.task_unit.title,
         }
       : initStateSelection
   );
@@ -311,7 +301,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
   }, [levelData]);
   useEffect(() => {
     if (selectedLevel.id != null) {
-      setSelectedLesson(initStateSelection);
+      useForEdit ? "" : setSelectedLesson(initStateSelection);
       filterLessonsByLevel(selectedLevel.id);
     }
   }, [selectedLevel]);
@@ -319,7 +309,14 @@ export default function AddQuestion({ rowData, useForEdit }) {
   //  -------------------------------------------------------------- Task Lesson Portion
   const lessonData = useLearningLesson((state) => state.data);
   const setLessons = useLearningLesson((state) => state.setLessons);
-  const [selectedLesson, setSelectedLesson] = useState(initStateSelection);
+  const [selectedLesson, setSelectedLesson] = useState(
+    useForEdit
+      ? {
+          id: rowData.lesson.id,
+          title: rowData.lesson.title,
+        }
+      : initStateSelection
+  );
   function filterLessonsByLevel(id) {
     setFilteredLessons(
       lessonData.filter((item) => item.learning_journey_level.id == id)
@@ -425,10 +422,10 @@ export default function AddQuestion({ rowData, useForEdit }) {
             data: { question: question },
           });
       if (queResult.status == 200) {
-        alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
-        alert("wrongAns : " + JSON.stringify(wrongAns));
-        alert("rightAns : " + JSON.stringify(rightAns));
-        alert("options: " + JSON.stringify(options));
+        // alert("rightAndwrong : " + JSON.stringify(rightAndWrong));
+        // alert("wrongAns : " + JSON.stringify(wrongAns));
+        // alert("rightAns : " + JSON.stringify(rightAns));
+        // alert("options: " + JSON.stringify(options));
 
         const queContResult = useForEdit
           ? await putHandler("question-content", rowData.id, {
@@ -441,19 +438,22 @@ export default function AddQuestion({ rowData, useForEdit }) {
                 content: { connect: [options[rightAns].content.id] },
               },
             });
-        alert(
-          "queOptResult: " +
-            JSON.stringify({
-              question_content: { connect: [queContResult.data.data.id] },
-              content: {
-                connect: [
-                  options[wrongAns[0]].content.id,
-                  options[wrongAns[1]].content.id,
-                  options[wrongAns[2]].content.id,
-                ],
-              },
-            })
-        );
+
+        // alert("queContResult: " + JSON.stringify(queContResult));
+
+        // alert(
+        //   "queOptResult: " +
+        //     JSON.stringify({
+        //       question_content: { connect: [queContResult.data.data.id] },
+        //       content: {
+        //         connect: [
+        //           options[wrongAns[0]].content.id,
+        //           options[wrongAns[1]].content.id,
+        //           options[wrongAns[2]].content.id,
+        //         ],
+        //       },
+        //     })
+        // );
 
         const queOptionResult = useForEdit
           ? await putHandler("question-content-option", rowData.id, {
@@ -472,16 +472,53 @@ export default function AddQuestion({ rowData, useForEdit }) {
               },
             });
 
-        alert("queOptionResult: " + JSON.stringify(queOptionResult));
+        // alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
-        // const data = {
-        //   id: queResult.data.data.id,
-        //   question: queResult.data.data.attributes.question,
-        // };
-        // useForEdit ? afterUpdate(data) : afterAdd(data);
-        // toast({
-        //   title: queResult.message,
-        // });
+        if (queOptionResult.status == 200) {
+          const journeyMapResult = useForEdit
+            ? await putHandler("journey-map-question", rowData.id, {
+                data: {},
+              })
+            : await postHandler("journey-map-question", {
+                data: {
+                  learning_journey_lesson: { connect: [selectedLesson.id] },
+                  question_content: { connect: [queContResult.data.data.id] },
+                },
+              });
+          if (journeyMapResult.status == 200) {
+            toast({
+              title: "Question Added Successfully",
+            });
+          }
+        }
+
+        useForEdit
+          ? afterUpdate(data)
+          : afterAdd({
+              id: queResult.data.data.id,
+              question: question,
+              question_type: {
+                id: selectedQueType.id,
+                title: selectedQueType.title,
+              },
+
+              lesson: {
+                id: selectedLesson.id,
+                title: selectedLesson.title,
+              },
+              task_unit: {
+                id: selectedLevel.id,
+                title: selectedLevel.title,
+              },
+              task: {
+                id: selectedUnit.id,
+                title: selectedUnit.title,
+              },
+              level: {
+                id: selectedJourney.id,
+                title: selectedJourney.title,
+              },
+            });
 
         document.getElementById("closeDialog")?.click();
       } else if (queResult.status == 400) {
