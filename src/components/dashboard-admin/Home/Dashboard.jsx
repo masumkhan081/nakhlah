@@ -1,5 +1,4 @@
 "use client"
-
 import DeveloperAMA from "./DeveloperAMA";
 import MenuCards from "./MenuCards";
 import Orders from "./Orders";
