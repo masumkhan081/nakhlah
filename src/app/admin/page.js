@@ -1,10 +1,10 @@
 import Dashboard from "@/components/dashboard-admin/Home/Dashboard";
 import React from "react";
 
-export default function page() {
+export default function Page() {
   return (
     <div>
-      {/* <Dashboard /> */}
+      <Dashboard />
     </div>
   );
 }

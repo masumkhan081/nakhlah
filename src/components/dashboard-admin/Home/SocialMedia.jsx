@@ -1,5 +1,5 @@
 "use client"
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle,CardContent } from '@/components/ui/card'
 import React from 'react'
 import { AiOutlineLike } from "react-icons/ai";
 
@@ -41,7 +41,7 @@ function SocialMedia() {
             <CardHeader>
                 <CardTitle className='textSemiHeader font-bold'>Social Media</CardTitle>
             </CardHeader>
-            <CardDescription className='w-[90%] mx-auto flex flex-col gap-5'>
+            <CardContent className='w-[90%] mx-auto flex flex-col gap-5'>
                 {data.map(item=>(
                     <div key={item.id} className='flex gap-3'>
                         <div className='text-3xl w-12 h-12 bg-black/40 flex items-center justify-center text-white rounded'>{item.icon}</div>
@@ -51,7 +51,7 @@ function SocialMedia() {
                         </div>
                     </div>
                 ))}
-            </CardDescription>
+            </CardContent>
         </Card>
     )
 }

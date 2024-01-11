@@ -1,4 +1,5 @@
 import AdminLayout from "@/layout/AdminLayout";
+import { Divide } from "lucide-react";
 
 export const metadata = {
   title: "Admin DashBoard",
@@ -6,8 +7,8 @@ export const metadata = {
 };
 export default function AdminDashboardLayout({ children }) {
   return (
-    <section className="">
+    <div className="">
       <AdminLayout child={children} />
-    </section>
+    </div>
   );
 }

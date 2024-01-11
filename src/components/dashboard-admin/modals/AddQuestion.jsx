@@ -548,6 +548,12 @@ export default function AddQuestion({ rowData, useForEdit }) {
     }
   }
 
+  const [tFAns, setTFAns] = useState(initStateSelection);
+  const trueFalseOptions = [
+    { id: 1, title: "False" },
+    { id: 2, title: "True " },
+  ];
+
   return (
     <>
       <DialogHeader className="overflow-y-scroll  ">
@@ -641,41 +647,60 @@ export default function AddQuestion({ rowData, useForEdit }) {
             </div>
 
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
-              Set Answer Options
+            {selectedQueType.title}  Set Answer Options
             </EnhancedText>
 
             <div className="flex flex-col gap-4">
               {/* option -1 */}
 
-              {Object.keys(options).map((option, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-3 px-2  "
-                  >
-                    <div className="flex justify-between   pb-1">
-                      <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                        <span className="px-2">Answer Option</span>
-                        <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
-                          {index + 1}
-                        </span>
-                      </p>
-                      <div className="flex gap-2 items-center">
-                        <input
-                          type="checkbox"
-                          id={option}
-                          checked={rightAndWrong[option]}
-                          name={"ans_option"}
-                          onChange={(e) =>
-                            handleMark({ [option]: e.target.checked })
-                          }
-                        />
-                        <label htmlFor="option1" className="text-sm">
-                          Mark as right answer
-                        </label>
+              {selectedQueType.title == "True 0r False" && (
+                <div className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-3 px-2  ">
+                  <div className="flex justify-between   pb-1">
+                    <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
+                      <span className="px-2">Select Correct Option</span>
+                    </p>
+                  </div>
+
+                  <CustomSelect
+                    label={"(true/false)"}
+                    value={tFAns}
+                    options={trueFalseOptions}
+                    onChange={(selected) => setTFAns(selected)}
+                    bg="wh"
+                  />
+                </div>
+              )}
+
+              {(selectedQueType.title == "MCQ"  || selectedQueType.title == "Fill in the blank" ) &&
+                Object.keys(options).map((option, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col gap-3 font-mono text-sm rounded-md border border-slate-400 py-3 px-2  "
+                    >
+                      <div className="flex justify-between   pb-1">
+                        <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
+                          <span className="px-2">Answer Option</span>
+                          <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
+                            {index + 1}
+                          </span>
+                        </p>
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="checkbox"
+                            id={option}
+                            checked={rightAndWrong[option]}
+                            name={"ans_option"}
+                            onChange={(e) =>
+                              handleMark({ [option]: e.target.checked })
+                            }
+                          />
+                          <label htmlFor="option1" className="text-sm">
+                            Mark as right answer
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                    {/* <CustomSelect
+                      {/* <CustomSelect
                       value={options[option].category}
                       label="Content Type Category"
                       options={conTypeCatagories}
@@ -690,7 +715,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
                       bg="wh"
                     /> */}
 
-                    {/* <CustomSelect
+                      {/* <CustomSelect
                       value={options[option].type}
                       label="Content Type"
                       options={contentTypes}
@@ -704,23 +729,23 @@ export default function AddQuestion({ rowData, useForEdit }) {
                       addNewAfterClick={handleAdd}
                       bg="wh"
                     /> */}
-                    <CustomSelect
-                      value={options[option].content}
-                      label="Content"
-                      options={contents}
-                      onChange={(selected) =>
-                        setOptions({
-                          ...options,
-                          [option]: { ...options[option], content: selected },
-                        })
-                      }
-                      addNewText="New Content"
-                      addNewAfterClick={handleAdd}
-                      bg="wh"
-                    />
-                  </div>
-                );
-              })}
+                      <CustomSelect
+                        value={options[option].content}
+                        label="Content"
+                        options={contents}
+                        onChange={(selected) =>
+                          setOptions({
+                            ...options,
+                            [option]: { ...options[option], content: selected },
+                          })
+                        }
+                        addNewText="New Content"
+                        addNewAfterClick={handleAdd}
+                        bg="wh"
+                      />
+                    </div>
+                  );
+                })}
             </div>
 
             <div className="sticky bottom-0 bg-white py-1 w-full ">

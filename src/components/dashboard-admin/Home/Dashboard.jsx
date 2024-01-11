@@ -1,12 +1,20 @@
 "use client";
 import DeveloperAMA from "./DeveloperAMA";
 import MenuCards from "./MenuCards";
-import Orders from "./Orders";
+// import Orders from "./Orders";
 import RecentOrders from "./RecentOrders";
-import Revenue from "./Revenue";
+// import Revenue from "./Revenue";
 import SocialMedia from "./SocialMedia";
 import TasksOverview from "./TasksOverview";
 import Transactions from "./Transactions";
+import dynamic from 'next/dynamic';
+
+const Orders = dynamic(() => import('./Orders'), {
+  ssr: false,
+});
+const Revenue = dynamic(() => import('./Revenue'), {
+  ssr: false,
+});
 
 export default function Dashboard() {
   return (
