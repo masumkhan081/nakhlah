@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import React from 'react'
 import { AiOutlineLike } from 'react-icons/ai'
