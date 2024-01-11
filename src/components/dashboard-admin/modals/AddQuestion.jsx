@@ -647,7 +647,7 @@ export default function AddQuestion({ rowData, useForEdit }) {
             </div>
 
             <EnhancedText kind={"three"} color="text-blue-400 font-normal ">
-            {selectedQueType.title}  Set Answer Options
+              Set Answer Options
             </EnhancedText>
 
             <div className="flex flex-col gap-4">
@@ -671,7 +671,8 @@ export default function AddQuestion({ rowData, useForEdit }) {
                 </div>
               )}
 
-              {(selectedQueType.title == "MCQ"  || selectedQueType.title == "Fill in the blank" ) &&
+              {(selectedQueType.title == "MCQ" ||
+                selectedQueType.title == "Fill in the blank") &&
                 Object.keys(options).map((option, index) => {
                   return (
                     <div
