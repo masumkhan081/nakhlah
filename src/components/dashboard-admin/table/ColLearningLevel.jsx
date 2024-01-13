@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddLevel from "../modals/AddLevel";
+import Deletion from "../modals/other/Deletion";
+import AddLevel from "../modals/lessons/AddLevel";
 
 const colLearningLevel = [
   {

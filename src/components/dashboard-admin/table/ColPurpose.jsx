@@ -4,8 +4,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
-import Deletion from "../modals/Deletion";
-import AddPurpose from "../modals/AddPurpose";
+import Deletion from "../modals/other/Deletion";
+import AddPurpose from "../modals/journey/AddPurpose";
 import { Main_URL } from "../../../lib/url";
 
 const columnPurpose = [

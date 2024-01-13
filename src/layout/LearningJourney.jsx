@@ -4,10 +4,10 @@ import { tabsJourney } from "@/static-data/interface";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import { useTabularView } from "../store/useAdminStore";
 import EnhancedText from "@/components/ui-custom/EnhancedText";
-import Purposes from "@/components/dashboard-admin/tabular-view/Purposes";
-import StartPoints from "@/components/dashboard-admin/tabular-view/StartPoints";
-import LearnerLevel from "@/components/dashboard-admin/tabular-view/LearnerLevel";
-import Goals from "@/components/dashboard-admin/tabular-view/Goals";
+import Purposes from "@/components/dashboard-admin/tabular-view/journey/Purposes";
+import StartPoints from "@/components/dashboard-admin/tabular-view/journey/StartPoints";
+import LearnerLevel from "@/components/dashboard-admin/tabular-view/journey/LearnerLevel";
+import Goals from "@/components/dashboard-admin/tabular-view/journey/Goals";
 
 export default function LearningJourney({ content }) {
   //
@@ -17,7 +17,7 @@ export default function LearningJourney({ content }) {
   useEffect(() => {
     setTabularView({
       currentPage: "learning-journey",
-      currentView: "Learner Purposes",
+      currentView: "Learner Goals",
     });
   }, []);
 

@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddQueType from "../modals/AddQueType";
+import Deletion from "../modals/other/Deletion";
+import AddQueType from "../modals/questionaries/AddQueType";
 
 const columnQueType = [
   {

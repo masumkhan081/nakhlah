@@ -4,15 +4,16 @@ import { tabsQuestionaries } from "@/static-data/interface";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import { useTabularView } from "../store/useAdminStore";
 import EnhancedText from "@/components/ui-custom/EnhancedText";
-import Purposes from "@/components/dashboard-admin/tabular-view/Purposes";
-import StartPoints from "@/components/dashboard-admin/tabular-view/StartPoints";
-import LearnerLevel from "@/components/dashboard-admin/tabular-view/LearnerLevel";
-import Goals from "@/components/dashboard-admin/tabular-view/Goals";
-import Question from "@/components/dashboard-admin/tabular-view/Question";
-import QueType from "@/components/dashboard-admin/tabular-view/QueType";
-import ContentType from "@/components/dashboard-admin/tabular-view/ContentType";
-import ConTypeCategory from "@/components/dashboard-admin/tabular-view/ConTypeCategory";
-import Content from "@/components/dashboard-admin/tabular-view/Content";
+import Purposes from "@/components/dashboard-admin/tabular-view/journey/Purposes";
+import StartPoints from "@/components/dashboard-admin/tabular-view/journey/StartPoints";
+import LearnerLevel from "@/components/dashboard-admin/tabular-view/journey/LearnerLevel";
+import Goals from "@/components/dashboard-admin/tabular-view/journey/Goals";
+import Question from "@/components/dashboard-admin/tabular-view/questionaries/Question";
+import QueType from "@/components/dashboard-admin/tabular-view/questionaries/QueType";
+import ContentType from "@/components/dashboard-admin/tabular-view/questionaries/ContentType";
+import ConTypeCategory from "@/components/dashboard-admin/tabular-view/questionaries/ConTypeCategory";
+import Content from "@/components/dashboard-admin/tabular-view/questionaries/Content";
+import AddQuePage from "@/components/dashboard-admin/modals/questionaries/AddQuePage";
 
 export default function Questionaries({ content }) {
   //
@@ -32,37 +33,47 @@ export default function Questionaries({ content }) {
       : " bg-slate-100 border-slate-200";
 
   return (
-    <div className="flex flex-col flex-wrap gap-2 p-2 w-full h-full">
-      <div className=" rounded-md py-1 flex justify-start    ">
+    <div className="max-h-[83vh] flex flex-col gap-2 p-2 w-full bg-white">
+      <div className=" rounded-md py-1 flex justify-start ">
         <EnhancedText kind={"two"} color=" text-slate-800">
           {tabularView.currentView}
         </EnhancedText>
       </div>
 
-      <div className="flex gap-2">
-        {tabsQuestionaries.map((item, ind) => {
-          return (
-            <CustomButton
-              key={ind}
-              txt={item.title}
-              style={`px-2 text-sm h-fit py-0.25 font-normal font-sans hover:shadow-md hover:drop-shadow-sm ${active_button(
-                item.title
-              )}`}
-              click={() => {
-                setTabularView({ currentView: item.title });
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {tabularView.currentView == "Questions" && <Question />}
-      {tabularView.currentView == "Question Types" && <QueType />}
-      {tabularView.currentView == "Content Types" && <ContentType />}
-      {tabularView.currentView == "Content Type Categories" && (
-        <ConTypeCategory />
+      {tabularView.currentPage == "questionaries" && (
+        <div className="flex gap-2">
+          {tabsQuestionaries.map((item, ind) => {
+            return (
+              <CustomButton
+                key={ind}
+                txt={item.title}
+                style={`px-2 text-sm h-fit py-0.25 font-normal font-sans hover:shadow-md hover:drop-shadow-sm ${active_button(
+                  item.title
+                )}`}
+                click={() => {
+                  setTabularView({ currentView: item.title });
+                }}
+              />
+            );
+          })}
+        </div>
       )}
-      {tabularView.currentView == "Contents" && <Content />}
+      <div className="flex-grow overflow-y-scroll  ">
+        {tabularView.currentView == "Questions" && <Question />}
+        {tabularView.currentView == "Question Types" && <QueType />}
+        {tabularView.currentView == "Content Types" && <ContentType />}
+        {tabularView.currentView == "Content Type Categories" && (
+          <ConTypeCategory />
+        )}
+
+        {tabularView.currentView == "Contents" && <Content />}
+        {tabularView.currentView == "Add New Question" && (
+          <AddQuePage useForEdit={false} />
+        )}
+        {tabularView.currentView == "Edit Question" && (
+          <AddQuePage useForEdit={true} />
+        )}
+      </div>
     </div>
   );
 }

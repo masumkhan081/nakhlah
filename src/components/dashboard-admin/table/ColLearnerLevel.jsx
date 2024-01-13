@@ -5,9 +5,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
-import Deletion from "../modals/Deletion";
+import Deletion from "../modals/other/Deletion";
 import { Main_URL } from "../../../lib/url";
-import AddLearnerLevel from "../modals/AddLearnerLevel";
+import AddLearnerLevel from "../modals/journey/AddLearnerLevel";
 
 const ColLearnerLevel = [
   {

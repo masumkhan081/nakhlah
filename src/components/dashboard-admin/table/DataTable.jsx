@@ -52,10 +52,10 @@ export default function DataTable({ data, columns, view, filter }) {
     onPaginationChange: setPagination,
   });
   return (
-    <div className="w-[98%] mx-auto h-full">
+    <div className="w-[98%] mx-auto h-full flex flex-col flex-wrap">
       <DataTableHeader table={table} view={view} />
 
-      <div className="max-h-[300px] rounded-md border overflow-y-scroll relative ">
+      <div className=" flex-grow  rounded-md border overflow-y-scroll relative ">
         <Table className="relative">
           <TableHeader
             style={{

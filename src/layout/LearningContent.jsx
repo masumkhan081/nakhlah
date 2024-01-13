@@ -4,10 +4,10 @@ import { tabsLesson } from "@/static-data/interface";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import { useTabularView } from "../store/useAdminStore";
 import EnhancedText from "@/components/ui-custom/EnhancedText";
-import TaskUnits from "@/components/dashboard-admin/tabular-view/TaskUnits";
-import Tasks from "@/components/dashboard-admin/tabular-view/Tasks";
-import LearningLevels from "@/components/dashboard-admin/tabular-view/LearningLevels";
-import Lessons from "@/components/dashboard-admin/tabular-view/Lessons";  
+import TaskUnits from "@/components/dashboard-admin/tabular-view/lessons/TaskUnits";
+import Tasks from "@/components/dashboard-admin/tabular-view/lessons/Tasks";
+import LearningLevels from "@/components/dashboard-admin/tabular-view/lessons/LearningLevels";
+import Lessons from "@/components/dashboard-admin/tabular-view/lessons/Lessons";  
 
 export default function LearningContent({ content }) {
   //

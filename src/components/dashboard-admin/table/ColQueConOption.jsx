@@ -4,8 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import React from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddQueContent from "../modals/AddQueContOption";
+import Deletion from "../modals/other/Deletion";
+import AddQueContent from "../modals/questionaries/AddQueContOption";
 
 const ColQueConOption = [
   {

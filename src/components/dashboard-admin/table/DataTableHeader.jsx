@@ -12,22 +12,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, Filter, Plus } from "lucide-react";
 //
-import AddGoal from "../modals/AddGoal";
-import AddPurpose from "../modals/AddPurpose";
-import AddStartingPoint from "../modals/AddStartPoint";
-import AddLearnerLevel from "../modals/AddLearnerLevel";
-import AddJourney from "../modals/AddJourney";
-import AddTaskUnit from "../modals/AddTaskUnit";
-import AddLevel from "../modals/AddLevel";
-import AddLesson from "../modals/AddLesson";
-import AddQueType from "../modals/AddQueType";
-import AddContentType from "../modals/AddContentType";
-import AddConTypeCategory from "../modals/AddConTypeCategory";
-import AddQuestion from "../modals/AddQuestion";
-import AddContent from "../modals/AddContent";
-import AddQueContent from "../modals/AddQueContent";
-import AddQueContOption from "../modals/AddQueContOption";
+import AddGoal from "../modals/journey/AddGoal";
+import AddPurpose from "../modals/journey/AddPurpose";
+import AddStartingPoint from "../modals/journey/AddStartPoint";
+import AddLearnerLevel from "../modals/journey/AddLearnerLevel";
+import AddJourney from "../modals/lessons/AddJourney";
+import AddTaskUnit from "../modals/lessons/AddTaskUnit";
+import AddLevel from "../modals/lessons/AddLevel";
+import AddLesson from "../modals/lessons/AddLesson";
+import AddQueType from "../modals/questionaries/AddQueType";
+import AddContentType from "../modals/questionaries/AddContentType";
+import AddConTypeCategory from "../modals/questionaries/AddConTypeCategory";
+import AddContent from "../modals/questionaries/AddContent";
+import AddQueContent from "../modals/questionaries/AddQueContent";
+import AddQueContOption from "../modals/questionaries/AddQueContOption";
 import { useTabularView } from "@/store/useAdminStore";
+import Link from "next/link";
+import CustomLink from "@/components/ui-custom/CustomLink";
+import CustomButton from "@/components/ui-custom/CustomButton";
 
 const viewMap = {
   // learning journey
@@ -53,13 +55,11 @@ const viewMap = {
 // {table,title, addURL, addItemAPICall, errorMessageCall}
 export default function DataTableHeader({ table, view, filter }) {
   const currentView = useTabularView((state) => state.data.currentView);
+  const setTabularView = useTabularView((state) => state.setTabularView);
   const addWhat = currentView.slice(0, currentView.length - 1);
 
   return (
-    <div
-      className="flex items-center justify-between py-3  "
-     
-    >
+    <div className="flex items-center justify-between py-3  ">
       <div className="flex items-center border border-slate-300 rounded-md">
         <span className="h-full border-r border-slate-400 ">
           <Filter className="w-5 h-5 mx-1 text-slate-600" />
@@ -74,40 +74,60 @@ export default function DataTableHeader({ table, view, filter }) {
         />
       </div>
 
-      <div className="flex items-center gap-4">
-        {/* modal button add new item */}
-        <Dialog className="">
-          <DialogTrigger asChild>
-            <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
-              <Plus className="w-5 h-5 mx-1" />
-              <span className="">{`Add ${addWhat}`}</span>
-            </Button>
-          </DialogTrigger>
+      {currentView == "Questions" ? (
+        <CustomButton
+          style={
+            "flex gap-2 rounded-md  text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3"
+          }
+          click={() =>
+            setTabularView({
+              currentPage: "add-question",
+              currentView: "Add New Question",
+            })
+          }
+          startIcon={<Plus className="w-5 h-5 mx-1" />}
+          // target="_blank"
+          // href={"/admin/questionaries/add"}
+          txt={"Add Question"}
+        />
+      ) : (
+        <div className="flex items-center gap-4">
+          {/* modal button add new item */}
+          <Dialog className="">
+            <DialogTrigger asChild>
+              <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
+                <Plus className="w-5 h-5 mx-1" />
+                <span className="">{`Add ${addWhat}`}</span>
+              </Button>
+            </DialogTrigger>
 
-          <DialogContent className="sm:max-w-[500px]">
-            {/* <AddNewItem  title={title}  isJourney={false}/> */}
-            {view == "learning-journey" && <AddJourney title={view} />}
-            {view == "learning-level" && <AddLevel title={view} />}
-            {view == "learning-lesson" && <AddLesson title={view} />}
-            {view == "learning-unit" && <AddTaskUnit title={view} />}
-            {view == "learner-goal" && <AddGoal title={view} />}
-            {view == "learner-purpose" && <AddPurpose title={view} />}
-            {view == "learner-start-point" && <AddStartingPoint title={view} />}
-            {view == "learner-level" && <AddLearnerLevel title={view} />}
-            {view == "question-type" && <AddQueType title={view} />}
-            {view == "content-type" && <AddContentType title={view} />}
-            {view == "content-type-category" && (
-              <AddConTypeCategory title={view} />
-            )}
-            {view == "question" && <AddQuestion title={view} />}{" "}
-            {view == "content" && <AddContent title={view} />}
-            {view == "question-content" && <AddQueContent title={view} />}
-            {view == "question-content-option" && (
-              <AddQueContOption title={view} />
-            )}
-          </DialogContent>
-        </Dialog>
-      </div>
+            <DialogContent className="sm:max-w-[500px]">
+              {/* <AddNewItem  title={title}  isJourney={false}/> */}
+              {view == "learning-journey" && <AddJourney title={view} />}
+              {view == "learning-level" && <AddLevel title={view} />}
+              {view == "learning-lesson" && <AddLesson title={view} />}
+              {view == "learning-unit" && <AddTaskUnit title={view} />}
+              {view == "learner-goal" && <AddGoal title={view} />}
+              {view == "learner-purpose" && <AddPurpose title={view} />}
+              {view == "learner-start-point" && (
+                <AddStartingPoint title={view} />
+              )}
+              {view == "learner-level" && <AddLearnerLevel title={view} />}
+              {view == "question-type" && <AddQueType title={view} />}
+              {view == "content-type" && <AddContentType title={view} />}
+              {view == "content-type-category" && (
+                <AddConTypeCategory title={view} />
+              )}
+              {/* {view == "question" && <AddQuestion title={view} />}{" "} */}
+              {view == "content" && <AddContent title={view} />}
+              {view == "question-content" && <AddQueContent title={view} />}
+              {view == "question-content-option" && (
+                <AddQueContOption title={view} />
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
     </div>
   );
 }

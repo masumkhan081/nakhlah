@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddQueContent from "../modals/AddQueContent";
+import Deletion from "../modals/other/Deletion";
+import AddQueContent from "../modals/questionaries/AddQueContent";
 
 const ColQueContent = [
   {

@@ -146,7 +146,7 @@ export const adminDashboard = {
         },
         {
           id: 2,
-          title: "Learning Lesson",
+          title: "Learning Lessons",
           icon: <SiReacthookform className="w-6 h-6 text-slate-700" />,
           link: "/admin/learning-materials",
         },

@@ -12,7 +12,7 @@ export default function EnhancedText({ children, kind, color }) {
   };
 
   return (
-    <p className={` ${style[kind]} ${color} font-mono drop-shadow-sm flex gap-2 items-center`}>
+    <p className={` ${style[kind]} ${color} font-sans drop-shadow-sm flex gap-2 items-center`}>
       {children}
     </p>
   );

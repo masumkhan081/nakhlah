@@ -4,9 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddQuestion from "../modals/AddQuestion";
-import AddContent from "../modals/AddContent";
+import Deletion from "../modals/other/Deletion";
+import AddContent from "../modals/questionaries/AddContent";
 
 const ColContent = [
   {

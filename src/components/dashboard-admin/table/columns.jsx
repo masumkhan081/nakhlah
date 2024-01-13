@@ -13,8 +13,8 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
-import AddJourney from "../modals/AddJourney";
-import AddLesson from "../modals/AddLesson";
+import AddJourney from "../modals/lessons/AddJourney";
+import AddLesson from "../modals/lessons/AddLesson";
 
 export const purposeColumns = [
   {

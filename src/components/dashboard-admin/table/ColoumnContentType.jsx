@@ -6,8 +6,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddContentType from "../modals/AddContentType";
+import Deletion from "../modals/other/Deletion";
+import AddContentType from "../modals/questionaries/AddContentType";
 
 const ColoumnContentType = [
   {

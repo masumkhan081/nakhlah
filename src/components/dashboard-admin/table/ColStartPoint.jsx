@@ -4,8 +4,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
-import Deletion from "../modals/Deletion";
-import AddStartingPoint from "../modals/AddStartPoint"; 
+import Deletion from "../modals/other/Deletion";
+import AddStartingPoint from "../modals/journey/AddStartPoint"; 
 import { BASE_URL } from "@/lib/requestHandler";
 
 const ColStartPoint = [

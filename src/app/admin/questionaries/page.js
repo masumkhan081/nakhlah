@@ -3,7 +3,7 @@ import React from "react";
 
 export default function layout({ children }) {
   return (
-    <div>
+    <div className="  h-full">
       <Questionaries content={children} />
     </div>
   );

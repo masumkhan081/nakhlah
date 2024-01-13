@@ -3,10 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddStartingPoint from "../modals/AddStartPoint";
-import AddQuestion from "../modals/AddQuestion";
-
+import Deletion from "../modals/other/Deletion";
+import AddStartingPoint from "../modals/journey/AddStartPoint";
+ 
 const ColQuestion = [
   {
     id: "select",
@@ -201,11 +200,11 @@ const ColQuestion = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
-              <AddQuestion
+              {/* <AddQuestion
                 title="question"
                 useForEdit={true}
                 rowData={row.original}
-              />
+              /> */}
             </DialogContent>
           </Dialog>
         </div>

@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
-import Deletion from "../modals/Deletion";
-import AddJourney from "../modals/AddJourney";
+import Deletion from "../modals/other/Deletion";
+import AddJourney from "../modals/lessons/AddJourney";
 
 const columnJourney = [
   {

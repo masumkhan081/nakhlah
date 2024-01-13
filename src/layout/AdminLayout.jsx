@@ -38,11 +38,11 @@ const AdminLayout = ({ child }) => {
             <div className="py-3">
               <AdminTopNavbar open={isOpenCall} handleOpen={toggleNavbarCall} />
             </div>
-            <div className="flex  relative">
+            <div className="flex  relative h-full   ">
               <div className="w-[17%] fixed">
                 <AdminLeftNavbar open={isOpenCall} />
               </div>
-              <animated.div style={delay} className={`absolute right-0`}>
+              <animated.div style={delay} className={`absolute right-0 h-full`}>
                 <ScrollArea className="h-[83vh]  rounded-xl">
                   {child}
                 </ScrollArea>
