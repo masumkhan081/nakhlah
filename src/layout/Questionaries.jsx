@@ -22,8 +22,8 @@ export default function Questionaries({ content }) {
 
   useEffect(() => {
     setTabularView({
-      currentPage: "questionaries",
-      currentView: "Questions",
+      currentPage: "add-question",
+      currentView: "Add New Question",
     });
   }, []);
 
@@ -34,10 +34,24 @@ export default function Questionaries({ content }) {
 
   return (
     <div className="max-h-[83vh] flex flex-col gap-2 p-2 w-full bg-white">
-      <div className=" rounded-md py-1 flex justify-start ">
+      <div className=" rounded-md p-1 flex justify-between">
         <EnhancedText kind={"two"} color=" text-slate-800">
           {tabularView.currentView}
         </EnhancedText>
+        {tabularView.currentView == "Add New Question" && (
+          <CustomButton
+            click={() => {
+              setTabularView({
+                currentPage: "questionaries",
+                currentView: "Questions",
+              });
+            }}
+            style={
+              "text-blue-800 bg-white font-semibold text-sm font-serif leading-3 py-1 hover:bg-slate-100 hover:outline-2 px-1 rounded-md"
+            }
+            txt="Back To Questions"
+          />
+        )}
       </div>
 
       {tabularView.currentPage == "questionaries" && (

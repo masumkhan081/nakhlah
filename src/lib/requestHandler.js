@@ -14,7 +14,7 @@ const config = {
   },
 };
 
-const getMap = {
+export const getMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
   "learner-start-point": `${BASE_URL}/api/learner-starting-points`,

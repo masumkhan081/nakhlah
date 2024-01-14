@@ -17,7 +17,7 @@ export default function LearningJourney({ content }) {
   useEffect(() => {
     setTabularView({
       currentPage: "learning-journey",
-      currentView: "Learner Goals",
+      currentView: "Learner Purposes",
     });
   }, []);
 

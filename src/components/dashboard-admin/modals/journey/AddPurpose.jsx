@@ -8,11 +8,13 @@ import {
 import { useState } from "react";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomButton from "@/components/ui-custom/CustomButton";
+import { getMap } from "@/lib/requestHandler";
+import axios from "axios";
 
 export default function AddPurpose({ rowData, title, useForEdit }) {
   //
   const { toast } = useToast();
- 
+
   const addEdit = useLearnerPurpose((state) => state.addEdit);
   const afterAdd = useLearnerPurpose((state) => state.afterAdd);
   const afterUpdate = useLearnerPurpose((state) => state.afterUpdate);
@@ -30,9 +32,19 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    let formData = new FormData();
     if (purpose.length < 3) {
       setError("Too Short");
     } else {
+      // let obj = {
+      //   purpose: purpose,
+      // };
+      // formData.append("files.icon", image);
+      // formData.append("data", obj);
+      // axios.post(getMap["learner-purpose"], formData).then((response) => {
+      //   alert(JSON.stringify(response));
+      // });
+
       const result = await addEdit({
         useForEdit,
         data: {
@@ -58,7 +70,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
     <>
       <DialogHeader className={" py-0"}>
         <DialogTitle className="font-mono text-xl text-slate-700 py-0.25">
-        {useForEdit ? "Update" : "New"} {addWhat}
+          {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
 
         <form

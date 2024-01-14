@@ -140,6 +140,7 @@ export const useLearnerPurpose = create(
         : await postHandler("learner-purpose", {
             data,
           });
+      alert(JSON.stringify(response));
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {

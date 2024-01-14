@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
@@ -36,11 +36,15 @@ const columnPurpose = [
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
-      return <div className="textSecondaryColor textNormal">{rowId} </div>;
+      return (
+        <div className="textSecondaryColor textNormal">
+          {row.getValue("id")}{" "}
+        </div>
+      );
     },
   },
   {
-    id:"id_learner_purpose",
+    id: "id_learner_purpose",
     accessorKey: "purpose",
     header: ({ column }) => {
       return (
@@ -92,7 +96,6 @@ const columnPurpose = [
             <DialogTrigger asChild>
               <Button className="hover:text-[--uDText]">
                 <Trash2 className="w-5 h-5" />
-               
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">

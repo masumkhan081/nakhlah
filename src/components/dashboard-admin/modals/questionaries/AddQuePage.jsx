@@ -43,9 +43,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   const [question, setQuestion] = useState(useForEdit ? rowData.question : "");
 
-  const [error, setError] = useState({
+  const initErrors = {
     err0: "",
-  });
+  };
+  const [error, setError] = useState(initErrors);
   //
   const queTypeData = useQueType((state) => state.data);
   const setQueTypes = useQueType((state) => state.setQueTypes);
@@ -86,8 +87,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
   //  -------------------------------------------------------------- Task Unit Portion
   const unitData = useLearningUnit((state) => state.data);
   const setUnits = useLearningUnit((state) => state.setUnits);
+  //
   function filterUnitsByJourney(id) {
-    setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
+    const filetred = unitData.filter((item) => item.learning_journey.id == id);
+
+    setFilteredUnits(filetred);
   }
   const [filteredUnits, setFilteredUnits] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(
@@ -130,6 +134,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
       filterLessonsByLevel(selectedLevel.id);
     }
   }, [selectedLevel]);
+  useEffect(() => {
+    if (selectedQueType.id != null) {
+      setError({ ...error, err3: "" });
+    }
+  }, [selectedQueType]);
   //
   //  -------------------------------------------------------------- Task Lesson Portion
   const lessonData = useLearningLesson((state) => state.data);
@@ -153,7 +162,6 @@ export default function AddQuePage({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("question-type");
-      console.log(response.data);
       if (response.status === 200) {
         setQueTypes(renderableQueType(response.data.data));
       }
@@ -177,6 +185,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-journey");
+
       if (response.status === 200) {
         setJournies(renderableLearningLevels(response.data.data));
       }
@@ -199,6 +208,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-level");
+
       if (response.status === 200) {
         setLevels(renderableTaskUnits(response.data.data));
       }
@@ -210,6 +220,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-lesson");
+
       if (response.status === 200) {
         setLessons(renderableLessons(response.data.data));
       }
@@ -220,10 +231,16 @@ export default function AddQuePage({ rowData, useForEdit }) {
   }, [lessonData]);
 
   const initOptionData = {
-    // category: initStateSelection,
-    // type: initStateSelection,
     content: initStateSelection,
   };
+
+  const initOptions = {
+    optionOne: initOptionData,
+    optionTwo: initOptionData,
+    optionThree: initOptionData,
+    optionFour: initOptionData,
+  };
+
   const initRightWrong = {
     optionOne: false,
     optionTwo: false,
@@ -231,12 +248,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
     optionFour: false,
   };
 
-  const [options, setOptions] = useState({
-    optionOne: initOptionData,
-    optionTwo: initOptionData,
-    optionThree: initOptionData,
-    optionFour: initOptionData,
-  });
+  const [options, setOptions] = useState(initOptions);
 
   const [rightAndWrong, setRightAndWrong] = useState(initRightWrong);
 
@@ -264,8 +276,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
     if (
       question.length > 2 &&
       selectedLesson.id &&
-      wrongAns.length == 3 &&
-      rightAns
+      ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
+        (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
+        (selectedQueType.title == "Fill in the blank" &&
+          wrongAns.length == 3 &&
+          rightAns &&
+          question.includes("-") == true))
     ) {
       const queResult = useForEdit
         ? await putHandler("question", rowData.id, {
@@ -274,6 +290,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
         : await postHandler("question", {
             data: { question: question },
           });
+
+      alert("queResult: " + JSON.stringify(queResult));
       if (queResult.status == 200) {
         const queContResult = useForEdit
           ? await putHandler("question-content", rowData.id, {
@@ -286,6 +304,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 content: { connect: [options[rightAns].content.id] },
               },
             });
+
+        alert("queContResult: " + JSON.stringify(queContResult));
 
         const queOptionResult = useForEdit
           ? await putHandler("question-content-option", rowData.id, {
@@ -304,6 +324,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
               },
             });
 
+        alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
         if (queOptionResult.status == 200) {
           const journeyMapResult = useForEdit
             ? await putHandler("journey-map-question", rowData.id, {
@@ -320,6 +342,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               title: "Question Added Successfully",
             });
           }
+          alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
         }
 
         useForEdit
@@ -349,10 +372,22 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 title: selectedJourney.title,
               },
             });
-
-        // document.getElementById("closeDialog")?.click();
+        toast({
+          title: useForEdit
+            ? "Item Updated Succesfully"
+            : "Item Added Successfully",
+        });
+        resetForm();
       } else if (queResult.status == 400) {
-        setError({ err0: queResult.error });
+        let errors = result.data.error.details.errors;
+        alert("errors: " + JSON.stringify(errors));
+        setError({
+          err0: errors[0].message,
+          err1: errors[1]?.message,
+          err2: errors[2]?.message,
+          err3: errors[3]?.message,
+          err4: errors[4]?.message,
+        });
       }
     }
     //  specific errors
@@ -366,16 +401,50 @@ export default function AddQuePage({ rowData, useForEdit }) {
       if (question.length < 3) {
         err_2 = "Too Short";
       }
+      if (
+        question.length > 2 &&
+        selectedQueType.title == "Fill in the blank" &&
+        question.includes("-") == false
+      ) {
+        err_2 = `Put a blank ("-") in question`;
+      }
+      if (selectedQueType.title == "True 0r False" && tFAns.id == null) {
+        err_3 = "Must Provide A Correct Option";
+      }
+      if (
+        selectedQueType.title == "MCQ" ||
+        selectedQueType.title == "Fill in the blank"
+      ) {
+        if (
+          options.optionOne.content.id == null ||
+          options.optionTwo.content.id == null ||
+          options.optionThree.content.id == null ||
+          options.optionFour.content.id == null
+        ) {
+          err_3 = "Provide all 4 options";
+        } else if (rightAns == undefined) {
+          err_3 = "Please mark an option as right answer";
+        }
+      }
 
       setError({
         err0: err_0,
         err1: err_1,
         err2: err_2,
+        err3: err_3,
         err4: err_4,
         err5: err_5,
         err6: err_6,
       });
     }
+  }
+
+  function resetForm() {
+    setOptions(initOptions);
+    setTFAns(initStateSelection);
+    setQuestion("");
+    setRightAndWrong(initRightWrong);
+    setError(initErrors);
   }
 
   const [tFAns, setTFAns] = useState(initStateSelection);
@@ -386,7 +455,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   //   jsx
   return (
-    <div className="w-full p-3 border border-blue-300 rounded-md ">
+    <div className="w-full p-3   rounded-md ">
+      {JSON.stringify(options)}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
@@ -468,89 +538,96 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err2}</span>
           </div>
         </div>
-
-        <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-          Set Answer Options
-        </EnhancedText>
-
-        <div className="flex flex-col gap-4 border-blue-400">
-          {/* option -1 */}
-
-          {selectedQueType.title == "True 0r False" && (
-            <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
-              <div className="flex justify-between   pb-1">
-                <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                  <span className="px-2">Select Correct Option</span>
-                </p>
-              </div>
-
-              <CustomSelect
-                label={"(true/false)"}
-                value={tFAns}
-                options={trueFalseOptions}
-                onChange={(selected) => setTFAns(selected)}
-                bg="wh"
-              />
+        {selectedQueType.id && (
+          <>
+            {" "}
+            <div className="flex gap-3 items-center">
+              <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
+                Set Answer Options
+              </EnhancedText>
+              <span className="text-red-600 font-semibold pt-0.12 ">
+                {error.err3}
+              </span>
             </div>
-          )}
+            <div className="flex flex-col gap-4 border-blue-400">
+              {/* option -1 */}
 
-          {(selectedQueType.title == "MCQ" ||
-            selectedQueType.title == "Fill in the blank") &&
-            Object.keys(options).map((option, index) => {
-              return (
-                <div
-                  key={index}
-                  className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  "
-                >
-                  <div className="flex justify-between   pb-1">
-                    <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                      <span className="px-2">Answer Option</span>
-                      <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
-                        {index + 1}
-                      </span>
-                    </p>
-                    <div className="flex gap-2 items-center">
-                      <input
-                        type="checkbox"
-                        id={option}
-                        checked={rightAndWrong[option]}
-                        name={"ans_option"}
-                        onChange={(e) =>
-                          handleMark({ [option]: e.target.checked })
-                        }
-                      />
-                      <label htmlFor="option1" className="text-sm">
-                        Mark as right answer
-                      </label>
-                    </div>
+              {selectedQueType.title == "True 0r False" && (
+                <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
+                  <div className="flex justify-between pb-1">
+                    <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
+                      Select Correct Option
+                    </span>
                   </div>
 
                   <CustomSelect
-                    value={options[option].content}
-                    label="Content"
-                    options={contents}
-                    onChange={(selected) =>
-                      setOptions({
-                        ...options,
-                        [option]: { ...options[option], content: selected },
-                      })
-                    }
-                    addNewText="New Content"
-                    addNewAfterClick={handleAdd}
+                    label={"(true/false)"}
+                    value={tFAns}
+                    options={trueFalseOptions}
+                    onChange={(selected) => setTFAns(selected)}
                     bg="wh"
                   />
                 </div>
-              );
-            })}
-        </div>
+              )}
 
-        <div className="sticky bottom-0 bg-white w-full ">
-          <CustomButton
-            txt="Submit"
-            type="submit"
-            style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
-          />
-        </div>
+              {(selectedQueType.title == "MCQ" ||
+                selectedQueType.title == "Fill in the blank") &&
+                Object.keys(options).map((option, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  "
+                    >
+                      <div className="flex justify-between   pb-1">
+                        <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
+                          <span className="px-2">Answer Option</span>
+                          <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
+                            {index + 1}
+                          </span>
+                        </p>
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="checkbox"
+                            id={option}
+                            checked={rightAndWrong[option]}
+                            name={"ans_option"}
+                            onChange={(e) =>
+                              handleMark({ [option]: e.target.checked })
+                            }
+                          />
+                          <label htmlFor="option1" className="text-sm">
+                            Mark as right answer
+                          </label>
+                        </div>
+                      </div>
+
+                      <CustomSelect
+                        value={options[option].content}
+                        label="Content"
+                        options={contents}
+                        onChange={(selected) =>
+                          setOptions({
+                            ...options,
+                            [option]: { ...options[option], content: selected },
+                          })
+                        }
+                        addNewText="New Content"
+                        addNewAfterClick={handleAdd}
+                        bg="wh"
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+            <div className="sticky bottom-0 bg-white w-full ">
+              <CustomButton
+                txt="Submit"
+                type="submit"
+                style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
+              />
+            </div>
+          </>
+        )}
       </form>
     </div>
   );
