@@ -379,14 +379,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
         });
         resetForm();
       } else if (queResult.status == 400) {
-        let errors = result.data.error.details.errors;
+        let errors = queResult.data.error.details.errors;
         alert("errors: " + JSON.stringify(errors));
         setError({
-          err0: errors[0].message,
-          err1: errors[1]?.message,
-          err2: errors[2]?.message,
-          err3: errors[3]?.message,
-          err4: errors[4]?.message,
+          err2: errors[0]?.message,
         });
       }
     }
@@ -456,7 +452,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   //   jsx
   return (
     <div className="w-full p-3   rounded-md ">
-      {JSON.stringify(options)}
+      {/* {JSON.stringify(options)} */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
