@@ -134,9 +134,24 @@ export default function AddQuePage({ rowData, useForEdit }) {
       filterLessonsByLevel(selectedLevel.id);
     }
   }, [selectedLevel]);
+
+  const fetchMapContent = {
+    MCQ: "content-mcq",
+    "Fill in the blank": "content-fib",
+    "True 0r False": "content-boolean",
+    "Sentence Making": "content-sm",
+    "Pair Matching": "content-pm",
+  };
   useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler(fetchMapContent[selectedQueType.title]);
+      if (response.status === 200) {
+        setContents(renderableContents(response.data.data));
+      }
+    };
     if (selectedQueType.id != null) {
       setError({ ...error, err3: "" });
+      fetch();
     }
   }, [selectedQueType]);
   //
@@ -171,17 +186,6 @@ export default function AddQuePage({ rowData, useForEdit }) {
     }
   }, [queTypeData]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("content");
-      if (response.status === 200) {
-        setContents(renderableContents(response.data.data));
-      }
-    };
-    if (Array.isArray(contents) && contents.length === 0) {
-      fetch();
-    }
-  }, [contents]);
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-journey");
@@ -301,7 +305,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               data: {
                 question: { connect: [queResult.data.data.id] },
                 question_type: { connect: [selectedQueType.id] },
-                content: { connect: [options[rightAns].content.id] },
+                content: { connect: [getQueContent(rightAns)] },
               },
             });
 
@@ -435,6 +439,17 @@ export default function AddQuePage({ rowData, useForEdit }) {
     }
   }
 
+  function getQueContent(rightAns) {
+    if (
+      selectedQueType.title == "Fill in the blank" ||
+      selectedQueType.title == "MCQ"
+    ) {
+      return options[rightAns].content.id;
+    } else if (selectedQueType.title == "True 0r False") {
+      return tFAns.id;
+    }
+  }
+
   function resetForm() {
     setOptions(initOptions);
     setTFAns(initStateSelection);
@@ -445,18 +460,22 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   const [tFAns, setTFAns] = useState(initStateSelection);
   const trueFalseOptions = [
-    { id: 1, title: "False" },
-    { id: 2, title: "True " },
+    { id: 31, title: "False" },
+    { id: 30, title: "True " },
   ];
+  const [image, setImage] = useState(null);
+  const [queAudio, setQueAudio] = useState("");
+  const [sentence, setSentence] = useState("");
 
   //   jsx
   return (
     <div className="w-full p-3   rounded-md ">
-      {/* {JSON.stringify(options)} */}
+      {JSON.stringify(contents)}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
       >
+        {/* sll select learning lesson */}
         <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
           Select Learning Lesson
         </EnhancedText>
@@ -504,10 +523,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           )}
         </div>
 
-        <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-          Set The Question
-        </EnhancedText>
-        <div className="flex flex-col gap-2 rounded-md border-l-2 border-blue-400 py-3 px-2">
+        {/* stq Set the question */}
+
+        <div className="flex flex-col gap-2 rounded-sm shadow-inner  border-blue-300 py-0.75 px-2">
+          <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
+            Set The Question
+          </EnhancedText>
           <div className="flex flex-col gap-1">
             <CustomSelect
               label={"Select Question Type"}
@@ -529,14 +550,34 @@ export default function AddQuePage({ rowData, useForEdit }) {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               ph="Enter the question"
-              style="py-0.12 px-1"
+              style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err2}</span>
           </div>
+          <div className="flex gap-4 items-center">
+            <span className="font-semibold">Attach Image</span>
+            <input type="file" id="fileInput" name="file" />
+            {image && (
+              <img
+                alt=" image"
+                src={image}
+                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+              />
+            )}
+          </div>
+          <div className="flex flex-col gap-1 ">
+            <span className="">Attach Audio Text</span>
+            <textarea
+              rows={2}
+              className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
+            />
+
+            <span className="text-red-700">{error.err2}</span>
+          </div>
         </div>
+        {/* sao Set answer option */}
         {selectedQueType.id && (
           <>
-            {" "}
             <div className="flex gap-3 items-center">
               <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
                 Set Answer Options
@@ -563,6 +604,21 @@ export default function AddQuePage({ rowData, useForEdit }) {
                     onChange={(selected) => setTFAns(selected)}
                     bg="wh"
                   />
+                </div>
+              )}
+              {selectedQueType.title == "Sentence Making" && (
+                <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
+                  <div className="flex flex-col gap-1 ">
+                    <span className="">Full Sentence In Correct Order</span>
+                    <CustomInput
+                      type="text"
+                      value={sentence}
+                      onChange={(e) => setSentence(e.target.value)}
+                      ph="Enter sentence in correct oprder"
+                      style="py-0.25 px-1"
+                    />
+                    <span className="text-red-700">{error.err2}</span>
+                  </div>
                 </div>
               )}
 

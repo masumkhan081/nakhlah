@@ -2,6 +2,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 
 export default function CustomInput({
+  id,
   type,
   style,
   ph,
@@ -18,6 +19,7 @@ export default function CustomInput({
         </span>
       )}
       <Input
+        id={id}
         type="text"
         placeHolder={ph}
         onChange={onChange}

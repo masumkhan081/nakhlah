@@ -5,10 +5,10 @@ export const API_URL = `${BASE_URL}/api/auth/local`;
 export const Forget_Reset_URL = `${BASE_URL}/api/auth`;
 export const Admin_URL = `${BASE_URL}/admin`;
 
-const token =
+export const token =
   "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e";
 
-const config = {
+export const config = {
   headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -26,7 +26,12 @@ export const getMap = {
   "question-type": `${BASE_URL}/api/question-types`,
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
-  content: `${BASE_URL}/api/contents?populate=*`,
+  "content-all": `${BASE_URL}/api/contents?populate=*`,
+  "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
+  "content-fib": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill_In_The_Blank`,
+  "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
+  "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence_Making`,
+  "content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair_Matching`,
   // question: `${BASE_URL}/api/questions?populate=*`,
   question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
@@ -97,7 +102,7 @@ export const getOne = async (url) => {
 
 export const getHandler = async (key) => {
   try {
-    const response = await axios.get(getMap[key], config);
+    const response = await axios.get(getMap[key], config); 
     return response;
   } catch (err) {
     return err;

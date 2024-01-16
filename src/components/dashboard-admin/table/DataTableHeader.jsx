@@ -27,9 +27,8 @@ import AddContent from "../modals/questionaries/AddContent";
 import AddQueContent from "../modals/questionaries/AddQueContent";
 import AddQueContOption from "../modals/questionaries/AddQueContOption";
 import { useTabularView } from "@/store/useAdminStore";
-import Link from "next/link";
-import CustomLink from "@/components/ui-custom/CustomLink";
 import CustomButton from "@/components/ui-custom/CustomButton";
+import QueFilter from "../tabular-view/questionaries/QueFilter";
 
 const viewMap = {
   // learning journey
@@ -61,23 +60,28 @@ export default function DataTableHeader({ table, view, filter }) {
   return (
     <div className="flex items-center justify-between py-3  ">
       <div className="flex items-center border border-slate-300 rounded-md">
-        <span className="h-full border-r border-slate-400 ">
+        {/* <span className="h-full border-r border-slate-400 ">
           <Filter className="w-5 h-5 mx-1 text-slate-600" />
-        </span>
+        </span> */}
+        <CustomButton
+          startIcon={<Filter className="w-5 h-5 mx-1 text-slate-600" />}
+        />
         <Input
           placeholder={`Filter ${currentView}`}
           value={table.getColumn(viewMap[view])?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn(viewMap[view])?.setFilterValue(event.target.value)
           }
-          className="max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
+          className="max-h-[28px] max-w-[350px] min-w-[220px] text-center text-slate-700 px-3 py-1 placeholder:text-slate-500 "
         />
       </div>
+
+      {currentView == "Questions" && <QueFilter />}
 
       {currentView == "Questions" ? (
         <CustomButton
           style={
-            "flex gap-2 rounded-md  text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3"
+            "flex gap-2 rounded-md max-h-[28px] text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3"
           }
           click={() =>
             setTabularView({
@@ -86,18 +90,16 @@ export default function DataTableHeader({ table, view, filter }) {
             })
           }
           startIcon={<Plus className="w-5 h-5 mx-1" />}
-          // target="_blank"
-          // href={"/admin/questionaries/add"}
-          txt={"Add Question"}
+          txt={"Question"}
         />
       ) : (
         <div className="flex items-center gap-4">
           {/* modal button add new item */}
           <Dialog className="">
             <DialogTrigger asChild>
-              <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-3">
+              <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-2">
                 <Plus className="w-5 h-5 mx-1" />
-                <span className="">{`Add ${addWhat}`}</span>
+                <span className="">{`${addWhat}`}</span>
               </Button>
             </DialogTrigger>
 

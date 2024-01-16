@@ -44,7 +44,7 @@ const CustomSelect = ({
   return (
     <div className="relative " ref={dropdownRef}>
       <div
-        className={` px-0.5 min-w-[110px] rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
+        className={` px-0.5 min-w-[110px] h-full rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
         onClick={toggleDropdown}
       >
         {label && (
@@ -73,7 +73,7 @@ const CustomSelect = ({
                   value.title === option.title
                     ? "bg-slate-200 border-blue-300"
                     : "bg-white text-black"
-                } capitalize py-1 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
+                } capitalize py-0.12 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
                 onClick={() => {
                   onChange(option);
                   setIsOpen(false);

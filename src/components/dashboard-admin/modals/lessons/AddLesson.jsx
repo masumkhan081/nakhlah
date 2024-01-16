@@ -19,6 +19,7 @@ import {
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 import { ChevronLast } from "lucide-react";
+import { renderableLearningLevels, renderableTaskUnits, renderableTasks } from "@/lib/fetchFunctions";
 
 export default function AddLesson({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -177,75 +178,38 @@ export default function AddLesson({ rowData, useForEdit }) {
   }
 
   useEffect(() => {
-    const fetchJournies = async () => {
+    const fetch = async () => {
       const response = await getHandler("learning-journey");
       if (response.status === 200) {
-        const dataRenderable = response.data.data.map((item) => {
-          return {
-            id: item.id,
-            title: item.attributes.title,
-          };
-        });
-        setJournies(dataRenderable);
+        setJournies(renderableLearningLevels(response.data.data));
       }
     };
-
     if (Array.isArray(journeyData) && journeyData.length === 0) {
-      fetchJournies();
+      fetch();
     }
   }, [journeyData]);
 
   useEffect(() => {
-    const fetchUnits = async () => {
+    const fetch = async () => {
       const response = await getHandler("learning-unit");
-      console.log(response.data);
       if (response.status === 200) {
-        const data = response.data.data.map((item) => {
-          const { learning_journey } = item.attributes;
-
-          return {
-            id: item.id,
-            title: item.attributes.title,
-            learning_journey: {
-              id: learning_journey.data.id,
-              title: learning_journey.data.attributes.title,
-            },
-          };
-        });
-        setUnits(data);
+        setUnits(renderableTasks(response.data.data));
       }
     };
     if (Array.isArray(unitData) && unitData.length === 0) {
-      fetchUnits();
+      fetch();
     }
   }, [unitData]);
 
   useEffect(() => {
-    const fetchLevels = async () => {
+    const fetch = async () => {
       const response = await getHandler("learning-level");
-      console.log(response.data);
       if (response.status === 200) {
-        const data = response.data.data.map((item) => {
-          const { learning_journey_unit } = item.attributes;
-          const { learning_journey } = learning_journey_unit.data.attributes;
-          return {
-            id: item.id,
-            title: item.attributes.title,
-            learning_journey_unit: {
-              id: learning_journey_unit.data.id,
-              title: learning_journey_unit.data.attributes.title,
-              learning_journey: {
-                id: learning_journey.data.id,
-                title: learning_journey.data.attributes.title,
-              },
-            },
-          };
-        });
-        setLevels(data);
+        setLevels(renderableTaskUnits(response.data.data));
       }
     };
     if (Array.isArray(levelData) && levelData.length === 0) {
-      fetchLevels();
+      fetch();
     }
   }, [levelData]);
 
