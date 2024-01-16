@@ -152,6 +152,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
     if (selectedQueType.id != null) {
       setError({ ...error, err3: "" });
       fetch();
+      selectedQueType.title == "Sentence Making"
+        ? setQuestion("Arrange The Below Sentence In Correct Order")
+        : "";
     }
   }, [selectedQueType]);
   //
@@ -282,6 +285,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
       selectedLesson.id &&
       ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
         (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
+        (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
         (selectedQueType.title == "Fill in the blank" &&
           wrongAns.length == 3 &&
           rightAns &&
@@ -311,42 +315,47 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
         alert("queContResult: " + JSON.stringify(queContResult));
 
-        const queOptionResult = useForEdit
-          ? await putHandler("question-content-option", rowData.id, {
-              data: {},
-            })
-          : await postHandler("question-content-option", {
-              data: {
-                question_content: { connect: [queContResult.data.data.id] },
-                content: {
-                  connect: [
-                    options[wrongAns[0]].content.id,
-                    options[wrongAns[1]].content.id,
-                    options[wrongAns[2]].content.id,
-                  ],
-                },
-              },
-            });
-
-        alert("queOptionResult: " + JSON.stringify(queOptionResult));
-
-        if (queOptionResult.status == 200) {
-          const journeyMapResult = useForEdit
-            ? await putHandler("journey-map-question", rowData.id, {
+        // if mcq or fib
+        if (
+          selectedQueType.title == "Fill in the blank" ||
+          selectedQueType.title == "MCQ"
+        ) {
+          const queOptionResult = useForEdit
+            ? await putHandler("question-content-option", rowData.id, {
                 data: {},
               })
-            : await postHandler("journey-map-question", {
+            : await postHandler("question-content-option", {
                 data: {
-                  learning_journey_lesson: { connect: [selectedLesson.id] },
                   question_content: { connect: [queContResult.data.data.id] },
+                  content: {
+                    connect: [
+                      options[wrongAns[0]].content.id,
+                      options[wrongAns[1]].content.id,
+                      options[wrongAns[2]].content.id,
+                    ],
+                  },
                 },
               });
-          if (journeyMapResult.status == 200) {
-            toast({
-              title: "Question Added Successfully",
-            });
+          alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
+          if (queOptionResult.status == 200) {
+            const journeyMapResult = useForEdit
+              ? await putHandler("journey-map-question", rowData.id, {
+                  data: {},
+                })
+              : await postHandler("journey-map-question", {
+                  data: {
+                    learning_journey_lesson: { connect: [selectedLesson.id] },
+                    question_content: { connect: [queContResult.data.data.id] },
+                  },
+                });
+            if (journeyMapResult.status == 200) {
+              toast({
+                title: "Question Added Successfully",
+              });
+            }
+            alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
-          alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
         }
 
         useForEdit
