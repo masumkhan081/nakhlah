@@ -13,7 +13,7 @@ const Content = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler("content");
+      const response = await getHandler("content-all");
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
       }

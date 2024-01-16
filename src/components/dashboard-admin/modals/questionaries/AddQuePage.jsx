@@ -447,6 +447,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
       return options[rightAns].content.id;
     } else if (selectedQueType.title == "True 0r False") {
       return tFAns.id;
+    } else if (selectedQueType.title == "Sentence Making") {
+      return smAns.id;
     }
   }
 
@@ -465,7 +467,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
   ];
   const [image, setImage] = useState(null);
   const [queAudio, setQueAudio] = useState("");
-  const [sentence, setSentence] = useState("");
+  const [smAns, setSmAns] = useState(initStateSelection);
 
   //   jsx
   return (
@@ -609,13 +611,17 @@ export default function AddQuePage({ rowData, useForEdit }) {
               {selectedQueType.title == "Sentence Making" && (
                 <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
                   <div className="flex flex-col gap-1 ">
-                    <span className="">Full Sentence In Correct Order</span>
-                    <CustomInput
-                      type="text"
-                      value={sentence}
-                      onChange={(e) => setSentence(e.target.value)}
-                      ph="Enter sentence in correct oprder"
-                      style="py-0.25 px-1"
+                    <span className="">
+                      Select Sentence That's In Correct Order
+                    </span>
+                    <CustomSelect
+                      value={smAns}
+                      label="Select Content"
+                      options={contents}
+                      onChange={(selected) => setSmAns(selected)}
+                      addNewText="New Sentence"
+                      addNewAfterClick={handleAdd}
+                      bg="wh"
                     />
                     <span className="text-red-700">{error.err2}</span>
                   </div>
