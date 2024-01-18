@@ -15,10 +15,10 @@ export const config = {
 };
 
 export const getMap = {
-  "learner-purpose": `${BASE_URL}/api/learning-purposes`,
+  "learner-purpose": `${BASE_URL}/api/learning-purposes?populate=icon`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
-  "learner-start-point": `${BASE_URL}/api/learner-starting-points`,
-  "learner-level": `${BASE_URL}/api/learner-levels`,
+  "learner-start-point": `${BASE_URL}/api/learner-starting-points?populate=icon`,
+  "learner-level": `${BASE_URL}/api/learner-levels?populate=icon`,
   "learning-journey": `${BASE_URL}/api/learning-journeys`,
   "learning-unit": `${BASE_URL}/api/learning-journey-units?populate=learning_journey`,
   "learning-level": `${BASE_URL}/api/learning-journey-levels?populate[learning_journey_unit][populate][0]=learning_journey`,
@@ -37,7 +37,6 @@ export const getMap = {
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
 };
-
 const postMap = {
   "learner-purpose": `${BASE_URL}/api/learning-purposes`,
   "learner-goal": `${BASE_URL}/api/learning-goals`,
@@ -91,6 +90,28 @@ const deleteMap = {
   "question-content-option": `${BASE_URL}/api/question-content-options`,
 };
 
+export const postFormData = async (key, formData) => {
+  try {
+    const response = await fetch(postMap[key], {
+      method: "POST",
+      body: formData,
+      // headers: {
+      //   Authorization:
+      //     "Bearer " +
+      //     "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+      // },
+      // headers:config.headers,
+      config,
+      redirect: "follow",
+    }).then((response) => {
+      return response;
+    });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 export const getOne = async (url) => {
   try {
     const response = await axios.get(`${BASE_URL}/${url}`, config);
@@ -102,7 +123,7 @@ export const getOne = async (url) => {
 
 export const getHandler = async (key) => {
   try {
-    const response = await axios.get(getMap[key], config); 
+    const response = await axios.get(getMap[key], config);
     return response;
   } catch (err) {
     return err;

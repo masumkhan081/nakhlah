@@ -28,6 +28,7 @@ import {
   renderableTaskUnits,
   renderableTasks,
 } from "@/lib/fetchFunctions";
+import { GitCommitHorizontal, Hash } from "lucide-react";
 
 export default function AddQuePage({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -56,7 +57,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.question_type.id,
           title: rowData.question_type.title,
         }
-      : initStateSelection
+      : { id: 1, title: "MCQ" }
   );
   //  question-type
 
@@ -74,12 +75,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.level.id,
           title: rowData.level.title,
         }
-      : initStateSelection
+      : { id: 3, title: "Advanced" } //initStateSelection
   );
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      useForEdit ? "" : setSelectedUnit(initStateSelection);
+      useForEdit ? "" : setSelectedUnit({ id: 9, title: "Pokath" });
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
@@ -100,12 +101,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.task.id,
           title: rowData.task.title,
         }
-      : initStateSelection
+      : { id: 9, title: "Pokath" } //initStateSelection
   );
 
   useEffect(() => {
     if (selectedUnit.id != null) {
-      useForEdit ? "" : setSelectedLevel(initStateSelection);
+      useForEdit ? "" : setSelectedLevel({ id: 7, title: "Level adv pokath" });
       filterLevelsByUnit(selectedUnit.id);
     }
   }, [selectedUnit]);
@@ -125,12 +126,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.task_unit.id,
           title: rowData.task_unit.title,
         }
-      : initStateSelection
+      : { id: 7, title: "Level adv pokath" } //initStateSelection
   );
 
   useEffect(() => {
     if (selectedLevel.id != null) {
-      useForEdit ? "" : setSelectedLesson(initStateSelection);
+      useForEdit ? "" : setSelectedLesson({ id: 8, title: "Lesson 2" });
       filterLessonsByLevel(selectedLevel.id);
     }
   }, [selectedLevel]);
@@ -167,7 +168,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.lesson.id,
           title: rowData.lesson.title,
         }
-      : initStateSelection
+      : { id: 8, title: "Lesson 2" } // initStateSelection
   );
   function filterLessonsByLevel(id) {
     setFilteredLessons(
@@ -296,7 +297,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
             data: { question: question },
           })
         : await postHandler("question", {
-            data: { question: question },
+            data: {
+              question: question,
+              question_type_category: { connect: [selectedQueType.id] },
+              audio: queAudio,
+            },
           });
 
       alert("queResult: " + JSON.stringify(queResult));
@@ -367,7 +372,6 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 id: selectedQueType.id,
                 title: selectedQueType.title,
               },
-
               lesson: {
                 id: selectedLesson.id,
                 title: selectedLesson.title,
@@ -481,66 +485,80 @@ export default function AddQuePage({ rowData, useForEdit }) {
   //   jsx
   return (
     <div className="w-full p-3   rounded-md ">
-      {JSON.stringify(contents)}
+      {JSON.stringify(selectedJourney) +
+        "--" +
+        JSON.stringify(selectedUnit) +
+        "--" +
+        JSON.stringify(selectedLevel) +
+        "--" +
+        JSON.stringify(selectedLesson) +
+        "--" +
+        JSON.stringify(selectedQueType) +
+        "--" +
+        JSON.stringify(tFAns)}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
       >
         {/* sll select learning lesson */}
-        <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-          Select Learning Lesson
-        </EnhancedText>
-        <div className="flex flex-col gap-2 ">
-          <CustomSelect
-            label={"Learner Level"}
-            value={selectedJourney}
-            options={journeyData}
-            bg="wh"
-            onChange={(value) =>
-              setSelectedJourney({ id: value.id, title: value.title })
-            }
-          />
-          <CustomSelect
-            label={"Task"}
-            value={selectedUnit}
-            options={filteredUnits}
-            bg="wh"
-            onChange={(value) =>
-              setSelectedUnit({ id: value.id, title: value.title })
-            }
-          />
+        <div className="flex flex-col gap-3 rounded-sm   py-0.75 px-2">
+          <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
+            <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Select
+            Learning Lesson
+          </EnhancedText>
+          <div className="flex flex-col gap-2 w-2/3">
+            <CustomSelect
+              label={"Learner Level"}
+              value={selectedJourney}
+              options={journeyData}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedJourney({ id: value.id, title: value.title })
+              }
+            />
+            <CustomSelect
+              label={"Task"}
+              value={selectedUnit}
+              options={filteredUnits}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedUnit({ id: value.id, title: value.title })
+              }
+            />
 
-          <CustomSelect
-            label={"Task level"}
-            value={selectedLevel}
-            options={filteredLevels}
-            bg="wh"
-            onChange={(value) =>
-              setSelectedLevel({ id: value.id, title: value.title })
-            }
-          />
+            <CustomSelect
+              label={"Task level"}
+              value={selectedLevel}
+              options={filteredLevels}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedLevel({ id: value.id, title: value.title })
+              }
+            />
 
-          <CustomSelect
-            label={"Task Lesson"}
-            value={selectedLesson}
-            options={filteredLessons}
-            bg="wh"
-            onChange={(value) =>
-              setSelectedLesson({ id: value.id, title: value.title })
-            }
-          />
-          {error.err0 !== "" && (
-            <span className="text-red-700">{error.err0}</span>
-          )}
+            <CustomSelect
+              label={"Task Lesson"}
+              value={selectedLesson}
+              options={filteredLessons}
+              bg="wh"
+              onChange={(value) =>
+                setSelectedLesson({ id: value.id, title: value.title })
+              }
+            />
+            {error.err0 !== "" && (
+              <span className="text-red-700">{error.err0}</span>
+            )}
+          </div>
         </div>
 
         {/* stq Set the question */}
 
-        <div className="flex flex-col gap-2 rounded-sm shadow-inner  border-blue-300 py-0.75 px-2">
+        <div className="flex flex-col gap-3 rounded-sm    py-0.75 px-2">
           <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-            Set The Question
+            <GitCommitHorizontal className="w-6 h-6 text-blue-400" /> Set The
+            Question
           </EnhancedText>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 w-2/3">
             <CustomSelect
               label={"Select Question Type"}
               value={selectedQueType}
@@ -554,7 +572,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               <span className="text-red-700">{error.err1}</span>
             )}
           </div>
-          <div className="flex flex-col gap-1 ">
+          <div className="flex flex-col gap-1 w-2/3">
             <span className="">Question</span>
             <CustomInput
               type="text"
@@ -565,7 +583,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err2}</span>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center w-2/3">
             <span className="font-semibold">Attach Image</span>
             <input type="file" id="fileInput" name="file" />
             {image && (
@@ -576,9 +594,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
               />
             )}
           </div>
-          <div className="flex flex-col gap-1 ">
+          <div className="flex flex-col gap-1 w-2/3 ">
             <span className="">Attach Audio Text</span>
             <textarea
+              value={queAudio}
+              onChange={(e) => setQueAudio(e.target.value)}
               rows={2}
               className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
             />
@@ -587,114 +607,125 @@ export default function AddQuePage({ rowData, useForEdit }) {
           </div>
         </div>
         {/* sao Set answer option */}
-        {selectedQueType.id && (
-          <>
-            <div className="flex gap-3 items-center">
-              <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-                Set Answer Options
-              </EnhancedText>
-              <span className="text-red-600 font-semibold pt-0.12 ">
-                {error.err3}
-              </span>
-            </div>
-            <div className="flex flex-col gap-4 border-blue-400">
-              {/* option -1 */}
+        <div className="flex flex-col gap-2 rounded-md w-2/3 py-0.75 px-2">
+          {selectedQueType.id && (
+            <>
+              <div className="flex gap-3 items-center">
+                <EnhancedText
+                  kind={"four"}
+                  color="text-blue-600 font-semibold "
+                >
+                  <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Set
+                  Answer Options
+                </EnhancedText>
+                <span className="text-red-600 font-semibold pt-0.12 ">
+                  {error.err3}
+                </span>
+              </div>
+              <div className="flex flex-col gap-4 border-blue-400">
+                {/* option -1 */}
 
-              {selectedQueType.title == "True 0r False" && (
-                <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
-                  <div className="flex justify-between pb-1">
-                    <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
-                      Select Correct Option
-                    </span>
-                  </div>
+                {selectedQueType.title == "True 0r False" && (
+                  <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
+                    <div className="flex justify-between pb-1">
+                      <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
+                        Select Correct Option
+                      </span>
+                    </div>
 
-                  <CustomSelect
-                    label={"(true/false)"}
-                    value={tFAns}
-                    options={trueFalseOptions}
-                    onChange={(selected) => setTFAns(selected)}
-                    bg="wh"
-                  />
-                </div>
-              )}
-              {selectedQueType.title == "Sentence Making" && (
-                <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
-                  <div className="flex flex-col gap-1 ">
-                    <span className="">
-                      Select Sentence That's In Correct Order
-                    </span>
                     <CustomSelect
-                      value={smAns}
-                      label="Select Content"
-                      options={contents}
-                      onChange={(selected) => setSmAns(selected)}
-                      addNewText="New Sentence"
-                      addNewAfterClick={handleAdd}
+                      label={"(true/false)"}
+                      value={tFAns}
+                      options={trueFalseOptions}
+                      onChange={(selected) => setTFAns(selected)}
                       bg="wh"
                     />
-                    <span className="text-red-700">{error.err2}</span>
                   </div>
-                </div>
-              )}
-
-              {(selectedQueType.title == "MCQ" ||
-                selectedQueType.title == "Fill in the blank") &&
-                Object.keys(options).map((option, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  "
-                    >
-                      <div className="flex justify-between   pb-1">
-                        <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                          <span className="px-2">Answer Option</span>
-                          <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
-                            {index + 1}
-                          </span>
-                        </p>
-                        <div className="flex gap-2 items-center">
-                          <input
-                            type="checkbox"
-                            id={option}
-                            checked={rightAndWrong[option]}
-                            name={"ans_option"}
-                            onChange={(e) =>
-                              handleMark({ [option]: e.target.checked })
-                            }
-                          />
-                          <label htmlFor="option1" className="text-sm">
-                            Mark as right answer
-                          </label>
-                        </div>
-                      </div>
-
+                )}
+                {selectedQueType.title == "Sentence Making" && (
+                  <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
+                    <div className="flex flex-col gap-1 ">
+                      <span className="">
+                        Select Sentence That's In Correct Order
+                      </span>
                       <CustomSelect
-                        value={options[option].content}
-                        label="Content"
+                        value={smAns}
+                        label="Select Content"
                         options={contents}
-                        onChange={(selected) =>
-                          setOptions({
-                            ...options,
-                            [option]: { ...options[option], content: selected },
-                          })
-                        }
-                        addNewText="New Content"
+                        onChange={(selected) => setSmAns(selected)}
+                        addNewText="New Sentence"
                         addNewAfterClick={handleAdd}
                         bg="wh"
                       />
+                      <span className="text-red-700">{error.err2}</span>
                     </div>
-                  );
-                })}
-            </div>
-            <div className="sticky bottom-0 bg-white w-full ">
-              <CustomButton
-                txt="Submit"
-                type="submit"
-                style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
-              />
-            </div>
-          </>
-        )}
+                  </div>
+                )}
+
+                {(selectedQueType.title == "MCQ" ||
+                  selectedQueType.title == "Fill in the blank") &&
+                  Object.keys(options).map((option, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2  "
+                      >
+                        <div className="flex justify-between   pb-1">
+                          <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
+                            <span className="px-2">Answer Option</span>
+                            <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
+                              {index + 1}
+                            </span>
+                          </p>
+                          <div className="flex gap-2 items-center">
+                            <input
+                              type="checkbox"
+                              id={option}
+                              checked={rightAndWrong[option]}
+                              name={"ans_option"}
+                              onChange={(e) =>
+                                handleMark({ [option]: e.target.checked })
+                              }
+                            />
+                            <label htmlFor="option1" className="text-sm">
+                              Mark as right answer
+                            </label>
+                          </div>
+                        </div>
+
+                        <CustomSelect
+                          value={options[option].content}
+                          label="Content"
+                          options={contents}
+                          onChange={(selected) =>
+                            setOptions({
+                              ...options,
+                              [option]: {
+                                ...options[option],
+                                content: selected,
+                              },
+                            })
+                          }
+                          addNewText="New Content"
+                          addNewAfterClick={handleAdd}
+                          bg="wh"
+                        />
+                      </div>
+                    );
+                  })}
+              </div>
+            </>
+          )}
+        </div>
+        <div className="relative px-3">
+          <div className="sticky bottom-0 bg-white w-2/3">
+            <CustomButton
+              txt="Submit"
+              type="submit"
+              style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
+            />
+          </div>
+        </div>
       </form>
     </div>
   );

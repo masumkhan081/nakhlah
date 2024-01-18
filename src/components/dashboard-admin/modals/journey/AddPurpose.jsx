@@ -27,12 +27,9 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   const onImageChange = (event) => {
     var fileInput = document.getElementById("fileInput");
     setImage(fileInput.files[0]);
-    // if (event.target.files && event.target.files[0]) {
-    //   setImage(URL.createObjectURL(event.target.files[0]));
-    // }
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     var fileInput = document.getElementById("fileInput");
     var titleInput = document.getElementById("titleInput");
@@ -43,7 +40,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
       formData.append("files.icon", file);
       formData.append("data", `{"purpose":"${titleInput.value}"}`);
 
-      fetch("https://api.nakhlah.xyz/api/learning-purposes", {
+      await fetch("https://api.nakhlah.xyz/api/learning-purposes", {
         method: "POST",
         body: formData,
         headers: {
@@ -54,7 +51,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
         redirect: "follow",
       })
         .then((response) => {
-          alert("response:  " + JSON.stringify(response));
+          alert("thren - response:  " + JSON.stringify(response));
           if (response.ok) {
             return response.text();
           } else {

@@ -16,10 +16,14 @@ import * as z from "zod";
 import AdminFormButton from "../../../ui-custom/AdminFormButton";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { useLearnerLevel, useTabularView } from "../../../../store/useAdminStore";
+import {
+  useLearnerLevel,
+  useTabularView,
+} from "../../../../store/useAdminStore";
 import { useState } from "react";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomButton from "@/components/ui-custom/CustomButton";
+import { postFormData } from "@/lib/requestHandler";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -42,25 +46,57 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
   const [error, setError] = useState("");
 
   const [image, setImage] = useState(null);
+  const [image2, setImage2] = useState(null);
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
     }
   };
-
-  async function handleSubmit(e) {
+  async function handleSubmitBackup(e) {
     e.preventDefault();
+    let formData = new FormData();
+
     if (learnerLevel.length < 3) {
       setError("Too Short");
     } else {
+      formData.append("files.icon", image);
+      formData.append("data", `{"level":"${learnerLevel}"}`);
       const result = await addEdit({
         useForEdit,
-        data: {
-          level: learnerLevel,
-        },
+        data: formData,
         id: rowData?.id,
       });
+      alert("result: " + JSON.stringify(result));
+      if (result.status == 200) {
+        useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
+        toast({
+          title: result.message,
+        });
+        document.getElementById("closeDialog")?.click();
+      } else if (result.status == 400) {
+        setError(result.error);
+      }
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    let formData = new FormData();
+    var fileInput = document.getElementById("fileInput");
+    var titleInput = document.getElementById("titleInput");
+    var file = fileInput.files[0];
+
+    if (learnerLevel.length < 3) {
+      setError("Too Short");
+    } else {
+      formData.append("files.icon", file);
+      formData.append("data", `{"level":"${titleInput.value}"}`);
+      alert("View: " + formData.getAll("data"));
+      alert("View: " + formData.getAll("files.icon"));
+      const result = await postFormData("learner-level", formData);
+      alert("result---: " + JSON.stringify(result));
       if (result.status == 200) {
         useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
         toast({
@@ -86,10 +122,12 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
+          {image}
           <div className="flex flex-col">
             <label>Learning Level</label>
             <CustomInput
               type="text"
+              id={"titleInput"}
               value={learnerLevel}
               onChange={(e) => setLearnerLevel(e.target.value)}
               ph="Enter learner level"
@@ -97,12 +135,23 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
             />
             <span className="text-red-700">{error}</span>
           </div>
+
           <div className="flex gap-2 items-center">
             <input type="file" onChange={onImageChange} className="" />
             {image && (
               <img
                 alt=" image"
                 src={image}
+                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+              />
+            )}
+          </div>
+          <div className="flex gap-2 items-center">
+            <input type="file" id="fileInput" name="file" />
+            {image2 && (
+              <img
+                alt=" image"
+                src={image2}
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
               />
             )}

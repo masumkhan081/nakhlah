@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddStartingPoint from "../modals/journey/AddStartPoint";
- 
+
 const ColQuestion = [
   {
     id: "select",
@@ -69,15 +69,39 @@ const ColQuestion = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Que Type
+          Type
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
       return (
-        <div className="lowercase textNormal textSecondaryColor">
+        <div className=" textNormal textSecondaryColor">
           {row.getValue("id_question_type")}
+        </div>
+      );
+    },
+  },
+  {
+    id: "id_question_audio",
+    accessorKey: "audio",
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="textPrimaryColor textNormal"
+        >
+          Audio
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className=" textNormal textSecondaryColor">
+          {row.getValue("id_question_audio")
+            ? row.getValue("id_question_audio")
+            : "Not attached"}
         </div>
       );
     },

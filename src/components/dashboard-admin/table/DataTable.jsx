@@ -52,19 +52,13 @@ export default function DataTable({ data, columns, view, filter }) {
     onPaginationChange: setPagination,
   });
   return (
-    <div className="w-[98%] mx-auto h-full flex flex-col flex-wrap">
-      <DataTableHeader table={table} view={view} />
-
-      <div className=" flex-grow  rounded-md border overflow-y-scroll relative ">
-        <Table className="relative">
-          <TableHeader
-            style={{
-              position: "-webkit-sticky",
-              position: "sticky",
-              top: "0",
-            }}
-            className="bg-slate-100 py-0 h-fit sticky top-0"
-          >
+    <div className="w-[98%] mx-auto flex flex-col ">
+      <div className="">
+        <DataTableHeader table={table} view={view} />
+      </div>
+      <div className=" flex-grow  rounded-md border overflow-y-scroll  ">
+        <Table className="">
+          <TableHeader className="bg-slate-100 py-0 h-fit ">
             {table?.getHeaderGroups()?.map((headerGroup) => (
               <TableRow key={headerGroup.id} className="h-fit  py-0">
                 {headerGroup.headers.map((header) => {
@@ -85,7 +79,7 @@ export default function DataTable({ data, columns, view, filter }) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="overflow-x-scroll">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow

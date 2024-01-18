@@ -155,6 +155,7 @@ export function renderableQueType(arr) {
 export function renderableQuetions(arr) {
   return arr.map((item) => {
     const { question } = item.attributes.question_content.data.attributes;
+    const { audio } = item.attributes.question_content.data.attributes;
     const { question_type } = item.attributes.question_content.data.attributes;
     const { learning_journey_lesson } = item.attributes;
     const { learning_journey_level } = learning_journey_lesson.data.attributes;
@@ -164,6 +165,7 @@ export function renderableQuetions(arr) {
     return {
       id: item.id,
       question: question.data?.attributes?.question,
+      audio: question.data?.attributes?.audio,
       question_type: {
         id: question_type?.data?.id,
         title: question_type?.data?.attributes?.title,
