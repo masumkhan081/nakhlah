@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import DataTable from "../../table/DataTable";
-import { useLearnerStartPoint } from "../../../../store/useAdminStore";
+import {
+  useLearnerStartPoint,
+  useLoadingState,
+} from "../../../../store/useAdminStore";
 import ColStartPoint from "../../table/ColStartPoint";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
@@ -12,28 +15,37 @@ export default function StartPoints() {
   const startPoints = useLearnerStartPoint((state) => state.data);
   const setStartPoints = useLearnerStartPoint((state) => state.setStartPoints);
 
+  const loading = useLoadingState((state) => state.loading);
+  const toggleLoading = useLoadingState((state) => state.toggleLoading);
+
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learner-start-point");
       if (response.status === 200) {
         setStartPoints(renderableStartPoint(response.data.data));
+        toggleLoading(false);
       }
     };
-    if (Array.isArray(startPoints) && startPoints.length === 0) {
+    if (
+      loading == false &&
+      Array.isArray(startPoints) &&
+      startPoints.length === 0
+    ) {
+      toggleLoading(true);
       fetch();
     }
-  }, [startPoints]);
+  }, []);
 
   return (
     <div className="w-full bg-white  rounded-xl">
-      {startPoints.length != 0 ? (
+      {loading ? (
+        <CustomSkeleton />
+      ) : (
         <DataTable
           data={startPoints}
           columns={ColStartPoint}
           view={"learner-start-point"}
         />
-      ) : (
-        <CustomSkeleton />
       )}
     </div>
   );

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Deletion from "../modals/other/Deletion";
-import AddStartingPoint from "../modals/journey/AddStartPoint"; 
+import AddStartingPoint from "../modals/journey/AddStartPoint";
 import { BASE_URL } from "@/lib/requestHandler";
 
 const ColStartPoint = [
@@ -36,7 +36,11 @@ const ColStartPoint = [
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
-      return <div className="textSecondaryColor textNormal">{rowId} </div>;
+      return (
+        <div className="textSecondaryColor textNormal">
+          {row.getValue("id")}
+        </div>
+      );
     },
   },
   {
@@ -79,14 +83,13 @@ const ColStartPoint = [
     ),
   },
   {
-    accessorKey: "formats",
+    accessorKey: "icon",
     header: () => <div className="textPrimaryColor textNormal">Image</div>,
     cell: ({ row }) => {
-      // console.log(row.getValue('formats'))
       return (
         <div>
           <Image
-            src={`${BASE_URL}${row.getValue("formats")?.small}`}
+            src={`${BASE_URL}${row.getValue("icon")}`}
             alt=""
             width={40}
             height={40}

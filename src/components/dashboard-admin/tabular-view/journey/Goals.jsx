@@ -2,7 +2,10 @@
 import { useEffect, useState } from "react";
 import goalColumns from "../../table/ColGoal";
 import DataTable from "../../table/DataTable";
-import { useLearnerGoal } from "../../../../store/useAdminStore";
+import {
+  useLearnerGoal,
+  useLoadingState,
+} from "../../../../store/useAdminStore";
 import { getHandler } from "../../../../lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { renderableGoals } from "@/lib/fetchFunctions";
@@ -11,30 +14,34 @@ export default function Goals() {
   //
   const learnerGoals = useLearnerGoal((state) => state.data);
   const setGoals = useLearnerGoal((state) => state.setGoals);
-  const addEdit = useLearnerGoal((state) => state.addEdit);
+
+  const loading = useLoadingState((state) => state.loading);
+  const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learner-goal");
       if (response.status === 200) {
         setGoals(renderableGoals(response.data.data));
+        toggleLoading(false);
       }
     };
     if (Array.isArray(learnerGoals) && learnerGoals.length === 0) {
+      toggleLoading(true)
       fetch();
     }
-  }, [learnerGoals]);
+  }, [ ]);
 
   return (
     <div className="w-full bg-white  rounded-xl">
-      {learnerGoals.length != 0 ? (
+      {loading ? (
+        <CustomSkeleton />
+      ) : (
         <DataTable
           data={learnerGoals}
           columns={goalColumns}
           view={"learner-goal"}
         />
-      ) : (
-        <CustomSkeleton />
       )}
     </div>
   );

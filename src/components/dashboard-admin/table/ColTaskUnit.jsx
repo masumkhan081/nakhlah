@@ -51,7 +51,6 @@ const columnTaskUnit = [
     },
   },
   {
-    id: "id_task_titel",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -64,9 +63,8 @@ const columnTaskUnit = [
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const rowId = parseInt(row.id) + 1;
-    <div className="textSecondaryColor">{rowId}</div>},
+    cell: ({ row }) => { 
+    <div className="text-slate-600">{row.getValue("title")}</div>},
   },
   {
     id: "journeyOfTask",

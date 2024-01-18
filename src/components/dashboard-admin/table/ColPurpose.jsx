@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Deletion from "../modals/other/Deletion";
 import AddPurpose from "../modals/journey/AddPurpose";
 import { Main_URL } from "../../../lib/url";
+import { BASE_URL } from "@/lib/requestHandler";
 
 const columnPurpose = [
   {
@@ -38,7 +39,7 @@ const columnPurpose = [
       const rowId = parseInt(row.id) + 1;
       return (
         <div className="textSecondaryColor textNormal">
-          {row.getValue("id")}{" "}
+          {row.getValue("id")}
         </div>
       );
     },
@@ -64,20 +65,18 @@ const columnPurpose = [
     ),
   },
   {
-    accessorKey: "formats",
+    accessorKey: "icon",
     header: () => <div className="textPrimaryColor textNormal">Image</div>,
     cell: ({ row }) => {
-      // console.log(row.getValue('formats'))
       return (
         <div>
           <Image
-            src={`${Main_URL}${row.getValue("formats")?.small}`}
+            src={`${BASE_URL}${row.getValue("icon")}`}
             alt=""
             width={40}
             height={40}
             className="rounded-full border-2 border-black"
           />
-          {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
         </div>
       );
     },

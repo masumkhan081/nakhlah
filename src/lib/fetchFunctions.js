@@ -27,17 +27,10 @@ export function renderableGoals(arr) {
 }
 export function renderablePurpose(arr) {
   const renderable = arr.map((item) => {
-    const { icon } = item.attributes;
-    const formats = {
-      large: icon?.data?.attributes?.formats.large?.url,
-      small: icon?.data?.attributes?.formats.small?.url,
-      medium: icon?.data?.attributes?.formats.medium?.url,
-      thumbnail: icon?.data?.attributes?.formats.thumbnail?.url,
-    };
     return {
       id: item.id,
       purpose: item.attributes.purpose,
-      formats,
+      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
     };
   });
   return renderable;
@@ -48,6 +41,7 @@ export function renderableStartPoint(arr) {
       id: item.id,
       title: item.attributes.title,
       subtitle: item.attributes.subtitle,
+      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
     };
   });
 }

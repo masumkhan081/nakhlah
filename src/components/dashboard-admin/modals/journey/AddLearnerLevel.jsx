@@ -137,16 +137,6 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
           </div>
 
           <div className="flex gap-2 items-center">
-            <input type="file" onChange={onImageChange} className="" />
-            {image && (
-              <img
-                alt=" image"
-                src={image}
-                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
-              />
-            )}
-          </div>
-          <div className="flex gap-2 items-center">
             <input type="file" id="fileInput" name="file" />
             {image2 && (
               <img

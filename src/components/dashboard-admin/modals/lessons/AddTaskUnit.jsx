@@ -156,7 +156,7 @@ export default function AddTaskUnit({ rowData, title, useForEdit }) {
           </div>
           <div className="flex flex-col gap-1">
             <label className="flex justify-between">
-              <span>Learning Unit Name</span>
+              <span>Learning Task Name</span>
               <span className="text-red-800">{error.err0}</span>
             </label>
             <CustomInput

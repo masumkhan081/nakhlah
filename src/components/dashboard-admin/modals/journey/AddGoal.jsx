@@ -1,7 +1,10 @@
 "use client";
 
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useLearnerGoal, useTabularView } from "../../../../store/useAdminStore";
+import {
+  useLearnerGoal,
+  useTabularView,
+} from "../../../../store/useAdminStore";
 import { useToast } from "@/components/ui/use-toast";
 import CustomInput from "../../../ui-custom/CustomInput";
 import { useState } from "react";
@@ -9,7 +12,7 @@ import CustomButton from "../../../ui-custom/CustomButton";
 
 export default function AddGoal({ rowData, useForEdit }) {
   //
-  const { toast } = useToast();  
+  const { toast } = useToast();
   const tabularView = useTabularView((state) => state.data);
 
   const afterAdd = useLearnerGoal((state) => state.afterAdd);
@@ -22,11 +25,16 @@ export default function AddGoal({ rowData, useForEdit }) {
     err1: "",
   });
 
+  function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     let err_0 = "";
     let err_1 = "";
-    if (goalName.length > 2 && targetTime > 0) {
+
+    if (goalName.length > 2 && targetTime.length > 0 && isNumeric(targetTime)) {
       const result = await addEdit({
         useForEdit,
         data: {
@@ -49,7 +57,7 @@ export default function AddGoal({ rowData, useForEdit }) {
       if (goalName.length < 3) {
         err_0 = "Too Short";
       }
-      if (targetTime < 1) {
+      if (isNumeric(targetTime) == false) {
         err_1 = "Wrong target time";
       }
       setError({ err0: err_0, err1: err_1 });
@@ -63,7 +71,7 @@ export default function AddGoal({ rowData, useForEdit }) {
     <>
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
-        {useForEdit ? "Update" : "New"} {addWhat}
+          {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
 
         <form
@@ -78,7 +86,8 @@ export default function AddGoal({ rowData, useForEdit }) {
               type="text"
               value={goalName}
               onChange={(e) => setGoalName(e.target.value)}
-              ph="Goal name" style="py-0.25 px-1"
+              ph="Goal name"
+              style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err0}</span>
           </div>
@@ -91,7 +100,8 @@ export default function AddGoal({ rowData, useForEdit }) {
               type="text"
               value={targetTime}
               onChange={(e) => setTargetTime(e.target.value)}
-              ph="Target time" style="py-0.25 px-1"
+              ph="Target time"
+              style="py-0.25 px-1"
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
@@ -99,7 +109,7 @@ export default function AddGoal({ rowData, useForEdit }) {
           <CustomButton
             txt={useForEdit ? "Update" : "Add"}
             type="submit"
-             style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
+            style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
       </DialogHeader>

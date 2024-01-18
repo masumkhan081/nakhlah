@@ -8,7 +8,14 @@ import {
 import { useState } from "react";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomButton from "@/components/ui-custom/CustomButton";
-import { getHandler, getMap } from "@/lib/requestHandler";
+import {
+  getHandler,
+  getMap,
+  postMap,
+  putMap,
+  fetchHeader,
+  BASE_URL,
+} from "@/lib/requestHandler";
 import axios from "axios";
 
 export default function AddPurpose({ rowData, title, useForEdit }) {
@@ -22,49 +29,46 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   const [purpose, setPurpose] = useState(useForEdit ? rowData.purpose : "");
   const [error, setError] = useState("");
 
-  const [image, setImage] = useState(null);
-
-  const onImageChange = (event) => {
-    var fileInput = document.getElementById("fileInput");
-    setImage(fileInput.files[0]);
-  };
+  const [image, setImage] = useState(
+    useForEdit ? BASE_URL + rowData.icon : null
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
-    var fileInput = document.getElementById("fileInput");
-    var titleInput = document.getElementById("titleInput");
-    if (fileInput.files.length > 0) {
-      let formData = new FormData();
-      //
-      var file = fileInput.files[0];
-      formData.append("files.icon", file);
-      formData.append("data", `{"purpose":"${titleInput.value}"}`);
+    let formData = new FormData();
+    var purposeInput = document.getElementById("idInputPurpose");
+    var fileInput = document.getElementById("idInputFile");
+    var file = fileInput.files[0];
+    formData.append("files.icon", file);
+    formData.append("data", `{"purpose":"${purposeInput.value}"}`);
 
-      await fetch("https://api.nakhlah.xyz/api/learning-purposes", {
-        method: "POST",
+    await fetch(
+      useForEdit
+        ? putMap["learner-purpose"] + `/${rowData.id}?populate=icon`
+        : postMap["learner-purpose"],
+      {
+        method: useForEdit ? "PUT" : "POST",
         body: formData,
-        headers: {
-          Authorization:
-            "Bearer " +
-            "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
-        },
+        headers: fetchHeader,
         redirect: "follow",
-      })
-        .then((response) => {
-          alert("thren - response:  " + JSON.stringify(response));
-          if (response.ok) {
-            return response.text();
-          } else {
-            throw new Error("Upload failed.");
-          }
-        })
-        .then((data) => {
-          uploadStatus.innerHTML = "Upload complete! Server response: " + data;
-        })
-        .catch((error) => {
-          uploadStatus.innerHTML = "Error: " + error.message;
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        let renderable = {
+          id: data.data.id,
+          purpose: data.data.attributes.purpose,
+          icon: data.data.attributes.icon?.data?.attributes?.formats?.small
+            ?.url,
+        };
+
+        useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
+        toast({
+          title: useForEdit ? "Successfully Updated" : "Successfully Added",
         });
-    }
+        document.getElementById("closeDialog")?.click();
+      })
+      .catch((error) => {});
   }
   const currentView = useTabularView((state) => state.data.currentView);
   const addWhat = currentView.slice(0, currentView.length - 1);
@@ -82,7 +86,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
           <div className="flex flex-col gap-1">
             <label>Learning Purpose</label>
             <CustomInput
-              id="titleInput"
+              id="idInputPurpose"
               type="text"
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
@@ -91,8 +95,20 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
             />
             <span className="text-red-700">{error}</span>
           </div>
-          <div className="flex gap-2 items-center">
-            <input type="file" id="fileInput" name="file" />
+          <div className="flex gap-2 flex-col items-start">
+            <input
+              type="file"
+              id="idInputFile"
+              name="file"
+              onChange={(e) => {
+                let files = e.target.files;
+                let reader = new FileReader();
+                reader.onload = (r) => {
+                  setImage(r.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+              }}
+            />
             {image && (
               <img
                 alt=" image"

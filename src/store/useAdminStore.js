@@ -59,6 +59,13 @@ export const useNavbarState = create(
   }))
 );
 
+export const useLoadingState = create(
+  immer((set) => ({
+    loading: false,
+    toggleLoading: (bool) => set((state) => ({ loading: bool })),
+  }))
+);
+
 // admin login , forget password, reset password
 export const useAdminAuth = create(
   immer((set) => ({
@@ -140,7 +147,7 @@ export const useLearnerPurpose = create(
         : await postHandler("learner-purpose", {
             data,
           });
-      alert("response justand:  "+JSON.stringify(response));
+
       if (response.status == 400) {
         let errors = response.data.error.details.errors;
         return {
@@ -659,7 +666,6 @@ export const useQuestion = create(
       }
     },
     afterAdd: (data) => {
-      alert("after add: " + JSON.stringify(data));
       set((state) => {
         state.data = [data, ...state.data];
       });
