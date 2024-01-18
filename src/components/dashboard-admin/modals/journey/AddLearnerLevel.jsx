@@ -23,14 +23,7 @@ import {
 import { useState } from "react";
 import CustomInput from "@/components/ui-custom/CustomInput";
 import CustomButton from "@/components/ui-custom/CustomButton";
-import { postFormData } from "@/lib/requestHandler";
-
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Fill the Title  field",
-  }),
-  picture: z.any().refine((file) => file, "Please upload file"),
-});
+import { BASE_URL, fetchHeader, postMap, putMap } from "@/lib/requestHandler";
 
 export default function AddLearnerLevel({ rowData, title, useForEdit }) {
   //
@@ -44,68 +37,49 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
     useForEdit ? rowData.level : ""
   );
   const [error, setError] = useState("");
-
-  const [image, setImage] = useState(null);
-  const [image2, setImage2] = useState(null);
-
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
-    }
-  };
-  async function handleSubmitBackup(e) {
-    e.preventDefault();
-    let formData = new FormData();
-
-    if (learnerLevel.length < 3) {
-      setError("Too Short");
-    } else {
-      formData.append("files.icon", image);
-      formData.append("data", `{"level":"${learnerLevel}"}`);
-      const result = await addEdit({
-        useForEdit,
-        data: formData,
-        id: rowData?.id,
-      });
-      alert("result: " + JSON.stringify(result));
-      if (result.status == 200) {
-        useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
-        toast({
-          title: result.message,
-        });
-        document.getElementById("closeDialog")?.click();
-      } else if (result.status == 400) {
-        setError(result.error);
-      }
-    }
-  }
+  const [image, setImage] = useState(
+    useForEdit ? BASE_URL + rowData.icon : null
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     let formData = new FormData();
-    var fileInput = document.getElementById("fileInput");
-    var titleInput = document.getElementById("titleInput");
+    var levelInput = document.getElementById("idInputLevel");
+    var fileInput = document.getElementById("idInputFile");
     var file = fileInput.files[0];
+
+    formData.append("files.icon", file);
+    formData.append("data", `{"level":"${levelInput.value}"}`);
 
     if (learnerLevel.length < 3) {
       setError("Too Short");
     } else {
-      formData.append("files.icon", file);
-      formData.append("data", `{"level":"${titleInput.value}"}`);
-      alert("View: " + formData.getAll("data"));
-      alert("View: " + formData.getAll("files.icon"));
-      const result = await postFormData("learner-level", formData);
-      alert("result---: " + JSON.stringify(result));
-      if (result.status == 200) {
-        useForEdit ? afterUpdate(result.data) : afterAdd(result.data);
-        toast({
-          title: result.message,
-        });
-        document.getElementById("closeDialog")?.click();
-      } else if (result.status == 400) {
-        setError(result.error);
-      }
+      await fetch(
+        useForEdit
+          ? putMap["learner-level"] + `/${rowData.id}?populate=icon`
+          : postMap["learner-level"],
+        {
+          method: useForEdit ? "PUT" : "POST",
+          body: formData,
+          headers: fetchHeader,
+          redirect: "follow",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          let renderable = {
+            id: data.data.id,
+            level: data.data.attributes.level,
+            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
+              ?.url,
+          };
+          useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
+          toast({
+            title: useForEdit ? "Successfully Updated" : "Successfully Added",
+          });
+          document.getElementById("closeDialog")?.click();
+        })
+        .catch((error) => {});
     }
   }
   const currentView = useTabularView((state) => state.data.currentView);
@@ -122,12 +96,11 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-          {image}
           <div className="flex flex-col">
             <label>Learning Level</label>
             <CustomInput
               type="text"
-              id={"titleInput"}
+              id={"idInputLevel"}
               value={learnerLevel}
               onChange={(e) => setLearnerLevel(e.target.value)}
               ph="Enter learner level"
@@ -136,12 +109,24 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
             <span className="text-red-700">{error}</span>
           </div>
 
-          <div className="flex gap-2 items-center">
-            <input type="file" id="fileInput" name="file" />
-            {image2 && (
+          <div className="flex gap-2 flex-col items-start">
+            <input
+              type="file"
+              id="idInputFile"
+              name="file"
+              onChange={(e) => {
+                let files = e.target.files;
+                let reader = new FileReader();
+                reader.onload = (r) => {
+                  setImage(r.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+              }}
+            />
+            {image && (
               <img
                 alt=" image"
-                src={image2}
+                src={image}
                 className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
               />
             )}

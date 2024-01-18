@@ -57,7 +57,7 @@ export default function DataTable({ data, columns, view, filter }) {
         <DataTableHeader table={table} view={view} filter={data?.length > 0} />
       </div>
       {data?.length == 0 ? (
-        <p className="text-lg text-center w-full  ">No Data</p>
+        <p className="text-lg text-center w-full py-0.5 ">No Data</p>
       ) : (
         <div className=" flex-grow  rounded-md border overflow-y-scroll  ">
           <Table className="">

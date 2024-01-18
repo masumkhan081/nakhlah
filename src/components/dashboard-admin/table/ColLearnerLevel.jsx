@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,6 +8,7 @@ import Image from "next/image";
 import Deletion from "../modals/other/Deletion";
 import { Main_URL } from "../../../lib/url";
 import AddLearnerLevel from "../modals/journey/AddLearnerLevel";
+import { BASE_URL } from "@/lib/requestHandler";
 
 const ColLearnerLevel = [
   {
@@ -41,7 +42,7 @@ const ColLearnerLevel = [
     },
   },
   {
-    id:"id_learner_level",
+    id: "id_learner_level",
     accessorKey: "level",
     header: ({ column }) => {
       return (
@@ -63,19 +64,18 @@ const ColLearnerLevel = [
     },
   },
   {
-    accessorKey: "formats",
+    accessorKey: "icon",
     header: () => <div className="textPrimaryColor textNormal">Image</div>,
     cell: ({ row }) => {
       return (
         <div>
           <Image
-            src={`${Main_URL}${row.getValue("formats")?.small}`}
+            src={`${BASE_URL}${row.getValue("icon")}`}
             alt=""
             width={40}
             height={40}
             className="rounded-full border-2 border-black"
           />
-          {/* <Image src={`${row.getValue('formats').src}`} alt="" width={40} height={40} className="rounded-full border-2 border-black" /> */}
         </div>
       );
     },

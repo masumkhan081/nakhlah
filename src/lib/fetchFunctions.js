@@ -47,17 +47,10 @@ export function renderableStartPoint(arr) {
 }
 export function renderableLearnerLevel(arr) {
   return arr.map((item) => {
-    const { icon } = item.attributes;
-    const formats = {
-      large: icon?.data?.attributes?.formats.large?.url,
-      small: icon?.data?.attributes?.formats.small?.url,
-      medium: icon?.data?.attributes?.formats.medium?.url,
-      thumbnail: icon?.data?.attributes?.formats.thumbnail?.url,
-    };
     return {
       id: item.id,
       level: item.attributes.level,
-      formats,
+      icon: item.attributes.icon?.data?.attributes?.formats.small?.url,
     };
   });
 }
