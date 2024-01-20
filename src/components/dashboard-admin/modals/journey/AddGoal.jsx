@@ -54,6 +54,7 @@ export default function AddGoal({ rowData, useForEdit }) {
         setError(result.errors);
       }
     } else {
+      alert(":::: "+JSON.stringify(isNumeric(targetTime)));
       if (goalName.length < 3) {
         err_0 = "Too Short";
       }

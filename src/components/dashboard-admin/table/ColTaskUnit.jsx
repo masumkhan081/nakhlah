@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";
@@ -51,6 +51,7 @@ const columnTaskUnit = [
     },
   },
   {
+    id: "idTask",
     accessorKey: "title",
     header: ({ column }) => {
       return (
@@ -63,8 +64,9 @@ const columnTaskUnit = [
         </Button>
       );
     },
-    cell: ({ row }) => { 
-    <div className="text-slate-600">{row.getValue("title")}</div>},
+    cell: ({ row }) => {
+      <div className="text-slate-600">{row.getValue("idTask")}</div>;
+    },
   },
   {
     id: "journeyOfTask",

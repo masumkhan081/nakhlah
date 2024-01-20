@@ -1,6 +1,9 @@
 "use client";
 import DataTable from "../../table/DataTable";
-import { useConTypeCategory } from "../../../../store/useAdminStore";
+import {
+  useConTypeCategory,
+  useLoadingState,
+} from "../../../../store/useAdminStore";
 import { useEffect } from "react";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
@@ -13,28 +16,37 @@ export default function ConTypeCategory() {
     (state) => state.setConTypeCategories
   );
 
+  const loading = useLoadingState((state) => state.loading);
+  const toggleLoading = useLoadingState((state) => state.toggleLoading);
+
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler("content-type-category"); 
-      if (response.status === 200) { 
+      const response = await getHandler("content-type-category");
+      if (response.status === 200) {
         setConTypeCategories(renderableContTypeCategories(response.data.data));
+        toggleLoading(false);
       }
     };
-    if (Array.isArray(conTypeCatagories) && conTypeCatagories.length === 0) {
+    if (
+      loading == false &&
+      Array.isArray(conTypeCatagories) &&
+      conTypeCatagories.length === 0
+    ) {
+      toggleLoading(true);
       fetch();
     }
-  }, [conTypeCatagories]);
+  }, []);
 
   return (
     <div className="w-full bg-white  rounded-xl">
-      {conTypeCatagories.length != 0 ? (
+      {loading ? (
+        <CustomSkeleton />
+      ) : (
         <DataTable
           data={conTypeCatagories}
           columns={ColContentCategory}
           view={"content-type-category"}
         />
-      ) : (
-        <CustomSkeleton />
       )}
     </div>
   );

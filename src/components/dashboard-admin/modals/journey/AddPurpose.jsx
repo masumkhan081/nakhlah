@@ -36,11 +36,10 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   async function handleSubmit(e) {
     e.preventDefault();
     let formData = new FormData();
-    var purposeInput = document.getElementById("idInputPurpose");
     var fileInput = document.getElementById("idInputFile");
     var file = fileInput.files[0];
     formData.append("files.icon", file);
-    formData.append("data", `{"purpose":"${purposeInput.value}"}`);
+    formData.append("data", `{"purpose":"${purpose}"}`);
 
     await fetch(
       useForEdit

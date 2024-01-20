@@ -39,7 +39,7 @@ export const getMap = {
   "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence_Making`,
   "content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair_Matching`,
   // question: `${BASE_URL}/api/questions?populate=*`,
-  question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
+  question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate=image&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
 };

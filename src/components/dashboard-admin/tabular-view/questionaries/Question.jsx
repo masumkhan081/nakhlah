@@ -1,7 +1,7 @@
 "use client";
 import DataTable from "../../table/DataTable";
 import ColQuestion from "../../table/ColQuestion";
-import { useQuestion } from "../../../../store/useAdminStore";
+import { useLoadingState, useQuestion } from "../../../../store/useAdminStore";
 import { useEffect } from "react";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { getHandler } from "@/lib/requestHandler";
@@ -11,29 +11,37 @@ const Question = () => {
   const questionData = useQuestion((state) => state.data);
   const setQuestions = useQuestion((state) => state.setQuestions);
 
+  const loading = useLoadingState((state) => state.loading);
+  const toggleLoading = useLoadingState((state) => state.toggleLoading);
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await getHandler("question");
       if (response.status === 200) {
         setQuestions(renderableQuetions(response.data.data));
+        toggleLoading(false);
       }
     };
-    if (Array.isArray(questionData) && questionData.length === 0) {
+    if (
+      loading == false &&
+      Array.isArray(questionData) &&
+      questionData.length === 0
+    ) {
+      toggleLoading(true);
       fetchQuestions();
     }
-  }, [questionData]);
+  }, []);
 
   return (
     <div className="w-full bg-white rounded-xl">
-      {questionData.length != 0 ? (
+      {loading ? (
+        <CustomSkeleton />
+      ) : (
         <DataTable
           data={questionData}
           columns={ColQuestion}
           view={"question"}
           filter={"Questions"}
         />
-      ) : (
-        <CustomSkeleton />
       )}
     </div>
   );

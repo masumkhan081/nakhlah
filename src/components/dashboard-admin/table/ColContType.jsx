@@ -1,6 +1,4 @@
-
-
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -56,7 +54,7 @@ const ColoumnContentType = [
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_content_type")}
+        {row.getValue("id_content_type").replaceAll("_", " ")}
       </div>
     ),
   },

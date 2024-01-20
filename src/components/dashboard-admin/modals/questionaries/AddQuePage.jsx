@@ -16,7 +16,13 @@ import {
   useLearningUnit,
 } from "../../../../store/useAdminStore";
 import { useEffect, useState } from "react";
-import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+import {
+  getHandler,
+  postHandler,
+  postMap,
+  putHandler,
+  putMap,
+} from "@/lib/requestHandler";
 import EnhancedText from "@/components/ui-custom/EnhancedText";
 import {
   renderableContTypeCategories,
@@ -29,6 +35,7 @@ import {
   renderableTasks,
 } from "@/lib/fetchFunctions";
 import { GitCommitHorizontal, Hash } from "lucide-react";
+import axios from "axios";
 
 export default function AddQuePage({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -57,14 +64,13 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.question_type.id,
           title: rowData.question_type.title,
         }
-      : { id: 1, title: "MCQ" }
+      : initStateSelection //{ id: 1, title: "MCQ" }
   );
   //  question-type
 
   const contents = useContent((state) => state.data);
   const setContents = useContent((state) => state.setContents);
   const currentView = useTabularView((state) => state.data.currentView);
-  const addWhat = currentView.slice(0, currentView.length - 1);
 
   //  -------------------------------------------------------------- journey portion
   const journeyData = useLearningJourney((state) => state.data);
@@ -75,12 +81,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.level.id,
           title: rowData.level.title,
         }
-      : { id: 3, title: "Advanced" } //initStateSelection
+      : initStateSelection // { id: 3, title: "Advanced" }
   );
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      useForEdit ? "" : setSelectedUnit({ id: 9, title: "Pokath" });
+      useForEdit ? "" : setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
@@ -101,12 +107,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.task.id,
           title: rowData.task.title,
         }
-      : { id: 9, title: "Pokath" } //initStateSelection
+      : initStateSelection //{ id: 9, title: "Pokath" }
   );
 
   useEffect(() => {
     if (selectedUnit.id != null) {
-      useForEdit ? "" : setSelectedLevel({ id: 7, title: "Level adv pokath" });
+      useForEdit ? "" : setSelectedLevel(initStateSelection);
       filterLevelsByUnit(selectedUnit.id);
     }
   }, [selectedUnit]);
@@ -126,12 +132,12 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.task_unit.id,
           title: rowData.task_unit.title,
         }
-      : { id: 7, title: "Level adv pokath" } //initStateSelection
+      : initStateSelection // { id: 7, title: "Level adv pokath" }
   );
 
   useEffect(() => {
     if (selectedLevel.id != null) {
-      useForEdit ? "" : setSelectedLesson({ id: 8, title: "Lesson 2" });
+      useForEdit ? "" : setSelectedLesson(initStateSelection);
       filterLessonsByLevel(selectedLevel.id);
     }
   }, [selectedLevel]);
@@ -168,7 +174,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
           id: rowData.lesson.id,
           title: rowData.lesson.title,
         }
-      : { id: 8, title: "Lesson 2" } // initStateSelection
+      : initStateSelection // { id: 8, title: "Lesson 2" }
   );
   function filterLessonsByLevel(id) {
     setFilteredLessons(
@@ -292,6 +298,43 @@ export default function AddQuePage({ rowData, useForEdit }) {
           rightAns &&
           question.includes("-") == true))
     ) {
+      //
+      let formData = new FormData();
+      var fileInput = document.getElementById("idInputFile");
+      var file = fileInput.files[0];
+      formData.append("files.image", file);
+
+      let obj = {
+        question: question,
+        question_type: { connect: [selectedQueType.id] },
+        audio: queAudio,
+      };
+
+      // formData.append("data", `{"question":"${question}"}`);
+      formData.append("data", JSON.stringify(obj));
+
+      try {
+        const anr = await axios.post(
+          "https://api.nakhlah.xyz/api/questions?populate=image",
+          formData,
+          {
+            headers: {
+              Authorization:
+                "Bearer " +
+                "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+            },
+          }
+        );
+        alert("anr - response:  " + JSON.stringify(anr));
+
+        // alert(
+        //   "formData : " +
+        //     JSON.stringify(formData.get("files.image")) +
+        //     JSON.stringify(formData.get("data"))
+        // );
+        // alert("queResult: " + JSON.stringify(data));
+
+        /*
       const queResult = useForEdit
         ? await putHandler("question", rowData.id, {
             data: { question: question },
@@ -299,7 +342,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         : await postHandler("question", {
             data: {
               question: question,
-              question_type_category: { connect: [selectedQueType.id] },
+              question_type: { connect: [selectedQueType.id] },
               audio: queAudio,
             },
           });
@@ -395,12 +438,19 @@ export default function AddQuePage({ rowData, useForEdit }) {
             : "Item Added Successfully",
         });
         resetForm();
-      } else if (queResult.status == 400) {
+      } 
+      
+      else if (queResult.status == 400) {
         let errors = queResult.data.error.details.errors;
         alert("errors: " + JSON.stringify(errors));
         setError({
           err2: errors[0]?.message,
         });
+      }
+
+      */
+      } catch (error) {
+        alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
       }
     }
     //  specific errors
@@ -495,7 +545,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
         "--" +
         JSON.stringify(selectedQueType) +
         "--" +
-        JSON.stringify(tFAns)}
+        JSON.stringify(tFAns) +
+        "--" +
+        JSON.stringify(smAns)}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
@@ -545,9 +597,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 setSelectedLesson({ id: value.id, title: value.title })
               }
             />
-            {error.err0 !== "" && (
+            {/* {error.err0 !== "" && (
               <span className="text-red-700">{error.err0}</span>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -568,9 +620,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 setSelectedQueType({ id: value.id, title: value.title })
               }
             />
-            {error.err1 !== "" && (
+            {/* {error.err1 !== "" && (
               <span className="text-red-700">{error.err1}</span>
-            )}
+            )} */}
           </div>
           <div className="flex flex-col gap-1 w-2/3">
             <span className="">Question</span>
@@ -581,11 +633,22 @@ export default function AddQuePage({ rowData, useForEdit }) {
               ph="Enter the question"
               style="py-0.25 px-1"
             />
-            <span className="text-red-700">{error.err2}</span>
+            {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
-          <div className="flex gap-4 items-center w-2/3">
-            <span className="font-semibold">Attach Image</span>
-            <input type="file" id="fileInput" name="file" />
+          <div className="flex gap-2 flex-col items-start">
+            <input
+              type="file"
+              id="idInputFile"
+              name="file"
+              onChange={(e) => {
+                let files = e.target.files;
+                let reader = new FileReader();
+                reader.onload = (r) => {
+                  setImage(r.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+              }}
+            />
             {image && (
               <img
                 alt=" image"
@@ -603,7 +666,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
             />
 
-            <span className="text-red-700">{error.err2}</span>
+            {/* <span className="text-red-700">{error.err2}</span> */}
           </div>
         </div>
         {/* sao Set answer option */}
@@ -618,9 +681,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Set
                   Answer Options
                 </EnhancedText>
-                <span className="text-red-600 font-semibold pt-0.12 ">
+                {/* <span className="text-red-600 font-semibold pt-0.12 ">
                   {error.err3}
-                </span>
+                </span> */}
               </div>
               <div className="flex flex-col gap-4 border-blue-400">
                 {/* option -1 */}
@@ -717,7 +780,19 @@ export default function AddQuePage({ rowData, useForEdit }) {
             </>
           )}
         </div>
-        <div className="relative px-3">
+        <div className="relative px-3   ">
+          {error.err0 !== "" && (
+            <span className="text-red-700">{error.err0}</span>
+          )}
+          {error.err1 !== "" && (
+            <span className="text-red-700">{error.err1}</span>
+          )}
+          {error.err2 !== "" && (
+            <span className="text-red-700">{error.err2}</span>
+          )}
+          {error.err3 !== "" && (
+            <span className="text-red-700">{error.err4}</span>
+          )}
           <div className="sticky bottom-0 bg-white w-2/3">
             <CustomButton
               txt="Submit"

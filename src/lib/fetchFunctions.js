@@ -141,13 +141,17 @@ export function renderableQueType(arr) {
 }
 export function renderableQuetions(arr) {
   return arr.map((item) => {
-    const { question } = item.attributes.question_content.data.attributes;
-    const { audio } = item.attributes.question_content.data.attributes;
-    const { question_type } = item.attributes.question_content.data.attributes;
-    const { learning_journey_lesson } = item.attributes;
-    const { learning_journey_level } = learning_journey_lesson.data.attributes;
-    const { learning_journey_unit } = learning_journey_level.data.attributes;
-    const { learning_journey } = learning_journey_unit.data.attributes;
+    const { question } = item.attributes?.question_content?.data?.attributes;
+
+    const { question_type } =
+      item.attributes?.question_content?.data?.attributes;
+    const learning_journey_lesson = item?.attributes?.learning_journey_lesson;
+    const learning_journey_level =
+      learning_journey_lesson?.data?.attributes?.learning_journey_level;
+    const learning_journey_unit =
+      learning_journey_level?.data?.attributes?.learning_journey_unit;
+    const learning_journey =
+      learning_journey_unit?.data?.attributes?.learning_journey;
     //
     return {
       id: item.id,
@@ -158,20 +162,20 @@ export function renderableQuetions(arr) {
         title: question_type?.data?.attributes?.title,
       },
       lesson: {
-        id: learning_journey_lesson.data.id,
-        title: learning_journey_lesson.data.attributes.title,
+        id: learning_journey_lesson?.data?.id,
+        title: learning_journey_lesson?.data?.attributes.title,
       },
       task_unit: {
-        id: learning_journey_level.data.id,
-        title: learning_journey_level.data.attributes.title,
+        id: learning_journey_level?.data?.id,
+        title: learning_journey_level?.data?.attributes?.title,
       },
       task: {
-        id: learning_journey_unit.data.id,
-        title: learning_journey_unit.data.attributes.title,
+        id: learning_journey_unit?.data?.id,
+        title: learning_journey_unit?.data?.attributes?.title,
       },
       level: {
-        id: learning_journey.data.id,
-        title: learning_journey.data.attributes.title,
+        id: learning_journey?.data?.id,
+        title: learning_journey?.data?.attributes?.title,
       },
     };
   });
@@ -182,7 +186,7 @@ export function renderableContents(arr) {
       id: item.id,
       title: item.attributes?.title,
       content_type: {
-        id: item.attributes?.content_type?.data.id,
+        id: item.attributes?.content_type?.data?.id,
         title: item.attributes?.content_type?.data?.attributes?.title,
       },
       content_type_category: {

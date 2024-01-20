@@ -122,10 +122,10 @@ export default function AddContent({ rowData, useForEdit }) {
       }
     } else {
       if (selectedCategory.id == null) {
-        err_1 = "Select content type category";
+        err_1 = "Select content data type";
       }
       if (selectedType.id == null) {
-        err_2 = "Select content type";
+        err_2 = "Select question type";
       }
       if (content.length < 1) {
         err_3 = "Too Short";
@@ -196,7 +196,7 @@ export default function AddContent({ rowData, useForEdit }) {
         >
           <div className="flex flex-col gap-1">
             <CustomSelect
-              label={"Content Type Category"}
+              label={"Content Data Type"}
               value={selectedCategory}
               options={categoryData}
               bg="wh"
@@ -207,9 +207,9 @@ export default function AddContent({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err1}</span>
           </div>
           <div className="flex flex-col gap-1">
-            <label>Content Type</label>
+            
             <CustomSelect
-              label={"Content Type"}
+              label={"Question Type"}
               value={selectedType}
               options={typeData}
               bg="wh"
@@ -229,7 +229,7 @@ export default function AddContent({ rowData, useForEdit }) {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               ph="Enter content"
-              style="py-0.25 px-1"
+              style="py-0.12 px-1"
             />
             <span className="text-red-700">{error.err3}</span>
           </div>

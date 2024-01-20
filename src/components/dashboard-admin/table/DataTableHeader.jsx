@@ -78,7 +78,7 @@ export default function DataTableHeader({ table, view, filter }) {
         </div>
       )}
 
-      {currentView == "Questions" && <QueFilter />}
+      {/* {currentView == "Questions" && <QueFilter />} */}
 
       {currentView == "Questions" ? (
         <CustomButton

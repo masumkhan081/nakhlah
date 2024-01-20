@@ -73,7 +73,7 @@ export const tabsQuestionaries = [
   },
   {
     id: 5,
-    title: "Contents",
+    title: "Question Contents",
     link: "/admin/dashboard/content",
   },
   {
@@ -83,7 +83,7 @@ export const tabsQuestionaries = [
   },
   {
     id: 4,
-    title: "Content Type Categories",
+    title: "Content Data Types",
     link: "/admin/questionaries/content-type-categories",
   },
 
