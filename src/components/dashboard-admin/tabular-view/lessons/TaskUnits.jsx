@@ -20,9 +20,12 @@ export default function TaskUnits() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-level");
+      if(response){
+        toggleLoading(false);
+      }
       if (response.status === 200) {
         setLevels(renderableTaskUnits(response.data.data));
-        toggleLoading(false);
+        
       }
     };
     if (

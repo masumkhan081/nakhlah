@@ -16,9 +16,12 @@ const Question = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await getHandler("question");
+      if(response){
+        toggleLoading(false);
+      }
       if (response.status === 200) {
         setQuestions(renderableQuetions(response.data.data));
-        toggleLoading(false);
+       
       }
     };
     if (
