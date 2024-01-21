@@ -159,9 +159,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
     if (selectedQueType.id != null) {
       setError({ ...error, err3: "" });
       fetch();
-      selectedQueType.title == "Sentence Making"
-        ? setQuestion("Arrange The Below Sentence In Correct Order")
-        : "";
+      selectedQueType.title == "Sentence Making" ? setQuestion("") : "";
     }
   }, [selectedQueType]);
   //
@@ -287,10 +285,6 @@ export default function AddQuePage({ rowData, useForEdit }) {
       (item) => rightAndWrong[item] == false
     );
 
-    alert("wrongAns: " + JSON.stringify(wrongAns));
-
-    alert("rightAns: " + JSON.stringify(rightAns));
-
     if (
       question.length > 2 &&
       selectedLesson.id &&
@@ -315,10 +309,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
       };
 
       // formData.append("data", `{"question":"${question}"}`);
-       formData.append("data", JSON.stringify(obj));
+      formData.append("data", JSON.stringify(obj));
 
       try {
-        const anr = await axios.post(
+        const queResult = await axios.post(
           "https://api.nakhlah.xyz/api/questions?populate=image",
           formData,
           {
@@ -329,7 +323,6 @@ export default function AddQuePage({ rowData, useForEdit }) {
             },
           }
         );
-        alert("anr - response:  " + JSON.stringify(anr));
 
         // alert(
         //   "formData : " +
@@ -338,20 +331,20 @@ export default function AddQuePage({ rowData, useForEdit }) {
         // );
         // alert("queResult: " + JSON.stringify(data));
 
-        const queResult = useForEdit
-          ? await putHandler("question", rowData.id, {
-              data: { question: question },
-            })
-          : await postHandler("question", {
-              data: {
-                question: question,
-                question_type: { connect: [selectedQueType.id] },
-                audio: queAudio,
-              },
-            });
+        // const queResult = useForEdit
+        //   ? await putHandler("question", rowData.id, {
+        //       data: { question: question },
+        //     })
+        //   : await postHandler("question", {
+        //       data: {
+        //         question: question,
+        //         question_type: { connect: [selectedQueType.id] },
+        //         audio: queAudio,
+        //       },
+        //     });
 
         alert("queResult: " + JSON.stringify(queResult));
-        if (queResult.status == 200) {
+        if (queResult?.data?.data?.id) {
           const queContResult = useForEdit
             ? await putHandler("question-content", rowData.id, {
                 data: {},
@@ -416,6 +409,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
             : afterAdd({
                 id: queResult.data.data.id,
                 question: question,
+                audio: queAudio,
                 question_type: {
                   id: selectedQueType.id,
                   title: selectedQueType.title,
@@ -463,14 +457,14 @@ export default function AddQuePage({ rowData, useForEdit }) {
         err_1 = "Select Question Type";
       }
       if (question.length < 3) {
-        err_2 = "Too Short";
+        err_2 = "Question Too Short";
       }
       if (
         question.length > 2 &&
         selectedQueType.title == "Fill in the blank" &&
         question.includes("-") == false
       ) {
-        err_2 = `Put a blank ("-") in question`;
+        err_2 = `Put a blank ("-") within question`;
       }
       if (selectedQueType.title == "True 0r False" && tFAns.id == null) {
         err_3 = "Must Provide A Correct Option";
@@ -522,6 +516,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
     setQuestion("");
     setRightAndWrong(initRightWrong);
     setError(initErrors);
+    setQueAudio("");
+    setImage("");
   }
 
   const [tFAns, setTFAns] = useState(initStateSelection);
@@ -536,7 +532,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
   //   jsx
   return (
     <div className="w-full p-3   rounded-md ">
-      {JSON.stringify(selectedJourney) +
+      {/* {JSON.stringify(tFAns)} */}
+      {/* 
         "--" +
         JSON.stringify(selectedUnit) +
         "--" +
@@ -548,7 +545,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         "--" +
         JSON.stringify(tFAns) +
         "--" +
-        JSON.stringify(smAns)}
+        JSON.stringify(smAns)} */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
@@ -700,7 +697,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                     <CustomSelect
                       label={"(true/false)"}
                       value={tFAns}
-                      options={trueFalseOptions}
+                      options={contents}
                       onChange={(selected) => setTFAns(selected)}
                       bg="wh"
                     />
@@ -782,22 +779,24 @@ export default function AddQuePage({ rowData, useForEdit }) {
           )}
         </div>
         <div className="relative px-3   ">
-          {error.err0 !== "" && (
-            <span className="text-red-700">{error.err0}</span>
-          )}
-          {error.err1 !== "" && (
-            <span className="text-red-700">{error.err1}</span>
-          )}
-          {error.err2 !== "" && (
-            <span className="text-red-700">{error.err2}</span>
-          )}
-          {error.err3 !== "" && (
-            <span className="text-red-700">{error.err3}</span>
-          )}
-          {error.err4 !== "" && (
-            <span className="text-red-700">{error.err4}</span>
-          )}
           <div className="sticky bottom-0 bg-white w-2/3">
+            <div className="flex flex-col gap-0">
+              {error.err0 !== "" && (
+                <span className="text-red-700">{error.err0}</span>
+              )}
+              {error.err1 !== "" && (
+                <span className="text-red-700">{error.err1}</span>
+              )}
+              {error.err2 !== "" && (
+                <span className="text-red-700">{error.err2}</span>
+              )}
+              {error.err3 !== "" && (
+                <span className="text-red-700">{error.err3}</span>
+              )}
+              {error.err4 !== "" && (
+                <span className="text-red-700">{error.err4}</span>
+              )}
+            </div>
             <CustomButton
               txt="Submit"
               type="submit"

@@ -23,8 +23,8 @@ export default function Questionaries({ content }) {
 
   useEffect(() => {
     setTabularView({
-      currentPage: "add-question",
-      currentView: "Add New Question",
+      currentPage: "questions",
+      currentView: "Questions",
     });
   }, []);
 
