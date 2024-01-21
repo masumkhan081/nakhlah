@@ -21,10 +21,11 @@ export default function Tasks() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-unit");
-
+      if (response) {
+        toggleLoading(false);
+      }
       if (response.status === 200) {
         setUnits(renderableTasks(response.data.data));
-        toggleLoading(false);
       }
     };
     if (loading == false && Array.isArray(unitData) && unitData.length === 0) {
