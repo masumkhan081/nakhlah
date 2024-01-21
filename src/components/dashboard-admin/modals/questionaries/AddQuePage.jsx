@@ -287,6 +287,10 @@ export default function AddQuePage({ rowData, useForEdit }) {
       (item) => rightAndWrong[item] == false
     );
 
+    alert("wrongAns: " + JSON.stringify(wrongAns));
+
+    alert("rightAns: " + JSON.stringify(rightAns));
+
     if (
       question.length > 2 &&
       selectedLesson.id &&
@@ -311,21 +315,21 @@ export default function AddQuePage({ rowData, useForEdit }) {
       };
 
       // formData.append("data", `{"question":"${question}"}`);
-      formData.append("data", JSON.stringify(obj));
+       formData.append("data", JSON.stringify(obj));
 
       try {
-        // const anr = await axios.post(
-        //   "https://api.nakhlah.xyz/api/questions?populate=image",
-        //   formData,
-        //   {
-        //     headers: {
-        //       Authorization:
-        //         "Bearer " +
-        //         "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
-        //     },
-        //   }
-        // );
-        // alert("anr - response:  " + JSON.stringify(anr));
+        const anr = await axios.post(
+          "https://api.nakhlah.xyz/api/questions?populate=image",
+          formData,
+          {
+            headers: {
+              Authorization:
+                "Bearer " +
+                "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+            },
+          }
+        );
+        alert("anr - response:  " + JSON.stringify(anr));
 
         // alert(
         //   "formData : " +
@@ -788,6 +792,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
             <span className="text-red-700">{error.err2}</span>
           )}
           {error.err3 !== "" && (
+            <span className="text-red-700">{error.err3}</span>
+          )}
+          {error.err4 !== "" && (
             <span className="text-red-700">{error.err4}</span>
           )}
           <div className="sticky bottom-0 bg-white w-2/3">
