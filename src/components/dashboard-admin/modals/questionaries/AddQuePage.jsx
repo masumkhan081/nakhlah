@@ -305,11 +305,18 @@ export default function AddQuePage({ rowData, useForEdit }) {
       let obj = {
         question: question,
         question_type: { connect: [selectedQueType.id] },
+      };
+      let obj2 = {
+        question: question,
+        question_type: { connect: [selectedQueType.id] },
         audio: queAudio,
       };
 
       // formData.append("data", `{"question":"${question}"}`);
-      formData.append("data", JSON.stringify(obj));
+      formData.append(
+        "data",
+        queAudio.length > 0 ? JSON.stringify(obj2) : JSON.stringify(obj)
+      );
 
       try {
         const queResult = await axios.post(
