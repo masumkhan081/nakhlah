@@ -43,7 +43,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
 
     await fetch(
       useForEdit
-        ? putMap["learner-purpose"] + `/${rowData.id}?populate=icon`
+        ? putMap["learner-purpose"] + "/${rowData.id}?populate=icon"
         : postMap["learner-purpose"],
       {
         method: useForEdit ? "PUT" : "POST",
