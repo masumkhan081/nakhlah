@@ -407,7 +407,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                   title: "Question Added Successfully",
                 });
               }
-              alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+              // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
             }
           }
 
