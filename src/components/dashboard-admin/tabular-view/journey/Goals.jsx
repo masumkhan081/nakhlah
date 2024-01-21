@@ -27,22 +27,14 @@ export default function Goals() {
       }
     };
     if (Array.isArray(learnerGoals) && learnerGoals.length === 0) {
-      toggleLoading(true)
+      toggleLoading(true);
       fetch();
     }
-  }, [ ]);
+  }, []);
 
   return (
     <div className="w-full bg-white  rounded-xl">
-      {loading ? (
-        <CustomSkeleton />
-      ) : (
-        <DataTable
-          data={learnerGoals}
-          columns={goalColumns}
-          view={"learner-goal"}
-        />
-      )}
+      {loading ? <CustomSkeleton /> : <span>disabled for a while</span>}
     </div>
   );
 }
