@@ -350,7 +350,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
         //       },
         //     });
 
-        alert("queResult: " + JSON.stringify(queResult));
+        // alert("queResult: " + JSON.stringify(queResult));
         if (queResult?.data?.data?.id) {
           const queContResult = useForEdit
             ? await putHandler("question-content", rowData.id, {
@@ -364,7 +364,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 },
               });
 
-          alert("queContResult: " + JSON.stringify(queContResult));
+          // alert("queContResult: " + JSON.stringify(queContResult));
 
           // if mcq or fib
           if (
@@ -387,7 +387,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                     },
                   },
                 });
-            alert("queOptionResult: " + JSON.stringify(queOptionResult));
+            // alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
             if (queOptionResult.status == 200) {
               const journeyMapResult = useForEdit
