@@ -65,7 +65,13 @@ export default function Questionaries({ content }) {
                 style={`px-2 text-sm h-fit py-0.25 font-normal font-sans hover:shadow-md hover:drop-shadow-sm ${active_button(
                   item.title
                 )}`}
-                startIcon={item.title=="Content Types"?<FileQuestion className="w-5 h-5 text-red-600"/>:""}
+                startIcon={
+                  item.title == "Content Types" ? (
+                    <FileQuestion className="w-5 h-5 text-red-600" />
+                  ) : (
+                    ""
+                  )
+                }
                 click={() => {
                   setTabularView({ currentView: item.title });
                 }}
@@ -78,9 +84,7 @@ export default function Questionaries({ content }) {
         {tabularView.currentView == "Questions" && <Question />}
         {tabularView.currentView == "Question Types" && <QueType />}
         {tabularView.currentView == "Content Types" && <ContentType />}
-        {tabularView.currentView == "Content Data Types" && (
-          <ConTypeCategory />
-        )}
+        {tabularView.currentView == "Content Data Types" && <ConTypeCategory />}
 
         {tabularView.currentView == "Question Contents" && <Content />}
         {tabularView.currentView == "Add New Question" && (

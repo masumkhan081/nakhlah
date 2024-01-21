@@ -314,18 +314,18 @@ export default function AddQuePage({ rowData, useForEdit }) {
       formData.append("data", JSON.stringify(obj));
 
       try {
-        const anr = await axios.post(
-          "https://api.nakhlah.xyz/api/questions?populate=image",
-          formData,
-          {
-            headers: {
-              Authorization:
-                "Bearer " +
-                "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
-            },
-          }
-        );
-        alert("anr - response:  " + JSON.stringify(anr));
+        // const anr = await axios.post(
+        //   "https://api.nakhlah.xyz/api/questions?populate=image",
+        //   formData,
+        //   {
+        //     headers: {
+        //       Authorization:
+        //         "Bearer " +
+        //         "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+        //     },
+        //   }
+        // );
+        // alert("anr - response:  " + JSON.stringify(anr));
 
         // alert(
         //   "formData : " +
@@ -334,121 +334,118 @@ export default function AddQuePage({ rowData, useForEdit }) {
         // );
         // alert("queResult: " + JSON.stringify(data));
 
-        /*
-      const queResult = useForEdit
-        ? await putHandler("question", rowData.id, {
-            data: { question: question },
-          })
-        : await postHandler("question", {
-            data: {
-              question: question,
-              question_type: { connect: [selectedQueType.id] },
-              audio: queAudio,
-            },
-          });
-
-      alert("queResult: " + JSON.stringify(queResult));
-      if (queResult.status == 200) {
-        const queContResult = useForEdit
-          ? await putHandler("question-content", rowData.id, {
-              data: {},
+        const queResult = useForEdit
+          ? await putHandler("question", rowData.id, {
+              data: { question: question },
             })
-          : await postHandler("question-content", {
+          : await postHandler("question", {
               data: {
-                question: { connect: [queResult.data.data.id] },
+                question: question,
                 question_type: { connect: [selectedQueType.id] },
-                content: { connect: [getQueContent(rightAns)] },
+                audio: queAudio,
               },
             });
 
-        alert("queContResult: " + JSON.stringify(queContResult));
-
-        // if mcq or fib
-        if (
-          selectedQueType.title == "Fill in the blank" ||
-          selectedQueType.title == "MCQ"
-        ) {
-          const queOptionResult = useForEdit
-            ? await putHandler("question-content-option", rowData.id, {
+        alert("queResult: " + JSON.stringify(queResult));
+        if (queResult.status == 200) {
+          const queContResult = useForEdit
+            ? await putHandler("question-content", rowData.id, {
                 data: {},
               })
-            : await postHandler("question-content-option", {
+            : await postHandler("question-content", {
                 data: {
-                  question_content: { connect: [queContResult.data.data.id] },
-                  content: {
-                    connect: [
-                      options[wrongAns[0]].content.id,
-                      options[wrongAns[1]].content.id,
-                      options[wrongAns[2]].content.id,
-                    ],
-                  },
+                  question: { connect: [queResult.data.data.id] },
+                  question_type: { connect: [selectedQueType.id] },
+                  content: { connect: [getQueContent(rightAns)] },
                 },
               });
-          alert("queOptionResult: " + JSON.stringify(queOptionResult));
 
-          if (queOptionResult.status == 200) {
-            const journeyMapResult = useForEdit
-              ? await putHandler("journey-map-question", rowData.id, {
+          alert("queContResult: " + JSON.stringify(queContResult));
+
+          // if mcq or fib
+          if (
+            selectedQueType.title == "Fill in the blank" ||
+            selectedQueType.title == "MCQ"
+          ) {
+            const queOptionResult = useForEdit
+              ? await putHandler("question-content-option", rowData.id, {
                   data: {},
                 })
-              : await postHandler("journey-map-question", {
+              : await postHandler("question-content-option", {
                   data: {
-                    learning_journey_lesson: { connect: [selectedLesson.id] },
                     question_content: { connect: [queContResult.data.data.id] },
+                    content: {
+                      connect: [
+                        options[wrongAns[0]].content.id,
+                        options[wrongAns[1]].content.id,
+                        options[wrongAns[2]].content.id,
+                      ],
+                    },
                   },
                 });
-            if (journeyMapResult.status == 200) {
-              toast({
-                title: "Question Added Successfully",
-              });
+            alert("queOptionResult: " + JSON.stringify(queOptionResult));
+
+            if (queOptionResult.status == 200) {
+              const journeyMapResult = useForEdit
+                ? await putHandler("journey-map-question", rowData.id, {
+                    data: {},
+                  })
+                : await postHandler("journey-map-question", {
+                    data: {
+                      learning_journey_lesson: { connect: [selectedLesson.id] },
+                      question_content: {
+                        connect: [queContResult.data.data.id],
+                      },
+                    },
+                  });
+              if (journeyMapResult.status == 200) {
+                toast({
+                  title: "Question Added Successfully",
+                });
+              }
+              alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
             }
-            alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
+
+          useForEdit
+            ? afterUpdate(data)
+            : afterAdd({
+                id: queResult.data.data.id,
+                question: question,
+                question_type: {
+                  id: selectedQueType.id,
+                  title: selectedQueType.title,
+                },
+                lesson: {
+                  id: selectedLesson.id,
+                  title: selectedLesson.title,
+                },
+                task_unit: {
+                  id: selectedLevel.id,
+                  title: selectedLevel.title,
+                },
+                task: {
+                  id: selectedUnit.id,
+                  title: selectedUnit.title,
+                },
+                level: {
+                  id: selectedJourney.id,
+                  title: selectedJourney.title,
+                },
+              });
+          toast({
+            title: useForEdit
+              ? "Item Updated Succesfully"
+              : "Item Added Successfully",
+          });
+          resetForm();
+        } else if (queResult.status == 400) {
+          let errors = queResult.data.error.details.errors;
+          alert("errors: " + JSON.stringify(errors));
+          setError({
+            err2: errors[0]?.message,
+          });
         }
-
-        useForEdit
-          ? afterUpdate(data)
-          : afterAdd({
-              id: queResult.data.data.id,
-              question: question,
-              question_type: {
-                id: selectedQueType.id,
-                title: selectedQueType.title,
-              },
-              lesson: {
-                id: selectedLesson.id,
-                title: selectedLesson.title,
-              },
-              task_unit: {
-                id: selectedLevel.id,
-                title: selectedLevel.title,
-              },
-              task: {
-                id: selectedUnit.id,
-                title: selectedUnit.title,
-              },
-              level: {
-                id: selectedJourney.id,
-                title: selectedJourney.title,
-              },
-            });
-        toast({
-          title: useForEdit
-            ? "Item Updated Succesfully"
-            : "Item Added Successfully",
-        });
-        resetForm();
-      } 
-      
-      else if (queResult.status == 400) {
-        let errors = queResult.data.error.details.errors;
-        alert("errors: " + JSON.stringify(errors));
-        setError({
-          err2: errors[0]?.message,
-        });
-      }
-
-      */
       } catch (error) {
         alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
       }
