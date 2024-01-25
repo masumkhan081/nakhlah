@@ -51,22 +51,18 @@ const viewMap = {
   "question-content-option": "id_question_content_option",
 };
 
-// {table,title, addURL, addItemAPICall, errorMessageCall}
 export default function DataTableHeader({ table, view, filter }) {
   const currentView = useTabularView((state) => state.data.currentView);
+  const currentSubView = useTabularView((state) => state.data.currentSubView);
   const setTabularView = useTabularView((state) => state.setTabularView);
   const addWhat = currentView.slice(0, currentView.length - 1);
 
   return (
     <div className="flex items-center justify-between py-3  ">
       {filter && (
-        <div className="flex items-center border border-slate-300 rounded-md">
-          {/* <span className="h-full border-r border-slate-400 ">
-          <Filter className="w-5 h-5 mx-1 text-slate-600" />
-        </span> */}
-          <CustomButton
-            startIcon={<Filter className="w-5 h-5 text-slate-600" />}
-          />
+        <div className="flex items-center border-b border-slate-300 rounded-none">
+          <Filter className="w-5 h-5 text-slate-600 border-0" />
+
           <Input
             placeholder={`Filter ${currentView}`}
             value={table.getColumn(viewMap[view])?.getFilterValue() ?? ""}
@@ -77,29 +73,25 @@ export default function DataTableHeader({ table, view, filter }) {
           />
         </div>
       )}
-
-      {/* {currentView == "Questions" && <QueFilter />} */}
-
       {currentView == "Questions" ? (
         <CustomButton
           style={
-            "flex gap-1 justify-center rounded-md max-h-[28px] text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 py-0.25 px-3"
+            "flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3"
           }
           click={() =>
             setTabularView({
-              currentPage: "add-question",
-              currentView: "Add New Question",
+              currentAct: "add",
             })
           }
           startIcon={<Plus className="w-5 h-5 mx-1" />}
-          txt={"Question"}
+          txt={currentSubView}
         />
       ) : (
         <div className="flex items-center gap-4">
           {/* modal button add new item */}
           <Dialog className="">
             <DialogTrigger asChild>
-              <Button className="text-sm font-semibold font-sans bg-slate-50 hover:bg-slate-100 hover:shadow-sm hover:drop-shadow-md border border-slate-300  text-slate-600 gap-2 py-0.25 px-2">
+              <Button className="flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3">
                 <Plus className="w-5 h-5 mx-1" />
                 <span className="">{`${addWhat}`}</span>
               </Button>

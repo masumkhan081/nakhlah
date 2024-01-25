@@ -33,12 +33,23 @@ export const getMap = {
   "content-type": `${BASE_URL}/api/content-types`,
   "content-type-category": `${BASE_URL}/api/content-type-categories`,
   "content-all": `${BASE_URL}/api/contents?populate=*`,
+  "content-pm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Pair_Matching`,
+  "content-sm": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Sentence_Making`,
+  "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
+  "content-tof": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Boolean`,
+  "content-mcq": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=MCQ`,
+   
   "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
   "content-fib": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill_In_The_Blank`,
   "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
   "content-sm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Sentence_Making`,
   "content-pm": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Pair_Matching`,
   // question: `${BASE_URL}/api/questions?populate=*`,
+  MCQ: "{{URL}}/api/question-contents?populate[question][populate]=*&filters[question_type][title][$eq]=MCQ",
+  "Pair Matching": "",
+  "Sentence Making": "",
+  "True Or False": "",
+  "Fill In The Blank": "",
   question: `${BASE_URL}/api/journey-map-question-contents?populate[question_content][populate]=*&populate=image&populate[learning_journey_lesson][populate][learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`,
   "question-content": `${BASE_URL}/api/question-contents?populate=*`,
   "question-content-option": `${BASE_URL}/api/question-content-options?populate[question_content][populate][0]=id`,
@@ -96,36 +107,15 @@ export const deleteMap = {
   "question-content-option": `${BASE_URL}/api/question-content-options`,
 };
 
-export const postFormData = async (key, formData) => {
+export const getWithUrl = async (url) => {
   try {
-    const response = await fetch(postMap[key], {
-      method: "POST",
-      body: formData,
-      // headers: {
-      //   Authorization:
-      //     "Bearer " +
-      //     "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
-      // },
-      // headers:config.headers,
-      config,
-      redirect: "follow",
-    }).then((response) => {
-      return response;
-    });
+    const response = await axios.get(BASE_URL+"/"+ url, config);
     return response;
   } catch (err) {
     return err;
   }
-};
+}; 
 
-export const getOne = async (url) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/${url}`, config);
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
 
 export const getHandler = async (key) => {
   try {
@@ -159,5 +149,35 @@ export const deleteHandler = async ({ key, id }) => {
     return response;
   } catch (error) {
     return error.response;
+  }
+};
+export const postFormData = async (key, formData) => {
+  try {
+    const response = await fetch(postMap[key], {
+      method: "POST",
+      body: formData,
+      // headers: {
+      //   Authorization:
+      //     "Bearer " +
+      //     "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+      // },
+      // headers:config.headers,
+      config,
+      redirect: "follow",
+    }).then((response) => {
+      return response;
+    });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getOne = async (url) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/${url}`, config);
+    return response;
+  } catch (err) {
+    return err;
   }
 };

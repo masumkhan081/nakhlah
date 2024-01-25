@@ -78,7 +78,7 @@ const ColContent = [
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_type").replaceAll("_", " ")}
+        {row.getValue("id_type")?.replaceAll("_", " ")}
       </div>
     ),
   },

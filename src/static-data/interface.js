@@ -40,64 +40,46 @@ export const tabsJourney = [
 export const tabsLesson = [
   {
     id: 1,
-    title: "Learning Levels",
+    title: "Learning Journies",
     link: "/admin/learning-materials/levels",
   },
   {
     id: 2,
-    title: "Tasks",
+    title: "Learning Units",
     link: "/admin/learning-materials/tasks",
   },
   {
     id: 3,
-    title: "Task Units",
+    title: "Learning Levels",
     link: "/admin/learning-materials/task-units",
   },
   {
     id: 4,
-    title: "Task Lessons",
+    title: "Learning Lessons",
     link: "/admin/learning-materials/unit-lessons",
   },
 ];
 
-export const tabsQuestionaries = [
-  {
-    id: 1,
-    title: "Questions",
-    link: "/admin/questionaries/questions",
-  },
-  {
-    id: 2,
-    title: "Question Types",
-    link: "/admin/questionaries/question-type",
-  },
-  {
-    id: 5,
-    title: "Question Contents",
-    link: "/admin/dashboard/content",
-  },
-  {
-    id: 3,
-    title: "Content Types",
-    link: "/admin/questionaries/content-type",
-  },
-  {
-    id: 4,
-    title: "Content Data Types",
-    link: "/admin/questionaries/content-type-categories",
-  },
+export const tabsQuestionaries = {
+  Questions: [
+    "MCQ",
+    "Fill In The Blank",
+    "True Or False",
+    "Sentence Making",
+    "Pair Matching",
+  ],
+  "Question Types": [],
+  Contents: [
+    "MCQ",
+    "Fill In The Blank",
+    "True Or False",
+    "Sentence Making",
+    "Pair Matching",
+  ],
+  "Content Types": [],
 
-  // {
-  //   id: 6,
-  //   title: "Question Content",
-  //   link: "/admin/dashboard/question-content",
-  // },
-  // {
-  //   id: 7,
-  //   title: "Question Content Option",
-  //   link: "/admin/dashboard/question-content-option",
-  // },
-];
+  "Content Data Types": [],
+};
 
 export const adminDashboard = {
   leftNavList: {

@@ -37,6 +37,11 @@ const config = {
   },
 };
 
+const initStateSelection = {
+  id: null,
+  title: "",
+};
+
 // const store_mode = "live";
 const is_store_mode_static = true;
 
@@ -115,14 +120,19 @@ export const useTabularView = create(
     data: {
       currentPage: "",
       currentView: "",
+      currentSubView: "",
+      currentAct: "",
+    },
+    setSubView: (data) => {
+      set((state) => {
+        state.data.currentSubView = data.currentSubView;
+      });
     },
     setTabularView: (data) => {
       set((state) => {
         state.data = {
           ...state.data,
           ...data,
-          // currentPage: data.currentPage,
-          // currentView: data.currentView,
         };
       });
     },
@@ -538,6 +548,7 @@ export const useLearningLevel = create(
 export const useLearningLesson = create(
   immer((set) => ({
     data: [],
+
     setLessons: (data) => {
       set((state) => {
         state.data = data;
@@ -632,6 +643,38 @@ export const useQueType = create(
 export const useQuestion = create(
   immer((set) => ({
     data: [],
+    selectedJourney: initStateSelection,
+    selectedUnit: initStateSelection,
+    selectedLevel: initStateSelection,
+    selectedLesson: initStateSelection,
+    resetSelection: (data) => {
+      set((state) => {
+        state.selectedJourney = initStateSelection;
+        state.selectedUnit = initStateSelection;
+        state.selectedLevel = initStateSelection;
+        state.selectedLesson = initStateSelection;
+      });
+    },
+    setSelectedJourney: (data) => {
+      set((state) => {
+        state.selectedJourney = data;
+      });
+    },
+    setSelectedUnit: (data) => {
+      set((state) => {
+        state.selectedUnit = data;
+      });
+    },
+    setSelectedLevel: (data) => {
+      set((state) => {
+        state.selectedLevel = data;
+      });
+    },
+    setSelectedLesson: (data) => {
+      set((state) => {
+        state.selectedLesson = data;
+      });
+    },
     setQuestions: (data) => {
       set((state) => {
         state.data = data;

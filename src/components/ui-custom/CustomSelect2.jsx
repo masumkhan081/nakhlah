@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronsRight } from "lucide-react";
 
-const CustomSelect2 = ({ options, value, onChange, bg, ph, icon, label }) => {
+const CustomSelect2 = ({ options, value, onChange, label }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const handleClickOutside = (e) => {
@@ -23,47 +23,44 @@ const CustomSelect2 = ({ options, value, onChange, bg, ph, icon, label }) => {
     setIsOpen(!isOpen);
   };
 
-  const styles = {
-    light: "bg-slate-200 text-black border border-slate-400",
-    blue: "bg-blue-700 text-white",
-  };
+  const active_style = (val) =>
+    val ? " border-b  border-slate-800 " : "border-x border-slate-400";
+
+  const active_txt_style = (val) =>
+    val ? "text-slate-800 text-sm font-semibold " : "text-slate-800 text-sm";
 
   return (
-    <div className="relative h-full" ref={dropdownRef}>
+    <div className="relative h-1.5 py-0" ref={dropdownRef}>
       <div
-        className={`py-1 px-1.0 min-w-[80px] h-full border rounded-md capitalize cursor-pointer flex justify-between items-center ${styles[bg]}`}
+        className={` ${active_style(
+          value?.title
+        )} min-w-[80px] h-1.5  rounded-none capitalize cursor-pointer flex gap-0.25 justify-center items-center`}
         onClick={toggleDropdown}
       >
-        {label && (
-          <span
-            className={
-              bg == "blue"
-                ? "bg-blue-900 text-wh text-sm font-semibold px-0.5 h-full rounded-md py-0.125"
-                : "bg-slate-300 text-black text-sm font-semibold px-0.5  rounded-md py-0.125 h-full"
-            }
-          >
-            {label}
-          </span>
-        )}
-        {icon && icon}
-        <span>{value.title ? value.title : ph}</span>
-        <ChevronDown className="w-[1.2rem] h-[1.2rem] ms-1" />
+        <span
+          className={`
+            ${active_txt_style(value?.title)}   font-light tracking-wide  font-sans px-0.12  rounded-sm h-full 
+          `}
+        >
+          {value.title ? value.title : label}
+        </span>
+        <ChevronDown className="w-1.0 h-1.0 text-slate-500" />
       </div>
 
-      {isOpen ? (
-        <ul className="absolute w-full z-10 top-full text-black  border  rounded-md shadow   overflow-y-auto scrollbar bg-white max-h-60">
+      {isOpen && options?.length > 0 ? (
+        <ul className="absolute min-w-[200px] w-full z-10 top-full text-black  border  rounded-md shadow   overflow-y-scrollbar bg-white max-h-60">
           {options?.map((option, index) => (
             <li
               key={index}
               className={`${
                 value === option ? "bg-primary" : "bg-white text-black"
-              } capitalize py-2 px-4 cursor-pointer   hover:bg-blue-800 hover:text-white`}
+              } capitalize py-1 px-4 cursor-pointer rounded-md  hover:bg-blue-800 hover:text-white`}
               onClick={() => {
                 onChange(option);
                 setIsOpen(false);
               }}
             >
-              {option}
+              {option.title}
             </li>
           ))}
         </ul>

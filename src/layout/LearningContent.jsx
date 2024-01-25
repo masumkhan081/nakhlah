@@ -7,7 +7,7 @@ import EnhancedText from "@/components/ui-custom/EnhancedText";
 import TaskUnits from "@/components/dashboard-admin/tabular-view/lessons/TaskUnits";
 import Tasks from "@/components/dashboard-admin/tabular-view/lessons/Tasks";
 import LearningLevels from "@/components/dashboard-admin/tabular-view/lessons/LearningLevels";
-import Lessons from "@/components/dashboard-admin/tabular-view/lessons/Lessons";  
+import Lessons from "@/components/dashboard-admin/tabular-view/lessons/Lessons";
 
 export default function LearningContent({ content }) {
   //
@@ -17,7 +17,7 @@ export default function LearningContent({ content }) {
   useEffect(() => {
     setTabularView({
       currentPage: "learning-materials",
-      currentView: "Task Lessons",
+      currentView: "Learning Lessons",
     });
   }, []);
 
@@ -50,12 +50,11 @@ export default function LearningContent({ content }) {
           );
         })}
       </div>
-     
 
-      {tabularView.currentView == "Learning Levels" && <LearningLevels />}
-      {tabularView.currentView == "Tasks" && <Tasks />}
-      {tabularView.currentView == "Task Units" && <TaskUnits />}
-      {tabularView.currentView == "Task Lessons" && <Lessons />} 
+      {tabularView.currentView == "Learning Journies" && <LearningLevels />}
+      {tabularView.currentView == "Learning Units" && <Tasks />}
+      {tabularView.currentView == "Learning Levels" && <TaskUnits />}
+      {tabularView.currentView == "Learning Lessons" && <Lessons />}
     </div>
   );
 }

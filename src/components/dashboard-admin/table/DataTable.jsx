@@ -59,7 +59,7 @@ export default function DataTable({ data, columns, view, filter }) {
       {data?.length == 0 ? (
         <p className="text-lg text-center w-full py-0.5 ">No Data</p>
       ) : (
-        <div className=" flex-grow  rounded-md border overflow-y-scroll  ">
+        <div className=" flex-grow min-h-[45vh] rounded-md border overflow-y-scroll  ">
           <Table className="">
             <TableHeader className="bg-slate-100 py-0 h-fit ">
               {table?.getHeaderGroups()?.map((headerGroup) => (
