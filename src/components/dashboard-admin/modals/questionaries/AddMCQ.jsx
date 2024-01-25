@@ -289,8 +289,6 @@ export default function AddMCQ({ rowData, useForEdit }) {
       question.length > 2 &&
       selectedLesson.id &&
       ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
-        (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
-        (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
         (selectedQueType.title == "Fill in the blank" &&
           wrongAns.length == 3 &&
           rightAns &&
@@ -330,25 +328,6 @@ export default function AddMCQ({ rowData, useForEdit }) {
             },
           }
         );
-
-        // alert(
-        //   "formData : " +
-        //     JSON.stringify(formData.get("files.image")) +
-        //     JSON.stringify(formData.get("data"))
-        // );
-        // alert("queResult: " + JSON.stringify(data));
-
-        // const queResult = useForEdit
-        //   ? await putHandler("question", rowData.id, {
-        //       data: { question: question },
-        //     })
-        //   : await postHandler("question", {
-        //       data: {
-        //         question: question,
-        //         question_type: { connect: [selectedQueType.id] },
-        //         audio: queAudio,
-        //       },
-        //     });
 
         // alert("queResult: " + JSON.stringify(queResult));
         if (queResult?.data?.data?.id) {
@@ -473,9 +452,7 @@ export default function AddMCQ({ rowData, useForEdit }) {
       ) {
         err_2 = `Put a blank ("-") within question`;
       }
-      if (selectedQueType.title == "True 0r False" && tFAns.id == null) {
-        err_3 = "Must Provide A Correct Option";
-      }
+
       if (
         selectedQueType.title == "MCQ" ||
         selectedQueType.title == "Fill in the blank"
