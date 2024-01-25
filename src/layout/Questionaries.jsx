@@ -185,7 +185,7 @@ export default function Questionaries({ content }) {
     btn === currentSubView ? " bg-wh border-slate-800 shadow-sm" : "   ";
 
   return (
-    <div className="max-h-[83vh] flex flex-col gap-2 px-2 w-full bg-white">
+    <div className="max-h-[83vh] flex flex-col gap-3 px-2 w-full bg-white">
       <div className=" rounded-md p-1 flex justify-between">
         <EnhancedText kind={"two"} color=" text-slate-800"></EnhancedText>
 

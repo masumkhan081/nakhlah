@@ -34,11 +34,7 @@ const ColQuestion = [
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
-      return (
-        <div className="textSecondaryColor textNormal">
-         {rowId}
-        </div>
-      );
+      return <div className="textSecondaryColor textNormal">{rowId}</div>;
     },
   },
   {
@@ -217,12 +213,9 @@ const ColQuestion = [
                 <Info className="w-5 h-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              {/* <AddQuestion
-                title="question"
-                useForEdit={true}
-                rowData={row.original}
-              /> */}
+            <DialogContent className="sm:max-w-[500px] min-w-20. flex justify-center items-center">
+              <span className="font-semibold text-base">To Be Done </span>
+              <span>Whole Detail of the Particular question</span>
             </DialogContent>
           </Dialog>
           <Dialog className="">

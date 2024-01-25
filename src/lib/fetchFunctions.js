@@ -68,6 +68,7 @@ export function renderableLearningLevels(arr) {
 }
 export function renderableTasks(arr) {
   return arr.map((item) => {
+    // alert("item: " + JSON.stringify(item));
     const { learning_journey } = item.attributes;
     return {
       id: item.id,
