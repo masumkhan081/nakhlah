@@ -12,6 +12,9 @@ import dynamic from 'next/dynamic';
 const Orders = dynamic(() => import('./Orders'), {
   ssr: false,
 });
+const ActivityHealmap = dynamic(() => import('./ActivityHealmap'), {
+  ssr: false,
+});
 const Revenue = dynamic(() => import('./Revenue'), {
   ssr: false,
 });
@@ -31,8 +34,8 @@ export default function Dashboard() {
         <Orders />
       </div>
       <div className="my-4 flex gap-5">
-        <TasksOverview />
-        <DeveloperAMA />
+        {/* <TasksOverview /> */}
+        <ActivityHealmap/>
         <Transactions />
       </div>
     </>

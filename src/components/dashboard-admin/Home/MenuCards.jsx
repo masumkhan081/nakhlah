@@ -10,27 +10,27 @@ function MenuCards() {
     const lists = [
         {
             id: 1,
-            title: 'New Customers',
-            subTitle: 'From last week',
-            num: '132'
+            title: 'New User',
+            subTitle: 'From last month',
+            num: '1500'
         },
         {
             id: 2,
-            title: 'Orders',
-            subTitle: 'Orders in waitlist',
+            title: 'Paid User',
+            subTitle: 'This Year',
             num: '287'
         },
         {
             id: 3,
-            title: 'Monthly Profit',
-            subTitle: 'For last 30 days',
-            num: '7.4K'
+            title: 'Monthly Subscribers',
+            subTitle: 'Last 30 days',
+            num: '$7.4k'
         },
         {
             id: 4,
-            title: 'Orders',
-            subTitle: 'Orders in waitlist',
-            num: '75'
+            title: 'Other Transaction',
+            subTitle: 'Last 30 days',
+            num: '$1.6k'
         },
     ]
     const [progress, setProgress] = useState(0)

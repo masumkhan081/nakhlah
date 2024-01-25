@@ -89,7 +89,7 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
         <DialogTitle className="textHeader textPrimaryColor">
           {useForEdit ? "Update" : "New"} {addWhat}
         </DialogTitle>
-        {/*
+
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
@@ -135,7 +135,6 @@ export default function AddLearnerLevel({ rowData, title, useForEdit }) {
             style="text-blue-800 bg-blue-100 border border-slate-400 py-0.25 h-fit text-base font-semibold"
           />
         </form>
-        */}
       </DialogHeader>
     </>
   );

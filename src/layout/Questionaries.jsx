@@ -81,11 +81,11 @@ export default function Questionaries({ content }) {
   const selectedJourney = useQuestion((state) => state.selectedJourney);
   const selectedUnit = useQuestion((state) => state.selectedUnit);
   const selectedLevel = useQuestion((state) => state.selectedLevel);
-  // 
-  const setSelectedUnit= useQuestion((state) => state.setSelectedUnit);
-  const setSelectedLevel= useQuestion((state) => state.setSelectedLevel);
-  const setSelectedLesson= useQuestion((state) => state.setSelectedLesson);
-  const setSelectedJourney= useQuestion((state) => state.setSelectedJourney);
+  //
+  const setSelectedUnit = useQuestion((state) => state.setSelectedUnit);
+  const setSelectedLevel = useQuestion((state) => state.setSelectedLevel);
+  const setSelectedLesson = useQuestion((state) => state.setSelectedLesson);
+  const setSelectedJourney = useQuestion((state) => state.setSelectedJourney);
   //
   const [filteredLessons, setFilteredLessons] = useState([]);
   const [filteredUnits, setFilteredUnits] = useState([]);
@@ -188,7 +188,7 @@ export default function Questionaries({ content }) {
     <div className="max-h-[83vh] flex flex-col gap-2 px-2 w-full bg-white">
       <div className=" rounded-md p-1 flex justify-between">
         <EnhancedText kind={"two"} color=" text-slate-800">
-          {/* {JSON.stringify(selectedJourney) + JSON.stringify(selectedUnit)} */}
+          {JSON.stringify(selectedJourney) + JSON.stringify(selectedUnit)}
         </EnhancedText>
 
         {currentView == "Add New Question" && (
@@ -312,7 +312,7 @@ export default function Questionaries({ content }) {
           <AddMCQ useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "Pair Matching" && (
-          <AddPM useForEdit={false} />
+          <div>{"Loading ... "}</div>
         )}
         {currentAct == "add" && currentSubView == "Sentence Making" && (
           <AddSM useForEdit={false} />

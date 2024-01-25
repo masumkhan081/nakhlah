@@ -36,14 +36,15 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
   async function handleSubmit(e) {
     e.preventDefault();
     let formData = new FormData();
+    var inputTilte = document.getElementById("idInputPurpose");
     var fileInput = document.getElementById("idInputFile");
     var file = fileInput.files[0];
     formData.append("files.icon", file);
-    formData.append("data", `{"purpose":"${purpose}"}`);
+    formData.append("data", `{"purpose":"${inputTilte.value}"}`);
 
     await fetch(
       useForEdit
-        ? putMap["learner-purpose"] + "/${rowData.id}?populate=icon"
+        ? putMap["learner-purpose"] + `/${rowData.id}?populate=icon`
         : postMap["learner-purpose"],
       {
         method: useForEdit ? "PUT" : "POST",
@@ -54,6 +55,7 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
     )
       .then((res) => res.json())
       .then((data) => {
+        alert(">> " + JSON.stringify(data));
         let renderable = {
           id: data.data.id,
           purpose: data.data.attributes.purpose,
@@ -67,7 +69,9 @@ export default function AddPurpose({ rowData, title, useForEdit }) {
         });
         document.getElementById("closeDialog")?.click();
       })
-      .catch((error) => {});
+      .catch((error) => {
+        alert(JSON.stringify(error));
+      });
   }
   const currentView = useTabularView((state) => state.data.currentView);
   const addWhat = currentView.slice(0, currentView.length - 1);

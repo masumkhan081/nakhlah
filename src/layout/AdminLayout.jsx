@@ -43,9 +43,9 @@ const AdminLayout = ({ child }) => {
                 <AdminLeftNavbar open={isOpenCall} />
               </div>
               <animated.div style={delay} className={`absolute right-0 h-full`}>
-                <ScrollArea className="h-[83vh]  rounded-xl">
+                <div className="h-[83vh] overflow-y-scroll rounded-xl">
                   {child}
-                </ScrollArea>
+                </div>
               </animated.div>
             </div>
           </div>

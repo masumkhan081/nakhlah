@@ -6,32 +6,32 @@ import { AiOutlineLike } from "react-icons/ai";
 const data =[
     {
         id: 1,
-        title: 'New post reached 7k+ likes',
+        title: 'Eid Ul Adha',
         subTitle: '02 March',
         icon: <AiOutlineLike/>
     },
     {
         id: 2,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'Black Friday',
+        subTitle: '$1.5k',
         icon: <AiOutlineLike/>
     },
     {
         id: 3,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'Eid Ul Fitar',
+        subTitle: '$1.1k',
         icon: <AiOutlineLike/>
     },
     {
         id: 4,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'Ramadan',
+        subTitle: '$0.3k',
         icon: <AiOutlineLike/>
     },
     {
         id: 5,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'Hajj',
+        subTitle: '$2.5k',
         icon: <AiOutlineLike/>
     },
 ]
@@ -39,7 +39,7 @@ function SocialMedia() {
     return (
         <Card className='w-[30%] textPrimaryColor bg-white border-none rounded-xl'>
             <CardHeader>
-                <CardTitle className='textSemiHeader font-bold'>Social Media</CardTitle>
+                <CardTitle className='textSemiHeader font-bold'>Running Event Response</CardTitle>
             </CardHeader>
             <CardContent className='w-[90%] mx-auto flex flex-col gap-5'>
                 {data.map(item=>(

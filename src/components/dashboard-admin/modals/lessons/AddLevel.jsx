@@ -188,7 +188,7 @@ export default function AddLevel({ rowData, useForEdit }) {
 
   useEffect(() => {
     if (selectedJourney.id != null) {
-      useForEdit ? "" : setSelectedUnit(initStateSelection);
+      setSelectedUnit(initStateSelection);
       filterUnitsByJourney(selectedJourney.id);
     }
   }, [selectedJourney]);
@@ -214,7 +214,7 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedJourney}
-              label={"Select Level"}
+              label={"Select Journey"}
               options={journeyData}
               bg="wh"
               onChange={(value) =>
@@ -226,7 +226,7 @@ export default function AddLevel({ rowData, useForEdit }) {
           <div className="flex flex-col gap-1">
             <CustomSelect
               value={selectedUnit}
-              label={"Select Task"}
+              label={"Select Unit"}
               options={filteredUnits}
               bg="wh"
               onChange={(value) =>

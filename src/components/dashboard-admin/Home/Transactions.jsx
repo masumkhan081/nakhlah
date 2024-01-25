@@ -6,32 +6,32 @@ import { AiOutlineLike } from 'react-icons/ai'
 const data =[
     {
         id: 1,
-        title: 'New post reached 7k+ likes',
+        title: 'New Subscribers - $20',
         subTitle: '02 March',
         icon: <AiOutlineLike/>
     },
     {
         id: 2,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'New Subscribers - $28',
+        subTitle: '07 March',
         icon: <AiOutlineLike/>
     },
     {
         id: 3,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'New Subscribers - $22',
+        subTitle: '10 March',
         icon: <AiOutlineLike/>
     },
     {
         id: 4,
-        title: 'New post reached 7k+ likes',
+        title: 'New Subscribers - $20',
         subTitle: '02 March',
         icon: <AiOutlineLike/>
     },
     {
         id: 5,
-        title: 'New post reached 7k+ likes',
-        subTitle: '02 March',
+        title: 'New Subscribers - $26',
+        subTitle: '04 March',
         icon: <AiOutlineLike/>
     },
 ]
@@ -39,7 +39,7 @@ function Transactions() {
     return (
         <Card className='w-[33.33%] textPrimaryColor bg-white border-none rounded-xl'>
             <CardHeader>
-                <CardTitle className='textSemiHeader font-bold'>Transactions</CardTitle>
+                <CardTitle className='textSemiHeader font-bold'>Transaction History</CardTitle>
             </CardHeader>
             <CardContent className='w-[90%] mx-auto flex flex-col gap-5 mb-5'>
                 {data.map(item=>(

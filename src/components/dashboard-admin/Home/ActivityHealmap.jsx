@@ -3,12 +3,12 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
-function Orders() {
+function ActivityHealmap() {
   const [state, setState] = useState({
     series: [
       {
         name: "Series 1",
-        data: [20, 100, 40, 30, 50, 80, 33],
+        data: [20, 100, 40, 30, 50, 80],
       },
     ],
     options: {
@@ -46,13 +46,13 @@ function Orders() {
       },
       xaxis: {
         categories: [
-          "Facebook",
-          "Google",
-          "Bing",
-          "X (Twitter)",
-          "Yahoo",
-          "Campaign",
-          "Friends And Family",
+          "0-4",
+          "4-8",
+          "8-12",
+          "12-16",
+          "16-20",
+          "20-24",
+           
         ],
       },
       yaxis: {
@@ -72,7 +72,7 @@ function Orders() {
   return (
     <Card className="w-[30%] textPrimaryColor bg-white border-none rounded-xl">
       <CardHeader>
-        <CardTitle className="textSemiHeader font-bold">Acquisition Channel Breakdown</CardTitle>
+        <CardTitle className="textSemiHeader font-bold">Hourly Activities</CardTitle>
       </CardHeader>
       <div className="">
         <Chart
@@ -86,4 +86,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default ActivityHealmap;

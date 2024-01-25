@@ -38,7 +38,7 @@ export const getMap = {
   "content-fitb": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Fill_In_The_Blank`,
   "content-tof": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=Boolean`,
   "content-mcq": `${BASE_URL}/api/contents?filters[content_type][title][$eq]=MCQ`,
-   
+
   "content-boolean": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Boolean`,
   "content-fib": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=Fill_In_The_Blank`,
   "content-mcq": `${BASE_URL}/api/contents?populate=*&filters[content_type][title][$eq]=MCQ`,
@@ -109,13 +109,12 @@ export const deleteMap = {
 
 export const getWithUrl = async (url) => {
   try {
-    const response = await axios.get(BASE_URL+"/"+ url, config);
+    const response = await axios.get(BASE_URL + "/" + url, config);
     return response;
   } catch (err) {
     return err;
   }
-}; 
-
+};
 
 export const getHandler = async (key) => {
   try {

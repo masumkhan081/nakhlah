@@ -5,28 +5,28 @@ import React from 'react'
 
 const invoices = [
     {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
+        invoice: "Google",
+        paymentStatus: "20k",
+        totalAmount: "4.5k",
+        paymentMethod: "$20000",
     },
     {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
+        invoice: "Facebook",
+        paymentStatus: "26.3k",
+        totalAmount: "6.1k",
+        paymentMethod: "$30000",
     },
     {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
+        invoice: "X (Twitter)",
+        paymentStatus: "17k",
+        totalAmount: "3.5k",
+        paymentMethod: "$28000",
     },
     {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
+        invoice: "Bing",
+        paymentStatus: "19.8k",
+        totalAmount: "1.9k",
+        paymentMethod: "$22000",
     },
 ]
 
@@ -34,16 +34,16 @@ function RecentOrders() {
     return (
         <Card className='w-[70%] textPrimaryColor bg-white border-none rounded-xl' >
             <CardHeader>
-                <CardTitle className='textSemiHeader font-bold'>Recent Orders</CardTitle>
+                <CardTitle className='textSemiHeader font-bold'>Traffic Source Timeline</CardTitle>
             </CardHeader>
 
             <Table className='textSmall'> 
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Invoice</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Method</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead className="w-[100px]">Source</TableHead>
+                        <TableHead>Unpaid User</TableHead>
+                        <TableHead>Paid User</TableHead>
+                        <TableHead className="text-right">Earned</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -59,7 +59,7 @@ function RecentOrders() {
                 <TableFooter>
                     <TableRow>
                         <TableCell colSpan={3}>Total</TableCell>
-                        <TableCell className="text-right">$2,500.00</TableCell>
+                        <TableCell className="text-right">$1,00,000</TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>
