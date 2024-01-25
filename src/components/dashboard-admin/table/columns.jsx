@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Main_URL } from "../../../lib/url";
@@ -309,7 +309,7 @@ export const levelColumns = [
       );
     },
   },
-]; 
+];
 
 export const goalColumns = [
   {

@@ -495,7 +495,7 @@ export default function AddMCQ({ rowData, useForEdit }) {
   }
 
   function resetForm() {
-    setOptions(initOptions); 
+    setOptions(initOptions);
     setQuestion("");
     setRightAndWrong(initRightWrong);
     setError(initErrors);
@@ -515,7 +515,7 @@ export default function AddMCQ({ rowData, useForEdit }) {
   //   jsx
   return (
     <div className="w-full p-3   rounded-md ">
-      {JSON.stringify(tFAns)}
+      {/* {JSON.stringify(tFAns)} */}
       {/* 
         "--" +
         JSON.stringify(selectedUnit) +

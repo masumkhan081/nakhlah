@@ -187,9 +187,7 @@ export default function Questionaries({ content }) {
   return (
     <div className="max-h-[83vh] flex flex-col gap-2 px-2 w-full bg-white">
       <div className=" rounded-md p-1 flex justify-between">
-        <EnhancedText kind={"two"} color=" text-slate-800">
-          {JSON.stringify(selectedJourney) + JSON.stringify(selectedUnit)}
-        </EnhancedText>
+        <EnhancedText kind={"two"} color=" text-slate-800"></EnhancedText>
 
         {currentView == "Add New Question" && (
           <CustomButton
@@ -309,19 +307,19 @@ export default function Questionaries({ content }) {
         {currentView == "Contents" && <Content />}
 
         {currentAct == "add" && currentSubView == "MCQ" && (
-          <AddMCQ useForEdit={false} />
+          <AddQuePage useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "Pair Matching" && (
           <div>{"Loading ... "}</div>
         )}
         {currentAct == "add" && currentSubView == "Sentence Making" && (
-          <AddSM useForEdit={false} />
+          <AddQuePage useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "True Or False" && (
-          <AddTOF useForEdit={false} />
+          <AddQuePage useForEdit={false} />
         )}
         {currentAct == "add" && currentSubView == "Fill In The Blank" && (
-          <AddFITB useForEdit={false} />
+          <AddQuePage useForEdit={false} />
         )}
       </div>
     </div>

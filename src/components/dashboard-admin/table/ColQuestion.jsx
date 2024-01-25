@@ -36,7 +36,7 @@ const ColQuestion = [
       const rowId = parseInt(row.id) + 1;
       return (
         <div className="textSecondaryColor textNormal">
-          {row.getValue("id")}
+         {rowId}
         </div>
       );
     },

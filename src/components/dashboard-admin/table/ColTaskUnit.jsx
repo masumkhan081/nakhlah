@@ -42,10 +42,10 @@ const columnTaskUnit = [
     accessorKey: "id",
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
-      // const rowId = parseInt(row.id) + 1;
+      const rowId = parseInt(row.id) + 1;
       return (
         <div className="textSecondaryColor textNormal">
-          {row.getValue("id")}
+          {rowId}
         </div>
       );
     },
@@ -65,7 +65,7 @@ const columnTaskUnit = [
       );
     },
     cell: ({ row }) => {
-      <div className="text-slate-600">{row.getValue("idTask")}</div>;
+      <div className="textPrimaryColor textNormal">{row.getValue("idTask")}</div>;
     },
   },
   {
