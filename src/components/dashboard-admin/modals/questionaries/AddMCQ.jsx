@@ -113,6 +113,7 @@ export default function AddMCQ({ rowData, useForEdit }) {
   );
 
   useEffect(() => {
+  
     const fetch = async () => {
       const response = await getHandler("learning-journey");
       if (response.status === 200) {
@@ -292,7 +293,12 @@ export default function AddMCQ({ rowData, useForEdit }) {
           if (queOptionResult.status == 200) {
             const journeyMapResult = useForEdit
               ? await putHandler("journey-map-question", rowData.id, {
-                  data: {},
+                  data: {
+                    learning_journey_lesson: { connect: [selectedLesson.id] },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
                 })
               : await postHandler("journey-map-question", {
                   data: {
@@ -303,46 +309,41 @@ export default function AddMCQ({ rowData, useForEdit }) {
                   },
                 });
             if (journeyMapResult.status == 200) {
+              useForEdit
+                ? afterUpdate(data)
+                : afterAdd({
+                    id: queResult.data.data.id,
+                    question: question,
+                    audio: queAudio,
+                    question_type: {
+                      id: currentSubView.id,
+                      title: currentSubView.title,
+                    },
+                    lesson: {
+                      id: selectedLesson.id,
+                      title: selectedLesson.title,
+                    },
+                    task_unit: {
+                      id: selectedLevel.id,
+                      title: selectedLevel.title,
+                    },
+                    task: {
+                      id: selectedUnit.id,
+                      title: selectedUnit.title,
+                    },
+                    level: {
+                      id: selectedJourney.id,
+                      title: selectedJourney.title,
+                    },
+                  });
               toast({
-                title: "Question Added Successfully",
+                title: useForEdit
+                  ? "Item Updated Succesfully"
+                  : "Item Added Successfully",
               });
+              resetForm();
             }
-            // alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
           }
-
-          useForEdit
-            ? afterUpdate(data)
-            : afterAdd({
-                id: queResult.data.data.id,
-                question: question,
-                audio: queAudio,
-                question_type: {
-                  id: currentSubView.id,
-                  title: currentSubView.title,
-                },
-                lesson: {
-                  id: selectedLesson.id,
-                  title: selectedLesson.title,
-                },
-                task_unit: {
-                  id: selectedLevel.id,
-                  title: selectedLevel.title,
-                },
-                task: {
-                  id: selectedUnit.id,
-                  title: selectedUnit.title,
-                },
-                level: {
-                  id: selectedJourney.id,
-                  title: selectedJourney.title,
-                },
-              });
-          toast({
-            title: useForEdit
-              ? "Item Updated Succesfully"
-              : "Item Added Successfully",
-          });
-          resetForm();
         } else if (queResult.status == 400) {
           let errors = queResult.data.error.details.errors;
           alert("errors: " + JSON.stringify(errors));

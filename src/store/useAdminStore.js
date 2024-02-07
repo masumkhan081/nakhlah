@@ -580,6 +580,16 @@ export const useLearningLesson = create(
 );
 
 // ______________________________________  learning question
+export const useQueDetail = create(
+  immer((set) => ({
+    data: [],
+    setQueTypes: (data) => {
+      set((state) => {
+        state.data = data;
+      });
+    },
+  }))
+);
 
 export const useQueType = create(
   immer((set) => ({

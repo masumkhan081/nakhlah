@@ -236,7 +236,12 @@ export default function AddTOF({ rowData, useForEdit }) {
           if (queContResult.status == 200) {
             const journeyMapResult = useForEdit
               ? await putHandler("journey-map-question", rowData.id, {
-                  data: {},
+                  data: {
+                    learning_journey_lesson: { connect: [selectedLesson.id] },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
                 })
               : await postHandler("journey-map-question", {
                   data: {

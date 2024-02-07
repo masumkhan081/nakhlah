@@ -57,7 +57,7 @@ export function renderableLearnerLevel(arr) {
 
 // ---------------------------------------- LEARNING LESSON
 export function renderableOptions(arr) {
-  return arr.map((item) => { 
+  return arr.map((item) => {
     return {
       id: item.id,
       title: item.attributes.title,
@@ -74,7 +74,7 @@ export function renderableJournies(arr) {
   });
   return renderable;
 }
- 
+
 export function renderableUnits(arr) {
   return arr.map((item) => {
     // alert("item: " + JSON.stringify(item));
@@ -139,7 +139,6 @@ export function renderableLessons(arr) {
       };
     });
 }
- 
 
 // ---------------------------------------- QUESTIONARIES
 
@@ -154,7 +153,7 @@ export function renderableQueType(arr) {
 export function renderableQuetions(arr) {
   return arr.map((item) => {
     const { question } = item.attributes?.question_content?.data?.attributes;
-
+    const { content } = item.attributes?.question_content?.data?.attributes;
     const { question_type } =
       item.attributes?.question_content?.data?.attributes;
     const learning_journey_lesson = item?.attributes?.learning_journey_lesson;
@@ -168,6 +167,10 @@ export function renderableQuetions(arr) {
     return {
       id: item.id,
       question: question.data?.attributes?.question,
+      content: {
+        id: content?.data?.id,
+        title: content?.data?.attributes?.title,
+      },
       audio: question.data?.attributes?.audio,
       question_type: {
         id: question_type?.data?.id,

@@ -62,7 +62,7 @@ export default function AddSM({ rowData, useForEdit }) {
   const selectedQueLevel = useQuestion((state) => state.selectedLevel);
   //
   const setContents = useContent((state) => state.setContents);
-  const contents = useContent((state) => state.contents);
+  const contents = useContent((state) => state.data);
   //
   const afterUpdate = useQuestion((state) => state.afterUpdate);
   const afterAdd = useQuestion((state) => state.afterAdd);
@@ -165,6 +165,7 @@ export default function AddSM({ rowData, useForEdit }) {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("content-sm");
+
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
       }
@@ -204,22 +205,40 @@ export default function AddSM({ rowData, useForEdit }) {
       );
 
       try {
-        const queResult = await axios.post(
-          "https://api.nakhlah.xyz/api/questions?populate=image",
-          formData,
-          {
-            headers: {
-              Authorization:
-                "Bearer " +
-                "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
-            },
-          }
-        );
+        const queResult = useForEdit
+          ? await axios.put(
+              `https://api.nakhlah.xyz/api/questions/${rowData.id}`,
+              formData,
+              {
+                headers: {
+                  Authorization:
+                    "Bearer " +
+                    "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+                },
+              }
+            )
+          : await axios.post(
+              "https://api.nakhlah.xyz/api/questions?populate=image",
+              formData,
+              {
+                headers: {
+                  Authorization:
+                    "Bearer " +
+                    "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
+                },
+              }
+            );
+
+        alert("queResult: " + JSON.stringify(queResult));
 
         if (queResult?.data?.data?.id) {
           const queContResult = useForEdit
             ? await putHandler("question-content", rowData.id, {
-                data: {},
+                data: {
+                  question: { connect: [queResult.data.data.id] },
+                  question_type: { connect: [currentSubView.id] },
+                  content: { connect: [smAns.id] },
+                },
               })
             : await postHandler("question-content", {
                 data: {
@@ -229,47 +248,63 @@ export default function AddSM({ rowData, useForEdit }) {
                 },
               });
 
-          // alert("queContResult: " + JSON.stringify(queContResult));
+          alert("queContResult: " + JSON.stringify(queContResult));
 
-          useForEdit
-            ? afterUpdate(data)
-            : afterAdd({
-                id: queResult.data.data.id,
-                question: question,
-                audio: queAudio,
-                question_type: {
-                  id: currentSubView.id,
-                  title: currentSubView.title,
-                },
-                lesson: {
-                  id: selectedLesson.id,
-                  title: selectedLesson.title,
-                },
-                task_unit: {
-                  id: selectedLevel.id,
-                  title: selectedLevel.title,
-                },
-                task: {
-                  id: selectedUnit.id,
-                  title: selectedUnit.title,
-                },
-                level: {
-                  id: selectedJourney.id,
-                  title: selectedJourney.title,
-                },
+          if (queContResult.status == 200) {
+            const journeyMapResult = useForEdit
+              ? await putHandler("journey-map-question", rowData.id, {
+                  data: {
+                    learning_journey_lesson: { connect: [selectedLesson.id] },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
+                })
+              : await postHandler("journey-map-question", {
+                  data: {
+                    learning_journey_lesson: { connect: [selectedLesson.id] },
+                    question_content: {
+                      connect: [queContResult.data.data.id],
+                    },
+                  },
+                });
+            if (journeyMapResult.status == 200) {
+              useForEdit
+                ? afterUpdate(data)
+                : afterAdd({
+                    id: queResult.data.data.id,
+                    question: question,
+                    audio: queAudio,
+                    question_type: {
+                      id: currentSubView.id,
+                      title: currentSubView.title,
+                    },
+                    lesson: {
+                      id: selectedLesson.id,
+                      title: selectedLesson.title,
+                    },
+                    task_unit: {
+                      id: selectedLevel.id,
+                      title: selectedLevel.title,
+                    },
+                    task: {
+                      id: selectedUnit.id,
+                      title: selectedUnit.title,
+                    },
+                    level: {
+                      id: selectedJourney.id,
+                      title: selectedJourney.title,
+                    },
+                  });
+              toast({
+                title: useForEdit
+                  ? "Item Updated Succesfully"
+                  : "Item Added Successfully",
               });
-          toast({
-            title: useForEdit
-              ? "Item Updated Succesfully"
-              : "Item Added Successfully",
-          });
-          resetForm();
-        } else if (queResult.status == 400) {
-          let errors = queResult.data.error.details.errors;
-          alert("errors: " + JSON.stringify(errors));
-          setError({
-            err2: errors[0]?.message,
-          });
+              resetForm();
+            }
+            alert("journeyMapResult: " + JSON.stringify(journeyMapResult));
+          }
         }
       } catch (error) {
         alert(JSON.stringify(error.response.data)); // NOTE - use "error.response.data` (not "error")
@@ -300,8 +335,10 @@ export default function AddSM({ rowData, useForEdit }) {
   }
 
   const [image, setImage] = useState(null);
-  const [queAudio, setQueAudio] = useState("");
-  const [smAns, setSmAns] = useState(initStateSelection);
+  const [queAudio, setQueAudio] = useState(useForEdit ? rowData.audio : "");
+  const [smAns, setSmAns] = useState(
+    useForEdit ? rowData.content : initStateSelection
+  );
 
   function handleAdd() {}
 

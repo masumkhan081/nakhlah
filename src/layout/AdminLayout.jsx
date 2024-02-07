@@ -43,7 +43,7 @@ const AdminLayout = ({ child }) => {
                 <AdminLeftNavbar open={isOpenCall} />
               </div>
               <animated.div style={delay} className={`absolute right-0 h-full`}>
-                <div className="h-[83vh] overflow-y-auto rounded-xl">
+                <div className="h-[83vh]  rounded-xl">
                   {child}
                 </div>
               </animated.div>

@@ -101,9 +101,9 @@ export default function DataTableHeader({ table, view, filter }) {
               <Plus className="w-5 h-5 mx-1" />
               <span className="">
                 {currentView == "Questions"
-                  ? viewContToAddButton[currentSubView.title]
-                  : currentView == "Contents"
                   ? viewQueToAddButton[currentSubView.title]
+                  : currentView == "Contents"
+                  ? viewContToAddButton[currentSubView.title]
                   : addWhat}
               </span>
             </Button>
@@ -130,19 +130,25 @@ export default function DataTableHeader({ table, view, filter }) {
             {view == "question-content-option" && (
               <AddQueContOption title={view} />
             )}
-            {currentSubView.title == "MCQ" && <AddMCQ useForEdit={false} />}
-            {currentSubView.title == "Pair Matching" && (
-              <div>{"Loading ... "}</div>
-            )}
-            {currentSubView.title == "Sentence Making" && (
-              <AddSM useForEdit={false} />
-            )}
-            {currentSubView.title == "True Or False" && (
-              <AddTOF useForEdit={false} />
-            )}
-            {currentSubView.title == "Fill In The Blank" && (
+            {currentView == "Questions" && currentSubView.title == "MCQ" && (
               <AddMCQ useForEdit={false} />
             )}
+            {currentView == "Questions" &&
+              currentSubView.title == "Pair Matching" && (
+                <div>{"Loading ... "}</div>
+              )}
+            {currentView == "Questions" &&
+              currentSubView.title == "Sentence Making" && (
+                <AddSM useForEdit={false} />
+              )}
+            {currentView == "Questions" &&
+              currentSubView.title == "True Or False" && (
+                <AddTOF useForEdit={false} />
+              )}
+            {currentView == "Questions" &&
+              currentSubView.title == "Fill In The Blank" && (
+                <AddMCQ useForEdit={false} />
+              )}
           </DialogContent>
         </Dialog>
       </div>

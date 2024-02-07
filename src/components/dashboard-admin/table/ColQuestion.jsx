@@ -7,6 +7,8 @@ import Deletion from "../modals/other/Deletion";
 import AddStartingPoint from "../modals/journey/AddStartPoint";
 import { useTabularView } from "@/store/useAdminStore";
 import AddSM from "../modals/questionaries/AddSM";
+import QueDetail from "../modals/questionaries/QueDetail";
+import EditModalContainer from "../modals/questionaries/EditModalContainer";
 
 const ColQuestion = [
   {
@@ -109,6 +111,7 @@ const ColQuestion = [
     },
   },
   // lesson title
+
   {
     id: "id_lesson",
     accessorKey: "lesson.title",
@@ -141,7 +144,7 @@ const ColQuestion = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Task Unit
+          Level
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -164,7 +167,7 @@ const ColQuestion = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Task
+          Unit
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -187,7 +190,7 @@ const ColQuestion = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Learning Level
+          Journey
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -200,6 +203,7 @@ const ColQuestion = [
       );
     },
   },
+
   {
     id: "actions",
     header: () => (
@@ -216,8 +220,7 @@ const ColQuestion = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px] min-w-20. flex justify-center items-center">
-              <span className="font-semibold text-base">To Be Done </span>
-              <span>Whole Detail of the Particular question</span>
+              <QueDetail rowData={row.original} />
             </DialogContent>
           </Dialog>
           <Dialog className="">
@@ -237,11 +240,7 @@ const ColQuestion = [
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px] ">
-              <AddSM
-                title="question"
-                useForEdit={true}
-                rowData={row.original}
-              />
+              <EditModalContainer rowData={row.original} />
             </DialogContent>
           </Dialog>
         </div>
