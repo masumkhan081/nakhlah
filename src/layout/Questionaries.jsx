@@ -316,7 +316,7 @@ export default function Questionaries({ content }) {
         </div>
       </div>
 
-      <div className="flex-grow overflow-y-scroll  ">
+      <div className="flex-grow overflow-y-auto  ">
         {currentView == "Questions" &&
           currentAct == "view" &&
           currentSubView.title == "MCQ" && <MCQ />}
