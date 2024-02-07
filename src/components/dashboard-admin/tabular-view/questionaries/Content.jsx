@@ -2,6 +2,7 @@
 import DataTable from "../../table/DataTable";
 import ColContent from "../../table/ColContent";
 import {
+  useConType,
   useContent,
   useLoadingState,
   useTabularView,
@@ -9,7 +10,7 @@ import {
 import { useEffect } from "react";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
 import { getHandler, putHandler } from "@/lib/requestHandler";
-import { renderableContents } from "@/lib/fetchFunctions";
+import { renderableContTypes, renderableContents } from "@/lib/fetchFunctions";
 
 const requestKeyMap = {
   "Sentence Making": "content-sm",
@@ -25,13 +26,14 @@ const Content = () => {
   const loading = useLoadingState((state) => state.loading);
   const toggleLoading = useLoadingState((state) => state.toggleLoading);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
-
+  //
   useEffect(() => {
     const fetch = async () => {
-      const response = await getHandler(requestKeyMap[currentSubView]);
+      const response = await getHandler(requestKeyMap[currentSubView.title]);
+
+      toggleLoading(false);
       if (response.status === 200) {
         setContents(renderableContents(response.data.data));
-        toggleLoading(false);
       }
     };
     if (loading == false) {
@@ -39,6 +41,8 @@ const Content = () => {
       fetch();
     }
   }, [currentSubView]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="w-full bg-white rounded-xl">

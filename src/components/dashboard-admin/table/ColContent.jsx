@@ -35,11 +35,7 @@ const ColContent = [
     header: () => <div className="textNormal textPrimaryColor">ID</div>,
     cell: ({ row }) => {
       const rowId = parseInt(row.id) + 1;
-      return (
-        <div className="textSecondaryColor textNormal">
-          {rowId}
-        </div>
-      );
+      return <div className="textSecondaryColor textNormal">{rowId}</div>;
     },
   },
   {
@@ -62,23 +58,43 @@ const ColContent = [
       </div>
     ),
   },
+  // {
+  //   id: "id_type",
+  //   accessorKey: "content_type.title",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         className="textPrimaryColor textNormal"
+  //       >
+  //         Content Type
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className=" textNormal textSecondaryColor">
+  //       {row.getValue("id_type")?.replaceAll("_", " ")}
+  //     </div>
+  //   ),
+  // },
   {
-    id: "id_type",
-    accessorKey: "content_type.title",
+    id: "id_audio",
+    accessorKey: "audio",
     header: ({ column }) => {
       return (
         <Button
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="textPrimaryColor textNormal"
         >
-          Content Type
+          Audio
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_type")?.replaceAll("_", " ")}
+        {row.getValue("id_audio")?.replaceAll("_", " ")}
       </div>
     ),
   },

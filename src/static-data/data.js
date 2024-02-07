@@ -454,7 +454,7 @@ export const staticQueType = [
   },
   {
     id: 2,
-    title: "Fill in the blank",
+    title: "Fill In The Blank",
   },
   {
     id: 3,
@@ -462,7 +462,7 @@ export const staticQueType = [
   },
   {
     id: 4,
-    title: "True 0r False",
+    title: "True Or False",
   },
 ];
 export const staticConType = [

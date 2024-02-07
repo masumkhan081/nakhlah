@@ -13,6 +13,7 @@ export default function LearningContent({ content }) {
   //
   const tabularView = useTabularView((state) => state.data);
   const setTabularView = useTabularView((state) => state.setTabularView);
+  //
 
   useEffect(() => {
     setTabularView({

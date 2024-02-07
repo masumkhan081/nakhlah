@@ -21,9 +21,11 @@ export default function StartPoints() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learner-start-point");
+    
+    toggleLoading(false);
+     
       if (response.status === 200) {
         setStartPoints(renderableStartPoint(response.data.data));
-        toggleLoading(false);
       }
     };
     if (

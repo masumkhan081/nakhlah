@@ -21,11 +21,12 @@ export default function Lessons() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-lesson");
-      if (response) {
+      
         toggleLoading(false);
-      }
+     
+      
       if (response.status === 200) {
-        setLessons(renderableLessons(response.data.data));
+        setLessons(renderableLessons(response.data.data));toggleLoading(false);
       }
     };
     if (

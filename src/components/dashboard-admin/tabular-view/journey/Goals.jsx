@@ -21,6 +21,9 @@ export default function Goals() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learner-goal");
+     
+        toggleLoading(false);
+     
       if (response.status === 200) {
         setGoals(renderableGoals(response.data.data));
         toggleLoading(false);

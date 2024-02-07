@@ -52,7 +52,7 @@ export default function DataTable({ data, columns, view, filter }) {
     onPaginationChange: setPagination,
   });
   return (
-    <div className="w-[98%] mx-auto flex flex-col ">
+    <div className="w-[98%] mx-auto flex flex-col lg:min-h-[300px] xl:min-h-[450px] 2xl:min-h-[550px]">
       <div className="">
         <DataTableHeader table={table} view={view} filter={data?.length > 0} />
       </div>
@@ -115,7 +115,7 @@ export default function DataTable({ data, columns, view, filter }) {
         </div>
       )}
       {/* pagination section */}
-      {data?.length > 0 ? <DataTablePagination table={table} /> : ""}
+      {data?.length > 0 ? <DataTablePagination table={table} className="mb-0"/> : ""}
     </div>
   );
 }

@@ -20,8 +20,8 @@ const AdminLayout = ({ child }) => {
   return (
     <>
       {path === "/admin/auth" ||
-        path === "/admin/auth/forgot-password" ||
-        path === "/admin/auth/reset-password" ? (
+      path === "/admin/auth/forgot-password" ||
+      path === "/admin/auth/reset-password" ? (
         <div className="flex w-full min-h-screen max-h-screen items-center justify-center bg-[--uDBg]">
           <div className=" bg-white text-[--uDText] 1xl:w-[25%]  xl:w-[30%] text-[16px] py-10 rounded-xl xl:w[35%] lg:w-[40%] md:w-[40%] sm:w-[50%] w-full sm:h-auto h-screen flex flex-col  justify-center">
             <>

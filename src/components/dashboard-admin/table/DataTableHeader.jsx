@@ -29,6 +29,9 @@ import AddQueContOption from "../modals/questionaries/AddQueContOption";
 import { useTabularView } from "@/store/useAdminStore";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import QueFilter from "../tabular-view/questionaries/QueFilter";
+import AddMCQ from "../modals/questionaries/AddMCQ";
+import AddTOF from "../modals/questionaries/AddTOF";
+import AddSM from "../modals/questionaries/AddSM";
 
 const viewMap = {
   // learning journey
@@ -51,11 +54,27 @@ const viewMap = {
   "question-content-option": "id_question_content_option",
 };
 
+const viewContToAddButton = {
+  MCQ: "MCQ Content",
+  "Fill In The Blank": "FITB Content",
+  "True Or False": "TOF Content",
+  "Sentence Making": "SM Content",
+  "Pair Matching": "PM Content",
+};
+const viewQueToAddButton = {
+  MCQ: "MCQ Question",
+  "Fill In The Blank": "FITB Question",
+  "True Or False": "TOF Question",
+  "Sentence Making": "SM Question",
+  "Pair Matching": "PM Question",
+};
+
 export default function DataTableHeader({ table, view, filter }) {
   const currentView = useTabularView((state) => state.data.currentView);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   const setTabularView = useTabularView((state) => state.setTabularView);
   const addWhat = currentView.slice(0, currentView.length - 1);
+  const currentAct = useTabularView((state) => state.data.currentAct);
 
   return (
     <div className="flex items-center justify-between py-3  ">
@@ -73,57 +92,60 @@ export default function DataTableHeader({ table, view, filter }) {
           />
         </div>
       )}
-      {currentView == "Questions" ? (
-        <CustomButton
-          style={
-            "flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3"
-          }
-          click={() =>
-            setTabularView({
-              currentAct: "add",
-            })
-          }
-          startIcon={<Plus className="w-5 h-5 mx-1" />}
-          txt={currentSubView}
-        />
-      ) : (
-        <div className="flex items-center gap-4">
-          {/* modal button add new item */}
-          <Dialog className="">
-            <DialogTrigger asChild>
-              <Button className="flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3">
-                <Plus className="w-5 h-5 mx-1" />
-                <span className="">{`${addWhat}`}</span>
-              </Button>
-            </DialogTrigger>
 
-            <DialogContent className="sm:max-w-[500px]">
-              {/* <AddNewItem  title={title}  isJourney={false}/> */}
-              {view == "learning-journey" && <AddJourney title={view} />}
-              {view == "learning-level" && <AddLevel title={view} />}
-              {view == "learning-lesson" && <AddLesson title={view} />}
-              {view == "learning-unit" && <AddTaskUnit title={view} />}
-              {view == "learner-goal" && <AddGoal title={view} />}
-              {view == "learner-purpose" && <AddPurpose title={view} />}
-              {view == "learner-start-point" && (
-                <AddStartingPoint title={view} />
-              )}
-              {view == "learner-level" && <AddLearnerLevel title={view} />}
-              {view == "question-type" && <AddQueType title={view} />}
-              {view == "content-type" && <AddContentType title={view} />}
-              {view == "content-type-category" && (
-                <AddConTypeCategory title={view} />
-              )}
-              {/* {view == "question" && <AddQuestion title={view} />}{" "} */}
-              {view == "content" && <AddContent title={view} />}
-              {view == "question-content" && <AddQueContent title={view} />}
-              {view == "question-content-option" && (
-                <AddQueContOption title={view} />
-              )}
-            </DialogContent>
-          </Dialog>
-        </div>
-      )}
+      <div className="flex items-center gap-4">
+        {/* modal button add new item */}
+        <Dialog className="">
+          <DialogTrigger asChild>
+            <Button className="flex gap-1 justify-center rounded-sm max-h-[28px] text-sm font-semibold font-sans bg-wh hover:bg-slate-50 hover:shadow-sm hover:drop-shadow-sm border border-slate-300  text-slate-600 py-0.25 px-3">
+              <Plus className="w-5 h-5 mx-1" />
+              <span className="">
+                {currentView == "Questions"
+                  ? viewContToAddButton[currentSubView.title]
+                  : currentView == "Contents"
+                  ? viewQueToAddButton[currentSubView.title]
+                  : addWhat}
+              </span>
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="sm:max-w-[500px]">
+            {/* <AddNewItem  title={title}  isJourney={false}/> */}
+            {view == "learning-journey" && <AddJourney title={view} />}
+            {view == "learning-level" && <AddLevel title={view} />}
+            {view == "learning-lesson" && <AddLesson title={view} />}
+            {view == "learning-unit" && <AddTaskUnit title={view} />}
+            {view == "learner-goal" && <AddGoal title={view} />}
+            {view == "learner-purpose" && <AddPurpose title={view} />}
+            {view == "learner-start-point" && <AddStartingPoint title={view} />}
+            {view == "learner-level" && <AddLearnerLevel title={view} />}
+            {view == "question-type" && <AddQueType title={view} />}
+            {view == "content-type" && <AddContentType title={view} />}
+            {view == "content-type-category" && (
+              <AddConTypeCategory title={view} />
+            )}
+            {/* {view == "question" && <AddQuestion title={view} />}{" "} */}
+            {view == "content" && <AddContent title={view} />}
+            {view == "question-content" && <AddQueContent title={view} />}
+            {view == "question-content-option" && (
+              <AddQueContOption title={view} />
+            )}
+            {currentSubView.title == "MCQ" && <AddMCQ useForEdit={false} />}
+            {currentSubView.title == "Pair Matching" && (
+              <div>{"Loading ... "}</div>
+            )}
+            {currentSubView.title == "Sentence Making" && (
+              <AddSM useForEdit={false} />
+            )}
+            {currentSubView.title == "True Or False" && (
+              <AddTOF useForEdit={false} />
+            )}
+            {currentSubView.title == "Fill In The Blank" && (
+              <AddMCQ useForEdit={false} />
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }

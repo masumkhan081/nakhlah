@@ -60,26 +60,21 @@ export const tabsLesson = [
   },
 ];
 
-export const tabsQuestionaries = {
-  Questions: [
-    "MCQ",
-    "Fill In The Blank",
-    "True Or False",
-    "Sentence Making",
-    "Pair Matching",
-  ],
-  "Question Types": [],
-  Contents: [
-    "MCQ",
-    "Fill In The Blank",
-    "True Or False",
-    "Sentence Making",
-    "Pair Matching",
-  ],
-  "Content Types": [],
+const arrQTypes = [
+  "MCQ",
+  "Fill In The Blank",
+  "True Or False",
+  "Sentence Making",
+  "Pair Matching",
+];
 
-  "Content Data Types": [],
-};
+export const tabsQuestionaries = [
+  "Questions",
+  "Question Types",
+  "Contents",
+  "Content Types",
+  "Content Data Types",
+];
 
 export const adminDashboard = {
   leftNavList: {

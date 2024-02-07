@@ -21,7 +21,7 @@ export default function ContentType() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("content-type");
-      if (response.status === 200) {
+      toggleLoading(false); if (response.status === 200) {
         setConTypes(renderableContTypes(response.data.data));
         toggleLoading(false);
       }

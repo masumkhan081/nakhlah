@@ -54,7 +54,8 @@ const ColoumnContentType = [
     },
     cell: ({ row }) => (
       <div className=" textNormal textSecondaryColor">
-        {row.getValue("id_content_type").replaceAll("_", " ")}
+        {/* .replaceAll("_", " ") */}
+        {row.getValue("id_content_type")}
       </div>
     ),
   },

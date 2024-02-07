@@ -21,6 +21,9 @@ const LearnerLevel = () => {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learner-level");
+      
+    toggleLoading(false);
+     
       if (response.status === 200) {
         setLearnerLevels(renderableLearnerLevel(response.data.data));
         toggleLoading(false);

@@ -144,8 +144,8 @@
 
 //   const fetchMapContent = {
 //     MCQ: "content-mcq",
-//     "Fill in the blank": "content-fib",
-//     "True 0r False": "content-boolean",
+//     "Fill In The Blank": "content-fib",
+//     "True Or False": "content-boolean",
 //     "Sentence Making": "content-sm",
 //     "Pair Matching": "content-pm",
 //   };
@@ -379,7 +379,7 @@
 
 //   function getQueContent( ) {
 //     if (
-//       selectedQueType.title == "Fill in the blank"  
+//       selectedQueType.title == "Fill In The Blank"  
 //     ) {}
 //   }
 
@@ -544,7 +544,7 @@
 //               <div className="flex flex-col gap-4 border-blue-400">
 //                 {/* option -1 */}
 
-//                 {selectedQueType.title == "True 0r False" && (
+//                 {selectedQueType.title == "True Or False" && (
 //                   <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
 //                     <div className="flex justify-between pb-1">
 //                       <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">

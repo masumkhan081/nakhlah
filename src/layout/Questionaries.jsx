@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { tabsQuestionaries } from "@/static-data/interface";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import {
+  useConType,
   useLearningJourney,
   useLearningLesson,
   useLearningLevel,
   useLearningUnit,
+  useQueType,
   useQuestion,
   useTabularView,
 } from "../store/useAdminStore";
@@ -21,10 +23,9 @@ import { ChevronsRight, FileQuestion } from "lucide-react";
 import CustomSelect2 from "@/components/ui-custom/CustomSelect2";
 import { getHandler, getWithUrl } from "@/lib/requestHandler";
 import {
-  renderableLearningLevels,
-  renderableLessons,
-  renderableTaskUnits,
-  renderableTasks,
+  renderableContTypes,
+  renderableQueType,
+  renderableOptions,
 } from "@/lib/fetchFunctions";
 import MCQ from "@/components/dashboard-admin/tabular-view/questionaries/MCQ";
 import TOF from "@/components/dashboard-admin/tabular-view/questionaries/TOF";
@@ -39,44 +40,24 @@ import AddPM from "@/components/dashboard-admin/modals/questionaries/AddPM";
 
 export default function Questionaries({ content }) {
   //
+  const tabularVeiw = useTabularView((state) => state.data);
   const currentView = useTabularView((state) => state.data.currentView);
   const currentSubView = useTabularView((state) => state.data.currentSubView);
   const currentAct = useTabularView((state) => state.data.currentAct);
 
   const setTabularView = useTabularView((state) => state.setTabularView);
   const setSubView = useTabularView((state) => state.setSubView);
-
-  const journeyData = useLearningJourney((state) => state.data);
-  const setJournies = useLearningJourney((state) => state.setJournies);
   //
-  const unitData = useLearningUnit((state) => state.data);
-  const setUnits = useLearningUnit((state) => state.setUnits);
+  const journeyDataQue = useQuestion((state) => state.journeyDataQue);
+  const unitDataQue = useQuestion((state) => state.unitDataQue);
+  const levelDataQue = useQuestion((state) => state.levelDataQue);
+  const lessonDataQue = useQuestion((state) => state.lessonDataQue);
   //
-  const levelData = useLearningLevel((state) => state.data);
-  const setLevels = useLearningLevel((state) => state.setLevels);
+  const setJourneyDataQue = useQuestion((state) => state.setJourneyDataQue);
+  const setUnitDataQue = useQuestion((state) => state.setUnitDataQue);
+  const setLevelDataQue = useQuestion((state) => state.setLevelDataQue);
+  const setLessonDataQue = useQuestion((state) => state.setLessonDataQue);
   //
-  const lessonData = useLearningLesson((state) => state.data);
-  const setLessons = useLearningLesson((state) => state.setLessons);
-
-  const initStateSelection = {
-    id: null,
-    title: "",
-  };
-
-  function filterUnitsByJourney(id) {
-    setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
-  }
-  function filterLevelsByUnit(id) {
-    setFilteredLevels(
-      levelData.filter((item) => item.learning_journey_unit.id == id)
-    );
-  }
-  function filterLessonsByLevel(id) {
-    setFilteredLessons(
-      lessonData.filter((item) => item.learning_journey_level.id == id)
-    );
-  }
-
   const selectedLesson = useQuestion((state) => state.selectedLesson);
   const selectedJourney = useQuestion((state) => state.selectedJourney);
   const selectedUnit = useQuestion((state) => state.selectedUnit);
@@ -86,94 +67,113 @@ export default function Questionaries({ content }) {
   const setSelectedLevel = useQuestion((state) => state.setSelectedLevel);
   const setSelectedLesson = useQuestion((state) => state.setSelectedLesson);
   const setSelectedJourney = useQuestion((state) => state.setSelectedJourney);
-  //
-  const [filteredLessons, setFilteredLessons] = useState([]);
-  const [filteredUnits, setFilteredUnits] = useState([]);
-  const [filteredLevels, setFilteredLevels] = useState([]);
+
+  const initStateSelection = {
+    id: null,
+    title: "",
+  };
 
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-journey");
       if (response.status === 200) {
-        setJournies(renderableLearningLevels(response.data.data));
+        setJourneyDataQue(renderableOptions(response.data.data));
       }
     };
-    if (Array.isArray(journeyData) && journeyData.length === 0) {
+    if (Array.isArray(journeyDataQue) && journeyDataQue.length === 0) {
       fetch();
     }
-  }, [journeyData]);
+  }, [journeyDataQue]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("learning-unit");
-      if (response.status === 200) {
-        setUnits(renderableTasks(response.data.data));
-      }
-    };
-    if (Array.isArray(unitData) && unitData.length === 0) {
-      fetch();
-    }
-  }, [unitData]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("learning-level");
-      if (response.status === 200) {
-        setLevels(renderableTaskUnits(response.data.data));
-      }
-    };
-    if (Array.isArray(levelData) && levelData.length === 0) {
-      fetch();
-    }
-  }, [levelData]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const response = await getHandler("learning-lesson");
-      if (response.status === 200) {
-        setLessons(renderableLessons(response.data.data));
-      }
-    };
-    if (Array.isArray(lessonData) && lessonData.length === 0) {
-      fetch();
-    }
-  }, [lessonData]);
   //
   useEffect(() => {
-    setSelectedUnit(initStateSelection);
-    filterUnitsByJourney(selectedJourney.id);
+    const fetch = async () => {
+      const response = await getWithUrl(
+        `api/learning-journey-units?populate=*&filters[learning_journey][title][$eq]=${selectedJourney.title}`
+      );
+
+      if (response.status === 200) {
+        setUnitDataQue(renderableOptions(response.data.data));
+        setSelectedUnit(initStateSelection);
+      }
+    };
+    fetch();
   }, [selectedJourney]);
 
   useEffect(() => {
-    setSelectedLevel(initStateSelection);
-    filterLevelsByUnit(selectedUnit.id);
+    const fetch = async () => {
+      const response = await getWithUrl(
+        `api/learning-journey-levels?filters[learning_journey_unit][learning_journey][title][$eq]=${selectedJourney.title}&filters[learning_journey_unit][title][$eq]=${selectedUnit.title}&populate[learning_journey_unit][populate][0]=learning_journey`
+      );
+      if (response.status === 200) {
+        setLevelDataQue(renderableOptions(response.data.data));
+        setSelectedLevel(initStateSelection);
+      }
+    };
+    fetch();
   }, [selectedUnit]);
 
   useEffect(() => {
-    setSelectedLesson(initStateSelection);
-    filterLessonsByLevel(selectedLevel.id);
+    const fetch = async () => {
+      const response = await getWithUrl(
+        `api/learning-journey-lessons?filters[learning_journey_level][learning_journey_unit][learning_journey][title][$eq]=${selectedJourney.title}&filters[learning_journey_level][learning_journey_unit][title][$eq]=${selectedUnit.title}&filters[learning_journey_level][title][$eq]=${selectedLevel.title}&populate[learning_journey_level][populate][learning_journey_unit][populate][0]=learning_journey`
+      );
+      if (response.status === 200) {
+        setLessonDataQue(renderableOptions(response.data.data));
+        setSelectedLesson(initStateSelection);
+      }
+    };
+    fetch();
   }, [selectedLevel]);
 
-  useEffect(() => {
-    if (currentView == "Questions") {
-      let url =
-        "/api/journey-map-question-contents?populate[question_content][populate]=*";
-      url += currentSubView
-        ? `&filters[question_content][question_type][title][$eq]=${currentSubView}`
-        : "";
+  const queTypeData = useQueType((state) => state.data);
+  const setQueTypes = useQueType((state) => state.setQueTypes);
 
-      if (currentSubView == "") {
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("question-type");
+
+      if (response.status === 200) {
+        setQueTypes(renderableQueType(response.data.data));
+        setTabularView({
+          currentPage: "questionaries",
+          currentView: tabsQuestionaries[0],
+          currentAct: "view",
+        });
       }
+    };
+    if (Array.isArray(queTypeData) && queTypeData.length === 0) {
+      fetch();
+    } else {
+      setTabularView({
+        currentPage: "questionaries",
+        currentView: tabsQuestionaries[0],
+        currentAct: "view",
+      });
     }
-  }, [currentSubView]);
+  }, []);
 
   useEffect(() => {
-    setTabularView({
-      currentPage: "questionaries",
-      currentView: Object.keys(tabsQuestionaries)[0],
-      currentSubView: tabsQuestionaries[Object.keys(tabsQuestionaries)[0]][0],
-      currentAct: "view",
-    });
+    if (queTypeData.length > 0) {
+      setSubView({
+        currentSubView: queTypeData[0],
+      });
+    }
+  }, [queTypeData]);
+
+  const conTypeData = useConType((state) => state.data);
+  const setConTypes = useConType((state) => state.setConTypes);
+  //
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getHandler("content-type");
+      if (response.status === 200) {
+        setConTypes(renderableContTypes(response.data.data));
+      }
+    };
+    if (Array.isArray(conTypeData) && conTypeData.length === 0) {
+      fetch();
+    }
   }, []);
 
   const active_tab = (btn) =>
@@ -182,12 +182,16 @@ export default function Questionaries({ content }) {
       : " bg-slate-100 border-slate-200";
 
   const active_sub_tab = (btn) =>
-    btn === currentSubView ? " bg-wh border-slate-800 shadow-sm" : "   ";
+    btn === currentSubView?.title
+      ? " bg-wh font-medium border-slate-800 shadow-sm"
+      : "   ";
 
   return (
     <div className="max-h-[83vh] flex flex-col gap-3 px-2 w-full bg-white">
       <div className=" rounded-md p-1 flex justify-between">
-        <EnhancedText kind={"two"} color=" text-slate-800"></EnhancedText>
+        <EnhancedText kind={"two"} color=" text-slate-800">
+          {/* {JSON.stringify(tabularVeiw)} */}
+        </EnhancedText>
 
         {currentView == "Add New Question" && (
           <CustomButton
@@ -206,7 +210,7 @@ export default function Questionaries({ content }) {
       </div>
 
       <div className="flex gap-2 items-center">
-        {Object.keys(tabsQuestionaries).map((item, ind) => {
+        {tabsQuestionaries.map((item, ind) => {
           return (
             <CustomButton
               key={ind}
@@ -218,7 +222,11 @@ export default function Questionaries({ content }) {
                 setTabularView({
                   currentView: item,
                   currentSubView:
-                    item == "Questions" || item == "Contents" ? "MCQ" : "",
+                    item == "Questions"
+                      ? queTypeData[0]
+                      : item == "Contents"
+                      ? conTypeData[0]
+                      : "",
                   currentAct: "view",
                 });
               }}
@@ -227,12 +235,13 @@ export default function Questionaries({ content }) {
         })}
       </div>
       <div className="flex flex-col gap-0.4 items-end px-2 mt-0.25">
+        {/* journey to lesson */}
         {currentView == "Questions" && (
           <div className="flex gap-1 items-center">
             <CustomSelect2
               label="Journey"
               value={selectedJourney}
-              options={journeyData}
+              options={journeyDataQue}
               onChange={(value) =>
                 setSelectedJourney({ id: value.id, title: value.title })
               }
@@ -241,7 +250,7 @@ export default function Questionaries({ content }) {
             <CustomSelect2
               label="Unit"
               value={selectedUnit}
-              options={filteredUnits}
+              options={unitDataQue}
               onChange={(value) =>
                 setSelectedUnit({ id: value.id, title: value.title })
               }
@@ -250,7 +259,7 @@ export default function Questionaries({ content }) {
             <CustomSelect2
               label="Level"
               value={selectedLevel}
-              options={filteredLevels}
+              options={levelDataQue}
               onChange={(value) =>
                 setSelectedLevel({ id: value.id, title: value.title })
               }
@@ -259,7 +268,7 @@ export default function Questionaries({ content }) {
             <CustomSelect2
               label="Lesson"
               value={selectedLesson}
-              options={filteredLessons}
+              options={lessonDataQue}
               onChange={(value) =>
                 setSelectedLesson({ id: value.id, title: value.title })
               }
@@ -267,60 +276,67 @@ export default function Questionaries({ content }) {
           </div>
         )}
         <div className="flex gap-2 ">
-          {tabsQuestionaries[currentView]?.map((item, ind) => {
-            return (
-              <CustomButton
-                key={ind}
-                txt={item}
-                style={`px-1 text-sm h-fit py-0 font-light tracking-wide font-sans  border-b border-slate-300 rounded-none  hover:border-slate-800 hover:drop-shadow-sm ${active_sub_tab(
-                  item
-                )}`}
-                click={() => {
-                  setTabularView({ currentSubView: item, currentAct: "view" });
-                }}
-              />
-            );
-          })}
+          {currentView == "Questions" &&
+            queTypeData.map((item, ind) => {
+              return (
+                <CustomButton
+                  key={ind}
+                  txt={item.title}
+                  style={`px-1 text-sm h-fit py-0 font-light tracking-wide font-sans  border-b border-slate-300 rounded-none  hover:border-slate-800 hover:drop-shadow-sm ${active_sub_tab(
+                    item.title
+                  )}`}
+                  click={() => {
+                    setTabularView({
+                      currentSubView: item,
+                      currentAct: "view",
+                    });
+                  }}
+                />
+              );
+            })}
+
+          {currentView == "Contents" &&
+            conTypeData.map((item, ind) => {
+              return (
+                <CustomButton
+                  key={ind}
+                  txt={item.title.replaceAll("_", " ")}
+                  style={`px-1 text-sm h-fit py-0 font-light tracking-wide font-sans  border-b border-slate-300 rounded-none  hover:border-slate-800 hover:drop-shadow-sm ${active_sub_tab(
+                    item.title
+                  )}`}
+                  click={() => {
+                    setTabularView({
+                      currentSubView: item,
+                      currentAct: "view",
+                    });
+                  }}
+                />
+              );
+            })}
         </div>
       </div>
 
       <div className="flex-grow overflow-y-scroll  ">
         {currentView == "Questions" &&
           currentAct == "view" &&
-          currentSubView == "MCQ" && <MCQ />}
+          currentSubView.title == "MCQ" && <MCQ />}
         {currentView == "Questions" &&
           currentAct == "view" &&
-          currentSubView == "True Or False" && <TOF />}
+          currentSubView.title == "True Or False" && <TOF />}
         {currentView == "Questions" &&
           currentAct == "view" &&
-          currentSubView == "Fill In The Blank" && <FITB />}
+          currentSubView.title == "Fill In The Blank" && <FITB />}
         {currentView == "Questions" &&
           currentAct == "view" &&
-          currentSubView == "Pair Matching" && <PM />}
+          currentSubView.title == "Pair Matching" && <PM />}
         {currentView == "Questions" &&
           currentAct == "view" &&
-          currentSubView == "Sentence Making" && <SM />}
+          currentSubView.title == "Sentence Making" && <SM />}
 
         {currentView == "Question Types" && <QueType />}
         {currentView == "Content Types" && <ContentType />}
         {currentView == "Content Data Types" && <ConTypeCategory />}
         {currentView == "Contents" && <Content />}
-
-        {currentAct == "add" && currentSubView == "MCQ" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "Pair Matching" && (
-          <div>{"Loading ... "}</div>
-        )}
-        {currentAct == "add" && currentSubView == "Sentence Making" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "True Or False" && (
-          <AddQuePage useForEdit={false} />
-        )}
-        {currentAct == "add" && currentSubView == "Fill In The Blank" && (
-          <AddQuePage useForEdit={false} />
-        )}
       </div>
     </div>
   );

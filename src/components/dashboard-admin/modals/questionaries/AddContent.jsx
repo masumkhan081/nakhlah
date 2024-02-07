@@ -18,7 +18,13 @@ import {
 } from "../../../../store/useAdminStore";
 import CustomSelect from "../../../ui-custom/CustomSelect";
 import CustomButton from "../../../ui-custom/CustomButton";
-import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
+import {
+  BASE_URL,
+  getHandler,
+  postMap,
+  putMap,
+  token,
+} from "@/lib/requestHandler";
 
 export default function AddContent({ rowData, useForEdit }) {
   //
@@ -38,16 +44,7 @@ export default function AddContent({ rowData, useForEdit }) {
       : initStateSelection
   );
 
-  const [selectedType, setSelectedType] = useState(
-    useForEdit
-      ? {
-          id: rowData.content_type.id,
-          title: rowData.content_type.title,
-        }
-      : initStateSelection
-  );
   const [error, setError] = useState({
-    err0: "",
     err1: "",
     err2: "",
   });
@@ -67,75 +64,79 @@ export default function AddContent({ rowData, useForEdit }) {
     e.preventDefault();
     let err_1 = "";
     let err_2 = "";
-    let err_3 = "";
-    if (
-      selectedCategory.title != "" &&
-      selectedType.title != "" &&
-      !(content.length < 3)
-    ) {
+
+    if (selectedCategory.title != "" && content.length > 0) {
+      let formData = new FormData();
+
+      var fileInput = document.getElementById("idInputFile");
+      var file = fileInput.files[0];
+      formData.append("files.image", file);
+
       const data = {
         title: content,
         content_type: {
-          connect: [selectedType.id],
+          connect: [currentSubView.id],
         },
         content_type_category: {
           connect: [selectedCategory.id],
         },
       };
+      audText.length > 0 ? (data["audio"] = audText) : "";
 
-      const result = useForEdit
-        ? await putHandler("content", rowData.id, { data })
-        : await postHandler("content", {
-            data,
+      formData.append("data", JSON.stringify(data));
+
+      await fetch(
+        useForEdit
+          ? putMap["content"] + `/${rowData.id}?populate=icon`
+          : postMap["content"],
+        {
+          method: useForEdit ? "PUT" : "POST",
+          body: formData,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          redirect: "follow",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          alert("res:data:--" + JSON.stringify(data));
+          let renderable = {
+            id: data.data.id,
+            title: content,
+            audio: audText,
+            content_type: {
+              id: currentSubView.id,
+              title: currentSubView.title,
+            },
+            content_type_category: {
+              id: selectedCategory.id,
+              title: selectedCategory.title,
+            },
+            icon: data.data.attributes.icon?.data?.attributes?.formats?.small
+              ?.url,
+          };
+
+          useForEdit ? afterUpdate(renderable) : afterAdd(renderable);
+          toast({
+            title: useForEdit ? "Successfully Updated" : "Successfully Added",
           });
-
-      if (result.status == 200) {
-        let data = result.data.data;
-
-        data = {
-          id: data.id,
-          title: data.attributes.title,
-          content_type: {
-            id: selectedType.id,
-            title: selectedType.title,
-          },
-          content_type_category: {
-            id: selectedCategory.id,
-            title: selectedCategory.title,
-          },
-        };
-
-        useForEdit ? afterUpdate(data) : afterAdd(data);
-        toast({
-          title: useForEdit
-            ? "Item Updated Succesfully"
-            : "Item Added Successfully",
+          document.getElementById("closeDialog")?.click();
+        })
+        .catch((error) => {
+          alert("err: " + JSON.stringify(error));
+          setError(JSON.stringify(error));
         });
-        document.getElementById("closeDialog")?.click();
-      } else if (result.status == 400) {
-        let errors = result.data.error.details.errors;
-        setError({
-          err0: errors[0].message,
-          err1: errors[1]?.message,
-          err2: errors[2]?.message,
-        });
-      }
     } else {
       if (selectedCategory.id == null) {
         err_1 = "Select content data type";
       }
-      if (selectedType.id == null) {
-        err_2 = "Select question type";
-      }
-      if (content.length < 1) {
-        err_3 = "Too Short";
-      }
-      setError({ err1: err_1, err2: err_2, err3: err_3 });
-    }
-  }
 
-  function filterUnitsByJourney(id) {
-    setFilteredUnits(unitData.filter((item) => item.learning_journey.id == id));
+      if (content.length < 1) {
+        err_2 = "Too Short";
+      }
+      setError({ err1: err_1, err2: err_2 });
+    }
   }
 
   useEffect(() => {
@@ -177,7 +178,13 @@ export default function AddContent({ rowData, useForEdit }) {
     }
   }, [typeData]);
 
+  const [audText, setAudText] = useState(useForEdit ? rowData.audio : "");
+  const [image, setImage] = useState(
+    useForEdit ? BASE_URL + rowData.icon : null
+  );
+
   const currentView = useTabularView((state) => state.data.currentView);
+  const currentSubView = useTabularView((state) => state.data.currentSubView);
   const addWhat = currentView.slice(0, currentView.length - 1);
 
   return (
@@ -185,16 +192,16 @@ export default function AddContent({ rowData, useForEdit }) {
       <DialogHeader>
         <DialogTitle className="textHeader textPrimaryColor">
           {useForEdit ? "Update" : "New"} {addWhat}
+          <span className="ms-2 font-normal text-sm font-mono text-blue-500">
+            {currentSubView.title.replaceAll("_", " ")}
+          </span>
         </DialogTitle>
-        {/* <DialogDescription className="textNormal textSecondaryColor">
-           instructions
-        </DialogDescription> */}
 
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 py-2 text-black text-lg"
         >
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-0">
             <CustomSelect
               label={"Content Data Type"}
               value={selectedCategory}
@@ -206,32 +213,58 @@ export default function AddContent({ rowData, useForEdit }) {
             />
             <span className="text-red-700">{error.err1}</span>
           </div>
-          <div className="flex flex-col gap-1">
-            
-            <CustomSelect
-              label={"Question Type"}
-              value={selectedType}
-              options={typeData}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedType({ id: value.id, title: value.title })
-              }
-            />
-            <span className="text-red-700">{error.err2}</span>
-          </div>
-          <div className="flex flex-col gap-1">
+
+          <div className="flex flex-col gap-0">
             <label className="flex justify-between">
-              <span>Content</span>
-              <span className=" text-red-800">{error.err0}</span>
+              <span>Content Title</span>
+              <span className=" text-red-800">{error.err2}</span>
             </label>
             <CustomInput
               type="text"
+              id="idContTitle"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               ph="Enter content"
               style="py-0.12 px-1"
             />
             <span className="text-red-700">{error.err3}</span>
+          </div>
+          <div className="flex flex-col gap-0">
+            <label className="flex justify-between">
+              <span>Audio Text</span>
+              <span className=" text-red-800">{error.err0}</span>
+            </label>
+            <CustomInput
+              type="text"
+              id="idAudText"
+              value={audText}
+              onChange={(e) => setAudText(e.target.value)}
+              ph="Enter content"
+              style="py-0.12 px-1"
+            />
+            <span className="text-red-700">{error.err3}</span>
+          </div>
+          <div className="flex gap-2 flex-col items-start">
+            <input
+              type="file"
+              id="idInputFile"
+              name="file"
+              onChange={(e) => {
+                let files = e.target.files;
+                let reader = new FileReader();
+                reader.onload = (r) => {
+                  setImage(r.target.result);
+                };
+                reader.readAsDataURL(files[0]);
+              }}
+            />
+            {image && (
+              <img
+                alt=" image"
+                src={image}
+                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+              />
+            )}
           </div>
 
           <CustomButton

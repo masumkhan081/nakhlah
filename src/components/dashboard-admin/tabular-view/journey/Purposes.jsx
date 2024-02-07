@@ -22,6 +22,8 @@ export default function Purposes() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learner-purpose");
+        toggleLoading(false);
+      
       if (response.status === 200) {
         setPurposes(renderablePurpose(response.data.data));
         toggleLoading(false);

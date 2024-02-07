@@ -19,7 +19,7 @@ import {
 import { useEffect, useState } from "react";
 import { getHandler, postHandler, putHandler } from "@/lib/requestHandler";
 import { ChevronLast } from "lucide-react";
-import { renderableLearningLevels, renderableTaskUnits, renderableTasks } from "@/lib/fetchFunctions";
+import { renderableJournies, renderableLevels, renderableTasks } from "@/lib/fetchFunctions";
 
 export default function AddLesson({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -181,7 +181,7 @@ export default function AddLesson({ rowData, useForEdit }) {
     const fetch = async () => {
       const response = await getHandler("learning-journey");
       if (response.status === 200) {
-        setJournies(renderableLearningLevels(response.data.data));
+        setJournies(renderableJournies(response.data.data));
       }
     };
     if (Array.isArray(journeyData) && journeyData.length === 0) {
@@ -205,7 +205,7 @@ export default function AddLesson({ rowData, useForEdit }) {
     const fetch = async () => {
       const response = await getHandler("learning-level");
       if (response.status === 200) {
-        setLevels(renderableTaskUnits(response.data.data));
+        setLevels(renderableLevels(response.data.data));
       }
     };
     if (Array.isArray(levelData) && levelData.length === 0) {

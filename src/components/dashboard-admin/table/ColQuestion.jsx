@@ -5,6 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowUpDown, ClipboardEdit, Info, Trash2 } from "lucide-react";
 import Deletion from "../modals/other/Deletion";
 import AddStartingPoint from "../modals/journey/AddStartPoint";
+import { useTabularView } from "@/store/useAdminStore";
+import AddSM from "../modals/questionaries/AddSM";
 
 const ColQuestion = [
   {
@@ -234,12 +236,12 @@ const ColQuestion = [
                 <ClipboardEdit className="w-5 h-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              {/* <AddQuestion
+            <DialogContent className="sm:max-w-[500px] ">
+              <AddSM
                 title="question"
                 useForEdit={true}
                 rowData={row.original}
-              /> */}
+              />
             </DialogContent>
           </Dialog>
         </div>

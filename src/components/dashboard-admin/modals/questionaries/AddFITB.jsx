@@ -28,14 +28,16 @@ import {
   renderableContTypeCategories,
   renderableContTypes,
   renderableContents,
-  renderableLearningLevels,
+  renderableJournies,
   renderableLessons,
   renderableQueType,
-  renderableTaskUnits,
+  renderableLevels,
   renderableTasks,
 } from "@/lib/fetchFunctions";
 import { GitCommitHorizontal, Hash } from "lucide-react";
 import axios from "axios";
+import { DialogHeader } from "@/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 export default function AddFITB({ rowData, useForEdit }) {
   const { toast } = useToast();
@@ -71,6 +73,7 @@ export default function AddFITB({ rowData, useForEdit }) {
   const contents = useContent((state) => state.data);
   const setContents = useContent((state) => state.setContents);
   const currentView = useTabularView((state) => state.data.currentView);
+  const currentSubView = useTabularView((state) => state.data.currentSubView);
 
   //  -------------------------------------------------------------- journey portion
   const journeyData = useLearningJourney((state) => state.data);
@@ -144,8 +147,8 @@ export default function AddFITB({ rowData, useForEdit }) {
 
   const fetchMapContent = {
     MCQ: "content-mcq",
-    "Fill in the blank": "content-fib",
-    "True 0r False": "content-boolean",
+    "Fill In The Blank": "content-fib",
+    "True Or False": "content-boolean",
     "Sentence Making": "content-sm",
     "Pair Matching": "content-pm",
   };
@@ -199,7 +202,7 @@ export default function AddFITB({ rowData, useForEdit }) {
       const response = await getHandler("learning-journey");
 
       if (response.status === 200) {
-        setJournies(renderableLearningLevels(response.data.data));
+        setJournies(renderableJournies(response.data.data));
       }
     };
     if (Array.isArray(journeyData) && journeyData.length === 0) {
@@ -222,7 +225,7 @@ export default function AddFITB({ rowData, useForEdit }) {
       const response = await getHandler("learning-level");
 
       if (response.status === 200) {
-        setLevels(renderableTaskUnits(response.data.data));
+        setLevels(renderableLevels(response.data.data));
       }
     };
     if (Array.isArray(levelData) && levelData.length === 0) {
@@ -289,9 +292,9 @@ export default function AddFITB({ rowData, useForEdit }) {
       question.length > 2 &&
       selectedLesson.id &&
       ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
-        (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
+        (selectedQueType.title == "True Or False" && tFAns.id != null) ||
         (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
-        (selectedQueType.title == "Fill in the blank" &&
+        (selectedQueType.title == "Fill In The Blank" &&
           wrongAns.length == 3 &&
           rightAns &&
           question.includes("-") == true))
@@ -326,7 +329,7 @@ export default function AddFITB({ rowData, useForEdit }) {
             headers: {
               Authorization:
                 "Bearer " +
-                "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+                "5cb5acf4b96532cdad0e30d900772f5c8b5532d2dbf06e04483a3705c725ffbbdba593340718423a5975e86aa47ca1749de402ec9f3127648dbcec37b190107ba975e669811b2a2f4c8b41c27472d6fdb70e7b0be4f8490c57a406e29aedf47dd05dadb7171788ba9fa2af106d93b4f92423b8e194131891e712857b52e8ceef",
             },
           }
         );
@@ -368,7 +371,7 @@ export default function AddFITB({ rowData, useForEdit }) {
 
           // if mcq or fib
           if (
-            selectedQueType.title == "Fill in the blank" ||
+            selectedQueType.title == "Fill In The Blank" ||
             selectedQueType.title == "MCQ"
           ) {
             const queOptionResult = useForEdit
@@ -468,17 +471,17 @@ export default function AddFITB({ rowData, useForEdit }) {
       }
       if (
         question.length > 2 &&
-        selectedQueType.title == "Fill in the blank" &&
+        selectedQueType.title == "Fill In The Blank" &&
         question.includes("-") == false
       ) {
         err_2 = `Put a blank ("-") within question`;
       }
-      if (selectedQueType.title == "True 0r False" && tFAns.id == null) {
+      if (selectedQueType.title == "True Or False" && tFAns.id == null) {
         err_3 = "Must Provide A Correct Option";
       }
       if (
         selectedQueType.title == "MCQ" ||
-        selectedQueType.title == "Fill in the blank"
+        selectedQueType.title == "Fill In The Blank"
       ) {
         if (
           options.optionOne.content.id == null ||
@@ -506,11 +509,11 @@ export default function AddFITB({ rowData, useForEdit }) {
 
   function getQueContent(rightAns) {
     if (
-      selectedQueType.title == "Fill in the blank" ||
+      selectedQueType.title == "Fill In The Blank" ||
       selectedQueType.title == "MCQ"
     ) {
       return options[rightAns].content.id;
-    } else if (selectedQueType.title == "True 0r False") {
+    } else if (selectedQueType.title == "True Or False") {
       return tFAns.id;
     } else if (selectedQueType.title == "Sentence Making") {
       return smAns.id;
@@ -538,280 +541,276 @@ export default function AddFITB({ rowData, useForEdit }) {
 
   //   jsx
   return (
-    <div className="w-full p-3   rounded-md ">
-      {/* {JSON.stringify(tFAns)} */}
-      {/* 
-        "--" +
-        JSON.stringify(selectedUnit) +
-        "--" +
-        JSON.stringify(selectedLevel) +
-        "--" +
-        JSON.stringify(selectedLesson) +
-        "--" +
-        JSON.stringify(selectedQueType) +
-        "--" +
-        JSON.stringify(tFAns) +
-        "--" +
-        JSON.stringify(smAns)} */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
-      >
-        {/* sll select learning lesson */}
-        <div className="flex flex-col gap-3 rounded-sm   py-0.75 px-2">
-          <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-            <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Select
-            Learning Lesson
-          </EnhancedText>
-          <div className="flex flex-col gap-2 w-2/3">
-            <CustomSelect
-              label={"Learner Level"}
-              value={selectedJourney}
-              options={journeyData}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedJourney({ id: value.id, title: value.title })
-              }
-            />
-            <CustomSelect
-              label={"Task"}
-              value={selectedUnit}
-              options={filteredUnits}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedUnit({ id: value.id, title: value.title })
-              }
-            />
+    <DialogHeader className=" h-fit  ">
+      <DialogTitle className="textHeader textPrimaryColor ">
+        {useForEdit ? "Update Question" : "New Question"}
+        <span className="ms-2 font-normal text-sm font-mono text-blue-500">
+          {currentSubView.title.replaceAll("_", " ")}
+        </span>
+      </DialogTitle>
+      <div className="w-full p-3 rounded-md  overflow-y-auto h-[400px] max-h-[400px]">
+        {/* {JSON.stringify(tFAns)} */}
 
-            <CustomSelect
-              label={"Task level"}
-              value={selectedLevel}
-              options={filteredLevels}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedLevel({ id: value.id, title: value.title })
-              }
-            />
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-3 py-2 text-black text-sm font-mono"
+        >
+          {/* sll select learning lesson */}
+          <div className="flex flex-col gap-3 rounded-sm   py-0.75 px-2">
+            <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
+              <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Select
+              Learning Lesson
+            </EnhancedText>
+            <div className="flex flex-col gap-2 ">
+              <CustomSelect
+                label={"Learner Level"}
+                value={selectedJourney}
+                options={journeyData}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedJourney({ id: value.id, title: value.title })
+                }
+              />
+              <CustomSelect
+                label={"Task"}
+                value={selectedUnit}
+                options={filteredUnits}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedUnit({ id: value.id, title: value.title })
+                }
+              />
 
-            <CustomSelect
-              label={"Task Lesson"}
-              value={selectedLesson}
-              options={filteredLessons}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedLesson({ id: value.id, title: value.title })
-              }
-            />
-            {/* {error.err0 !== "" && (
+              <CustomSelect
+                label={"Task level"}
+                value={selectedLevel}
+                options={filteredLevels}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedLevel({ id: value.id, title: value.title })
+                }
+              />
+
+              <CustomSelect
+                label={"Task Lesson"}
+                value={selectedLesson}
+                options={filteredLessons}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedLesson({ id: value.id, title: value.title })
+                }
+              />
+              {/* {error.err0 !== "" && (
               <span className="text-red-700">{error.err0}</span>
             )} */}
+            </div>
           </div>
-        </div>
 
-        {/* stq Set the question */}
+          {/* stq Set the question */}
 
-        <div className="flex flex-col gap-3 rounded-sm    py-0.75 px-2">
-          <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
-            <GitCommitHorizontal className="w-6 h-6 text-blue-400" /> Set The
-            Question
-          </EnhancedText>
-          <div className="flex flex-col gap-1 w-2/3">
-            <CustomSelect
-              label={"Select Question Type"}
-              value={selectedQueType}
-              options={queTypeData}
-              bg="wh"
-              onChange={(value) =>
-                setSelectedQueType({ id: value.id, title: value.title })
-              }
-            />
-            {/* {error.err1 !== "" && (
+          <div className="flex flex-col gap-3 rounded-sm    py-0.75 px-2">
+            <EnhancedText kind={"four"} color="text-blue-600 font-semibold ">
+              <GitCommitHorizontal className="w-6 h-6 text-blue-400" /> Set The
+              Question
+            </EnhancedText>
+            <div className="flex flex-col gap-1   ">
+              <CustomSelect
+                label={"Select Question Type"}
+                value={selectedQueType}
+                options={queTypeData}
+                bg="wh"
+                onChange={(value) =>
+                  setSelectedQueType({ id: value.id, title: value.title })
+                }
+              />
+              {/* {error.err1 !== "" && (
               <span className="text-red-700">{error.err1}</span>
             )} */}
-          </div>
-          <div className="flex flex-col gap-1 w-2/3">
-            <span className="">Question</span>
-            <CustomInput
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              ph="Enter the question"
-              style="py-0.25 px-1"
-            />
-            {/* <span className="text-red-700">{error.err2}</span> */}
-          </div>
-          <div className="flex gap-2 flex-col items-start">
-            <input
-              type="file"
-              id="idInputFile"
-              name="file"
-              onChange={(e) => {
-                let files = e.target.files;
-                let reader = new FileReader();
-                reader.onload = (r) => {
-                  setImage(r.target.result);
-                };
-                reader.readAsDataURL(files[0]);
-              }}
-            />
-            {image && (
-              <img
-                alt=" image"
-                src={image}
-                className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+            </div>
+            <div className="flex flex-col gap-1   ">
+              <span className="">Question</span>
+              <CustomInput
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                ph="Enter the question"
+                style="py-0.25 px-1"
               />
-            )}
-          </div>
-          <div className="flex flex-col gap-1 w-2/3 ">
-            <span className="">Attach Audio Text</span>
-            <textarea
-              value={queAudio}
-              onChange={(e) => setQueAudio(e.target.value)}
-              rows={2}
-              className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
-            />
+              {/* <span className="text-red-700">{error.err2}</span> */}
+            </div>
+            <div className="flex gap-2 flex-col items-start">
+              <input
+                type="file"
+                id="idInputFile"
+                name="file"
+                onChange={(e) => {
+                  let files = e.target.files;
+                  let reader = new FileReader();
+                  reader.onload = (r) => {
+                    setImage(r.target.result);
+                  };
+                  reader.readAsDataURL(files[0]);
+                }}
+              />
+              {image && (
+                <img
+                  alt=" image"
+                  src={image}
+                  className="w-5.0 h-5.0 rounded-full border border-slate-400 bg-slate-50"
+                />
+              )}
+            </div>
+            <div className="flex flex-col gap-1    ">
+              <span className="">Attach Audio Text</span>
+              <textarea
+                value={queAudio}
+                onChange={(e) => setQueAudio(e.target.value)}
+                rows={2}
+                className="py-0.12 px-1 rounded-md border border-slate-400 outline-none"
+              />
 
-            {/* <span className="text-red-700">{error.err2}</span> */}
+              {/* <span className="text-red-700">{error.err2}</span> */}
+            </div>
           </div>
-        </div>
-        {/* sao Set answer option */}
-        <div className="flex flex-col gap-2 rounded-md w-2/3 py-0.75 px-2">
-          {selectedQueType.id && (
-            <>
-              <div className="flex gap-3 items-center">
-                <EnhancedText
-                  kind={"four"}
-                  color="text-blue-600 font-semibold "
-                >
-                  <GitCommitHorizontal className="w-6 h-6 text-blue-500" /> Set
-                  Answer Options
-                </EnhancedText>
-                {/* <span className="text-red-600 font-semibold pt-0.12 ">
+          {/* sao Set answer option */}
+          <div className="flex flex-col gap-2 rounded-md    py-0.75 px-2">
+            {selectedQueType.id && (
+              <>
+                <div className="flex gap-3 items-center">
+                  <EnhancedText
+                    kind={"four"}
+                    color="text-blue-600 font-semibold "
+                  >
+                    <GitCommitHorizontal className="w-6 h-6 text-blue-500" />{" "}
+                    Set Answer Options
+                  </EnhancedText>
+                  {/* <span className="text-red-600 font-semibold pt-0.12 ">
                   {error.err3}
                 </span> */}
-              </div>
-              <div className="flex flex-col gap-4 border-blue-400">
-                {/* option -1 */}
+                </div>
+                <div className="flex flex-col gap-4 border-blue-400">
+                  {/* option -1 */}
 
-                {selectedQueType.title == "True 0r False" && (
-                  <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
-                    <div className="flex justify-between pb-1">
-                      <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
-                        Select Correct Option
-                      </span>
-                    </div>
+                  {selectedQueType.title == "True Or False" && (
+                    <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
+                      <div className="flex justify-between pb-1">
+                        <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
+                          Select Correct Option
+                        </span>
+                      </div>
 
-                    <CustomSelect
-                      label={"(true/false)"}
-                      value={tFAns}
-                      options={contents}
-                      onChange={(selected) => setTFAns(selected)}
-                      bg="wh"
-                    />
-                  </div>
-                )}
-                {selectedQueType.title == "Sentence Making" && (
-                  <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
-                    <div className="flex flex-col gap-1 ">
-                      <span className="">
-                        Select Sentence That's In Correct Order
-                      </span>
                       <CustomSelect
-                        value={smAns}
-                        label="Select Content"
+                        label={"(true/false)"}
+                        value={tFAns}
                         options={contents}
-                        onChange={(selected) => setSmAns(selected)}
-                        addNewText="New Sentence"
-                        addNewAfterClick={handleAdd}
+                        onChange={(selected) => setTFAns(selected)}
                         bg="wh"
                       />
-                      <span className="text-red-700">{error.err2}</span>
                     </div>
-                  </div>
-                )}
-
-                {(selectedQueType.title == "MCQ" ||
-                  selectedQueType.title == "Fill in the blank") &&
-                  Object.keys(options).map((option, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2  "
-                      >
-                        <div className="flex justify-between   pb-1">
-                          <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
-                            <span className="px-2">Answer Option</span>
-                            <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
-                              {index + 1}
-                            </span>
-                          </p>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              type="checkbox"
-                              id={option}
-                              checked={rightAndWrong[option]}
-                              name={"ans_option"}
-                              onChange={(e) =>
-                                handleMark({ [option]: e.target.checked })
-                              }
-                            />
-                            <label htmlFor="option1" className="text-sm">
-                              Mark as right answer
-                            </label>
-                          </div>
-                        </div>
-
+                  )}
+                  {selectedQueType.title == "Sentence Making" && (
+                    <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
+                      <div className="flex flex-col gap-1 ">
+                        <span className="">
+                          Select Sentence That's In Correct Order
+                        </span>
                         <CustomSelect
-                          value={options[option].content}
-                          label="Content"
+                          value={smAns}
+                          label="Select Content"
                           options={contents}
-                          onChange={(selected) =>
-                            setOptions({
-                              ...options,
-                              [option]: {
-                                ...options[option],
-                                content: selected,
-                              },
-                            })
-                          }
-                          addNewText="New Content"
+                          onChange={(selected) => setSmAns(selected)}
+                          addNewText="New Sentence"
                           addNewAfterClick={handleAdd}
                           bg="wh"
                         />
+                        <span className="text-red-700">{error.err2}</span>
                       </div>
-                    );
-                  })}
-              </div>
-            </>
-          )}
-        </div>
-        <div className="relative px-3   ">
-          <div className="sticky bottom-0 bg-white w-2/3">
-            <div className="flex flex-col gap-0">
-              {error.err0 !== "" && (
-                <span className="text-red-700">{error.err0}</span>
-              )}
-              {error.err1 !== "" && (
-                <span className="text-red-700">{error.err1}</span>
-              )}
-              {error.err2 !== "" && (
-                <span className="text-red-700">{error.err2}</span>
-              )}
-              {error.err3 !== "" && (
-                <span className="text-red-700">{error.err3}</span>
-              )}
-              {error.err4 !== "" && (
-                <span className="text-red-700">{error.err4}</span>
-              )}
-            </div>
-            <CustomButton
-              txt="Submit"
-              type="submit"
-              style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
-            />
+                    </div>
+                  )}
+
+                  {(selectedQueType.title == "MCQ" ||
+                    selectedQueType.title == "Fill In The Blank") &&
+                    Object.keys(options).map((option, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex flex-col gap-3 font-mono text-sm rounded-sm border-l-2 border-blue-400 py-3 px-2  "
+                        >
+                          <div className="flex justify-between   pb-1">
+                            <p className="flex justify-between bg-blue-100 rounded-full h-[1.2rem]  ">
+                              <span className="px-2">Answer Option</span>
+                              <span className="px-1 h-full rounded-full bg-blue-200 font-semibold">
+                                {index + 1}
+                              </span>
+                            </p>
+                            <div className="flex gap-2 items-center">
+                              <input
+                                type="checkbox"
+                                id={option}
+                                checked={rightAndWrong[option]}
+                                name={"ans_option"}
+                                onChange={(e) =>
+                                  handleMark({ [option]: e.target.checked })
+                                }
+                              />
+                              <label htmlFor="option1" className="text-sm">
+                                Mark as right answer
+                              </label>
+                            </div>
+                          </div>
+
+                          <CustomSelect
+                            value={options[option].content}
+                            label="Content"
+                            options={contents}
+                            onChange={(selected) =>
+                              setOptions({
+                                ...options,
+                                [option]: {
+                                  ...options[option],
+                                  content: selected,
+                                },
+                              })
+                            }
+                            addNewText="New Content"
+                            addNewAfterClick={handleAdd}
+                            bg="wh"
+                          />
+                        </div>
+                      );
+                    })}
+                </div>
+              </>
+            )}
           </div>
-        </div>
-      </form>
-    </div>
+          <div className="relative px-3   ">
+            <div className="sticky bottom-0 bg-white   ">
+              <div className="flex flex-col gap-0">
+                {error.err0 !== "" && (
+                  <span className="text-red-700">{error.err0}</span>
+                )}
+                {error.err1 !== "" && (
+                  <span className="text-red-700">{error.err1}</span>
+                )}
+                {error.err2 !== "" && (
+                  <span className="text-red-700">{error.err2}</span>
+                )}
+                {error.err3 !== "" && (
+                  <span className="text-red-700">{error.err3}</span>
+                )}
+                {error.err4 !== "" && (
+                  <span className="text-red-700">{error.err4}</span>
+                )}
+              </div>
+              <CustomButton
+                txt="Submit"
+                type="submit"
+                style="text-lg w-full my-1 shadow-sm  py-0.12 h-fit font-semibold text-blue-900 bg-blue-200 leading-1"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </DialogHeader>
   );
 }

@@ -9,36 +9,45 @@ import columnJourney from "../../table/ColJourney";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
-import { renderableLearningLevels } from "@/lib/fetchFunctions";
+import { renderableJournies } from "@/lib/fetchFunctions";
 
 export default function LearningLevels() {
-
-
   const journeyData = useLearningJourney((state) => state.data);
-  const setJournies = useLearningJourney((state) => state.setJournies); 
+  const setJournies = useLearningJourney((state) => state.setJournies);
+
+  const loading = useLoadingState((state) => state.loading);
+  const toggleLoading = useLoadingState((state) => state.toggleLoading);
 
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-journey");
+     toggleLoading(false);
+      
       if (response.status === 200) {
-        setJournies(renderableLearningLevels(response.data.data));
+        setJournies(renderableJournies(response.data.data));
+        toggleLoading(false);
       }
     };
-    if (Array.isArray(journeyData) && journeyData.length === 0) {
+    if (
+      loading == false &&
+      Array.isArray(journeyData) &&
+      journeyData.length === 0
+    ) {
       fetch();
+      toggleLoading(true);
     }
   }, [journeyData]);
 
   return (
     <div className="w-full bg-white  rounded-xl   ">
-      {journeyData.length != 0 ? (
+      {loading ? (
+        <CustomSkeleton />
+      ) : (
         <DataTable
           data={journeyData}
           columns={columnJourney}
           view={"learning-journey"}
         />
-      ) : (
-        <CustomSkeleton />
       )}
     </div>
   );

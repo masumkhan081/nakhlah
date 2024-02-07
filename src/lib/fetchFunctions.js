@@ -50,14 +50,22 @@ export function renderableLearnerLevel(arr) {
     return {
       id: item.id,
       level: item.attributes.level,
-      icon: item.attributes.icon?.data?.attributes?.formats.small?.url,
+      icon: item.attributes.icon?.data?.attributes?.formats?.small?.url,
     };
   });
 }
 
 // ---------------------------------------- LEARNING LESSON
+export function renderableOptions(arr) {
+  return arr.map((item) => { 
+    return {
+      id: item.id,
+      title: item.attributes.title,
+    };
+  });
+}
 
-export function renderableLearningLevels(arr) {
+export function renderableJournies(arr) {
   const renderable = arr.map((item) => {
     return {
       id: item.id,
@@ -66,7 +74,8 @@ export function renderableLearningLevels(arr) {
   });
   return renderable;
 }
-export function renderableTasks(arr) {
+ 
+export function renderableUnits(arr) {
   return arr.map((item) => {
     // alert("item: " + JSON.stringify(item));
     const { learning_journey } = item.attributes;
@@ -80,7 +89,7 @@ export function renderableTasks(arr) {
     };
   });
 }
-export function renderableTaskUnits(arr) {
+export function renderableLevels(arr) {
   return arr.map((item) => {
     const { learning_journey_unit } = item.attributes;
     const { learning_journey } = learning_journey_unit.data.attributes;
@@ -98,6 +107,7 @@ export function renderableTaskUnits(arr) {
     };
   });
 }
+
 export function renderableLessons(arr) {
   return arr
     ?.filter((theData) => {
@@ -129,6 +139,7 @@ export function renderableLessons(arr) {
       };
     });
 }
+ 
 
 // ---------------------------------------- QUESTIONARIES
 
@@ -186,6 +197,7 @@ export function renderableContents(arr) {
     return {
       id: item.id,
       title: item.attributes?.title,
+      audio: item.attributes?.audio,
       content_type: {
         id: item.attributes?.content_type?.data?.id,
         title: item.attributes?.content_type?.data?.attributes?.title,
@@ -201,7 +213,7 @@ export function renderableContTypes(arr) {
   return arr?.map((item) => {
     return {
       id: item.id,
-      title: item.attributes.title,
+      title: item.attributes.title.replaceAll("_", " "),
     };
   });
 }

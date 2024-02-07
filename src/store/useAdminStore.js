@@ -120,7 +120,7 @@ export const useTabularView = create(
     data: {
       currentPage: "",
       currentView: "",
-      currentSubView: "",
+      currentSubView: { id: null, title: "" },
       currentAct: "",
     },
     setSubView: (data) => {
@@ -643,10 +643,35 @@ export const useQueType = create(
 export const useQuestion = create(
   immer((set) => ({
     data: [],
+    journeyDataQue: [],
+    unitDataQue: [],
+    levelDataQue: [],
+    lessonDataQue: [],
     selectedJourney: initStateSelection,
     selectedUnit: initStateSelection,
     selectedLevel: initStateSelection,
     selectedLesson: initStateSelection,
+
+    setJourneyDataQue: (data) => {
+      set((state) => {
+        state.journeyDataQue = data;
+      });
+    },
+    setUnitDataQue: (data) => {
+      set((state) => {
+        state.unitDataQue = data;
+      });
+    },
+    setLevelDataQue: (data) => {
+      set((state) => {
+        state.levelDataQue = data;
+      });
+    },
+    setLessonDataQue: (data) => {
+      set((state) => {
+        state.lessonDataQue = data;
+      });
+    },
     resetSelection: (data) => {
       set((state) => {
         state.selectedJourney = initStateSelection;

@@ -28,10 +28,10 @@ import {
   renderableContTypeCategories,
   renderableContTypes,
   renderableContents,
-  renderableLearningLevels,
+  renderableJournies,
   renderableLessons,
   renderableQueType,
-  renderableTaskUnits,
+  renderableLevels,
   renderableTasks,
 } from "@/lib/fetchFunctions";
 import { GitCommitHorizontal, Hash } from "lucide-react";
@@ -144,8 +144,8 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   const fetchMapContent = {
     MCQ: "content-mcq",
-    "Fill in the blank": "content-fib",
-    "True 0r False": "content-boolean",
+    "Fill In The Blank": "content-fib",
+    "True Or False": "content-boolean",
     "Sentence Making": "content-sm",
     "Pair Matching": "content-pm",
   };
@@ -199,7 +199,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
       const response = await getHandler("learning-journey");
 
       if (response.status === 200) {
-        setJournies(renderableLearningLevels(response.data.data));
+        setJournies(renderableJournies(response.data.data));
       }
     };
     if (Array.isArray(journeyData) && journeyData.length === 0) {
@@ -222,7 +222,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
       const response = await getHandler("learning-level");
 
       if (response.status === 200) {
-        setLevels(renderableTaskUnits(response.data.data));
+        setLevels(renderableLevels(response.data.data));
       }
     };
     if (Array.isArray(levelData) && levelData.length === 0) {
@@ -289,9 +289,9 @@ export default function AddQuePage({ rowData, useForEdit }) {
       question.length > 2 &&
       selectedLesson.id &&
       ((selectedQueType.title == "MCQ" && wrongAns.length == 3 && rightAns) ||
-        (selectedQueType.title == "True 0r False" && tFAns.id != null) ||
+        (selectedQueType.title == "True Or False" && tFAns.id != null) ||
         (selectedQueType.title == "Sentence Making" && smAns.id != null) ||
-        (selectedQueType.title == "Fill in the blank" &&
+        (selectedQueType.title == "Fill In The Blank" &&
           wrongAns.length == 3 &&
           rightAns &&
           question.includes("-") == true))
@@ -368,7 +368,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
           // if mcq or fib
           if (
-            selectedQueType.title == "Fill in the blank" ||
+            selectedQueType.title == "Fill In The Blank" ||
             selectedQueType.title == "MCQ"
           ) {
             const queOptionResult = useForEdit
@@ -468,17 +468,17 @@ export default function AddQuePage({ rowData, useForEdit }) {
       }
       if (
         question.length > 2 &&
-        selectedQueType.title == "Fill in the blank" &&
+        selectedQueType.title == "Fill In The Blank" &&
         question.includes("-") == false
       ) {
         err_2 = `Put a blank ("-") within question`;
       }
-      if (selectedQueType.title == "True 0r False" && tFAns.id == null) {
+      if (selectedQueType.title == "True Or False" && tFAns.id == null) {
         err_3 = "Must Provide A Correct Option";
       }
       if (
         selectedQueType.title == "MCQ" ||
-        selectedQueType.title == "Fill in the blank"
+        selectedQueType.title == "Fill In The Blank"
       ) {
         if (
           options.optionOne.content.id == null ||
@@ -506,11 +506,11 @@ export default function AddQuePage({ rowData, useForEdit }) {
 
   function getQueContent(rightAns) {
     if (
-      selectedQueType.title == "Fill in the blank" ||
+      selectedQueType.title == "Fill In The Blank" ||
       selectedQueType.title == "MCQ"
     ) {
       return options[rightAns].content.id;
-    } else if (selectedQueType.title == "True 0r False") {
+    } else if (selectedQueType.title == "True Or False") {
       return tFAns.id;
     } else if (selectedQueType.title == "Sentence Making") {
       return smAns.id;
@@ -693,7 +693,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
               <div className="flex flex-col gap-4 border-blue-400">
                 {/* option -1 */}
 
-                {selectedQueType.title == "True 0r False" && (
+                {selectedQueType.title == "True Or False" && (
                   <div className="flex flex-col gap-3 font-mono text-sm rounded-md border-l-2 border-blue-400 py-3 px-2  ">
                     <div className="flex justify-between pb-1">
                       <span className="px-2 bg-blue-100 rounded-full h-[1.2rem]">
@@ -731,7 +731,7 @@ export default function AddQuePage({ rowData, useForEdit }) {
                 )}
 
                 {(selectedQueType.title == "MCQ" ||
-                  selectedQueType.title == "Fill in the blank") &&
+                  selectedQueType.title == "Fill In The Blank") &&
                   Object.keys(options).map((option, index) => {
                     return (
                       <div

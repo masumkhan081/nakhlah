@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import CustomButton from "@/components/ui-custom/CustomButton";
 import CustomInput from "@/components/ui-custom/CustomInput";
-import { BASE_URL, config, postMap, putMap } from "@/lib/requestHandler";
+import { BASE_URL, config, postMap, putMap, token } from "@/lib/requestHandler";
 
 export default function AddStartingPoint({ rowData, useForEdit }) {
   //
@@ -55,9 +55,7 @@ export default function AddStartingPoint({ rowData, useForEdit }) {
           method: useForEdit ? "PUT" : "POST",
           body: formData,
           headers: {
-            Authorization:
-              "Bearer " +
-              "a040ca42e35c1c761a32f3166e19953056bf7163576137e47c01966247a3d630e5af4ca1c9f58256511a8a91079b1db1e794ca5527bd1cc6cfb04655ebfc1e0ad4ceedea704a2b68b30d14e15b7f44c4f680f73a50cc051981f0e390697d5181ae3a6ada78b3ccc4e6a721fb5e8dd28b34aaa73f01238d4250a09f9360519b0e",
+            Authorization: "Bearer " + token,
           },
           redirect: "follow",
         }

@@ -1,8 +1,8 @@
 import CustomSelect from "@/components/ui-custom/CustomSelect";
 import {
-  renderableLearningLevels,
+  renderableJournies,
   renderableLessons,
-  renderableTaskUnits,
+  renderableLevels,
   renderableTasks,
 } from "@/lib/fetchFunctions";
 import { getHandler } from "@/lib/requestHandler";

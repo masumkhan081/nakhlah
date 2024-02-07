@@ -8,7 +8,7 @@ import {
 } from "../../../../store/useAdminStore";
 import { getHandler } from "@/lib/requestHandler";
 import CustomSkeleton from "@/components/ui-custom/CustomSkeleton";
-import { renderableTaskUnits } from "@/lib/fetchFunctions";
+import { renderableLevels } from "@/lib/fetchFunctions";
 
 export default function TaskUnits() {
   const levelData = useLearningLevel((state) => state.data);
@@ -20,12 +20,12 @@ export default function TaskUnits() {
   useEffect(() => {
     const fetch = async () => {
       const response = await getHandler("learning-level");
-      if(response){
-        toggleLoading(false);
-      }
+
+      toggleLoading(false);
+
       if (response.status === 200) {
-        setLevels(renderableTaskUnits(response.data.data));
-        
+        setLevels(renderableLevels(response.data.data));
+        toggleLoading(false);
       }
     };
     if (
